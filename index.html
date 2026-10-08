@@ -2,47 +2,1751 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ZIVAN — Phase 1</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZIVAN — Social World</title>
+
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
+
 <style>
-:root{--bg:#060609;--panel:#0d0d12;--panel2:#111118;--line:#242432;--text:#f7f7fb;--muted:#8d8d9d;--a:#8b5cf6;--b:#4f8cff;--danger:#ff5470}
-*{box-sizing:border-box}html,body,#root{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input{font:inherit}button{cursor:pointer}
-body{overflow-x:hidden}.app{min-height:100vh;background:radial-gradient(circle at 70% -10%,rgba(139,92,246,.18),transparent 30%),radial-gradient(circle at 0 60%,rgba(79,140,255,.08),transparent 28%),var(--bg)}
-.topbar{position:sticky;top:0;z-index:20;height:64px;background:rgba(6,6,9,.82);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;padding:0 18px}.brand{font-weight:900;letter-spacing:2px;font-size:21px}.brand span{background:linear-gradient(90deg,#fff,#9f8cff,#65a4ff);-webkit-background-clip:text;color:transparent}.iconbtn{width:40px;height:40px;border:1px solid var(--line);background:#0e0e14;color:#fff;border-radius:13px}.layout{display:flex;max-width:1240px;margin:auto}.side{width:220px;padding:20px 12px;position:sticky;top:64px;height:calc(100vh - 64px);display:none}.side button{display:flex;gap:13px;align-items:center;width:100%;padding:13px;border:0;background:transparent;color:var(--muted);border-radius:13px;text-align:left;margin-bottom:5px}.side button.active,.side button:hover{background:#15151d;color:#fff}.main{width:100%;max-width:700px;margin:auto;padding:18px 14px 100px}.desktop-right{display:none;width:300px;padding:20px}.card{background:rgba(13,13,18,.82);border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 15px 50px rgba(0,0,0,.2)}.hero{padding:24px;background:linear-gradient(135deg,rgba(139,92,246,.16),rgba(79,140,255,.08));border-color:#33285b}.hero h1{font-size:32px;margin:0 0 7px}.muted{color:var(--muted)}.tiny{font-size:12px}.pill{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border-radius:999px;background:#171720;border:1px solid var(--line);font-size:12px;color:#cfcfe0}.composer{display:flex;gap:12px;align-items:center}.avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#4f8cff);display:grid;place-items:center;font-weight:900;flex:none}.composer button{flex:1;text-align:left;background:#15151c;border:1px solid var(--line);color:#8f8f9f;border-radius:15px;padding:13px 15px}.post-head{display:flex;align-items:center;gap:10px}.post-meta{flex:1}.post-meta b{font-size:14px}.post-body{line-height:1.55;color:#e7e7ed;margin-top:14px}.post-media{height:230px;border-radius:16px;margin-top:14px;background:linear-gradient(135deg,#15121f,#101827 55%,#191122);display:grid;place-items:center;font-size:52px}.actions{display:flex;gap:8px;margin-top:10px}.actions button{border:0;background:transparent;color:#9292a1;padding:9px;border-radius:10px}.actions button:hover{background:#171720;color:#fff}.section-title{display:flex;justify-content:space-between;align-items:center;margin:8px 2px 14px}.section-title h2{font-size:18px;margin:0}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{padding:15px;background:#111118;border:1px solid var(--line);border-radius:15px}.stat b{font-size:20px}.stat span{display:block;color:var(--muted);font-size:11px;margin-top:3px}.settings-item{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid #1c1c25}.settings-item:last-child{border-bottom:0}.settings-item .si{width:38px;height:38px;border-radius:12px;background:#171720;display:grid;place-items:center}.settings-item .txt{flex:1}.settings-item b{display:block;font-size:14px}.settings-item small{color:var(--muted)}.switch{width:44px;height:25px;border-radius:20px;background:#2a2a34;padding:3px}.switch i{display:block;width:19px;height:19px;border-radius:50%;background:#777;transition:.2s}.switch.on{background:#6d4bd8}.switch.on i{transform:translateX(19px);background:#fff}.bottom{position:fixed;bottom:0;left:0;right:0;height:68px;z-index:30;background:rgba(8,8,12,.92);backdrop-filter:blur(18px);border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-around}.bottom button{border:0;background:transparent;color:#77778a;font-size:10px;min-width:55px}.bottom button i{display:block;font-size:19px;margin-bottom:4px}.bottom button.active{color:#fff}.create{width:46px!important;height:46px;margin-top:10px;border-radius:15px!important;background:linear-gradient(135deg,#8b5cf6,#4f8cff)!important;color:#fff!important;font-size:20px!important}.create i{margin:0!important}.auth{min-height:100vh;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at 50% 0,rgba(139,92,246,.22),transparent 35%),#060609}.authbox{width:min(430px,100%);background:rgba(13,13,18,.9);border:1px solid #292638;border-radius:26px;padding:28px;box-shadow:0 30px 100px rgba(0,0,0,.5)}.logoMark{width:64px;height:64px;border-radius:20px;background:linear-gradient(135deg,#8b5cf6,#4f8cff);display:grid;place-items:center;font-weight:1000;font-size:25px;margin-bottom:18px}.authbox h1{margin:0;font-size:29px}.authbox p{color:var(--muted);font-size:13px}.field{width:100%;padding:14px 15px;border-radius:14px;background:#09090e;border:1px solid #292934;color:#fff;outline:0;margin-top:10px}.field:focus{border-color:#7352d4}.primary{width:100%;padding:14px;border:0;border-radius:14px;background:linear-gradient(100deg,#8b5cf6,#4f8cff);color:#fff;font-weight:800;margin-top:14px}.linkbtn{border:0;background:transparent;color:#a88cff;font-weight:700;margin-top:14px}.toast{position:fixed;top:76px;left:50%;transform:translateX(-50%);z-index:50;background:#171720;border:1px solid #39394a;border-radius:13px;padding:11px 15px;font-size:13px;box-shadow:0 15px 50px #0008}.profile-cover{height:130px;border-radius:18px;background:linear-gradient(135deg,#241642,#10244a,#17121e);position:relative}.profile-main{margin-top:-28px;position:relative;padding:0 4px}.profile-main .avatar{width:74px;height:74px;border:4px solid var(--bg);font-size:23px}.followbtn{border:0;border-radius:12px;padding:10px 15px;background:#fff;color:#08080b;font-weight:800}.danger{color:#ff7184!important}
-@media(min-width:900px){.side{display:block}.desktop-right{display:block}.bottom{display:none}.main{padding-bottom:30px}.layout{gap:10px}.topbar{padding-left:calc((100vw - 1240px)/2 + 12px);padding-right:calc((100vw - 1240px)/2 + 12px)}}
+:root{
+ --bg:#060609;
+ --panel:#0d0d12;
+ --panel2:#111118;
+ --line:#242432;
+ --text:#f7f7fb;
+ --muted:#8d8d9d;
+ --a:#8b5cf6;
+ --b:#4f8cff;
+ --danger:#ff5470
+}
+
+*{box-sizing:border-box}
+
+html,body,#root{
+ margin:0;
+ min-height:100%;
+ background:var(--bg);
+ color:var(--text);
+ font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+}
+
+body{overflow-x:hidden}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+
+.app{
+ min-height:100vh;
+ background:
+ radial-gradient(circle at 70% -10%,rgba(139,92,246,.18),transparent 30%),
+ radial-gradient(circle at 0 60%,rgba(79,140,255,.08),transparent 28%),
+ var(--bg)
+}
+
+.topbar{
+ position:sticky;
+ top:0;
+ z-index:20;
+ height:64px;
+ background:rgba(6,6,9,.86);
+ backdrop-filter:blur(18px);
+ border-bottom:1px solid rgba(255,255,255,.07);
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ padding:0 18px
+}
+
+.brand{
+ font-weight:900;
+ letter-spacing:2px;
+ font-size:21px
+}
+
+.brand span{
+ background:linear-gradient(90deg,#fff,#9f8cff,#65a4ff);
+ -webkit-background-clip:text;
+ color:transparent
+}
+
+.layout{
+ display:flex;
+ max-width:1240px;
+ margin:auto
+}
+
+.side{
+ width:220px;
+ padding:20px 12px;
+ position:sticky;
+ top:64px;
+ height:calc(100vh - 64px);
+ display:none
+}
+
+.side button{
+ display:flex;
+ gap:13px;
+ align-items:center;
+ width:100%;
+ padding:13px;
+ border:0;
+ background:transparent;
+ color:var(--muted);
+ border-radius:13px;
+ text-align:left;
+ margin-bottom:5px
+}
+
+.side button.active,
+.side button:hover{
+ background:#15151d;
+ color:#fff
+}
+
+.main{
+ width:100%;
+ max-width:700px;
+ margin:auto;
+ padding:18px 14px 100px
+}
+
+.right{
+ display:none;
+ width:300px;
+ padding:20px
+}
+
+.card{
+ background:rgba(13,13,18,.84);
+ border:1px solid var(--line);
+ border-radius:20px;
+ padding:18px;
+ margin-bottom:14px;
+ box-shadow:0 15px 50px rgba(0,0,0,.2)
+}
+
+.hero{
+ padding:24px;
+ background:linear-gradient(135deg,rgba(139,92,246,.16),rgba(79,140,255,.08));
+ border-color:#33285b
+}
+
+.hero h1{
+ font-size:32px;
+ margin:12px 0 8px
+}
+
+.muted{color:var(--muted)}
+.tiny{font-size:12px}
+
+.pill{
+ display:inline-flex;
+ align-items:center;
+ padding:7px 11px;
+ border-radius:999px;
+ background:#171720;
+ border:1px solid var(--line);
+ font-size:12px;
+ color:#cfcfe0
+}
+
+.iconbtn{
+ width:40px;
+ height:40px;
+ border:1px solid var(--line);
+ background:#0e0e14;
+ color:#fff;
+ border-radius:13px
+}
+
+.avatar{
+ width:44px;
+ height:44px;
+ border-radius:50%;
+ background:linear-gradient(135deg,#8b5cf6,#4f8cff);
+ display:grid;
+ place-items:center;
+ font-weight:900;
+ flex:none
+}
+
+.composer{
+ display:flex;
+ gap:12px;
+ align-items:center
+}
+
+.field{
+ width:100%;
+ padding:14px 15px;
+ border-radius:14px;
+ background:#09090e;
+ border:1px solid #292934;
+ color:#fff;
+ outline:0;
+ margin-top:10px
+}
+
+.field:focus{border-color:#7352d4}
+
+.textarea{
+ min-height:100px;
+ resize:vertical
+}
+
+.primary{
+ width:100%;
+ padding:14px;
+ border:0;
+ border-radius:14px;
+ background:linear-gradient(100deg,#8b5cf6,#4f8cff);
+ color:#fff;
+ font-weight:800;
+ margin-top:14px
+}
+
+.section-title{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin:8px 2px 14px
+}
+
+.section-title h2{
+ font-size:18px;
+ margin:0
+}
+
+.post-head{
+ display:flex;
+ align-items:center;
+ gap:10px
+}
+
+.post-meta{flex:1}
+
+.post-meta b{font-size:14px}
+
+.post-body{
+ line-height:1.55;
+ color:#e7e7ed;
+ margin-top:14px;
+ white-space:pre-wrap
+}
+
+.post-media{
+ height:170px;
+ border-radius:16px;
+ margin-top:14px;
+ background:linear-gradient(135deg,#15121f,#101827,#191122);
+ display:grid;
+ place-items:center;
+ font-size:42px
+}
+
+.actions{
+ display:flex;
+ gap:5px;
+ margin-top:10px
+}
+
+.actions button{
+ border:0;
+ background:transparent;
+ color:#9292a1;
+ padding:9px;
+ border-radius:10px
+}
+
+.actions button:hover{
+ background:#171720;
+ color:#fff
+}
+
+.grid2{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px
+}
+
+.stat{
+ padding:15px;
+ background:#111118;
+ border:1px solid var(--line);
+ border-radius:15px
+}
+
+.stat b{
+ font-size:20px
+}
+
+.stat span{
+ display:block;
+ color:var(--muted);
+ font-size:11px;
+ margin-top:3px
+}
+
+.auth{
+ min-height:100vh;
+ display:grid;
+ place-items:center;
+ padding:22px;
+ background:
+ radial-gradient(circle at 50% 0,rgba(139,92,246,.22),transparent 35%),
+ #060609
+}
+
+.authbox{
+ width:min(430px,100%);
+ background:rgba(13,13,18,.94);
+ border:1px solid #292638;
+ border-radius:26px;
+ padding:28px;
+ box-shadow:0 30px 100px rgba(0,0,0,.5)
+}
+
+.logo{
+ width:64px;
+ height:64px;
+ border-radius:20px;
+ background:linear-gradient(135deg,#8b5cf6,#4f8cff);
+ display:grid;
+ place-items:center;
+ font-weight:1000;
+ font-size:25px;
+ margin-bottom:18px
+}
+
+.authbox h1{
+ margin:0;
+ font-size:29px
+}
+
+.link{
+ border:0;
+ background:transparent;
+ color:#a88cff;
+ font-weight:700;
+ margin-top:14px
+}
+
+.toast{
+ position:fixed;
+ top:76px;
+ left:50%;
+ transform:translateX(-50%);
+ z-index:100;
+ background:#171720;
+ border:1px solid #39394a;
+ border-radius:13px;
+ padding:11px 15px;
+ font-size:13px
+}
+
+.bottom{
+ position:fixed;
+ bottom:0;
+ left:0;
+ right:0;
+ height:68px;
+ z-index:30;
+ background:rgba(8,8,12,.94);
+ backdrop-filter:blur(18px);
+ border-top:1px solid rgba(255,255,255,.08);
+ display:flex;
+ justify-content:space-around
+}
+
+.bottom button{
+ border:0;
+ background:transparent;
+ color:#77778a;
+ font-size:10px;
+ min-width:55px
+}
+
+.bottom button i{
+ display:block;
+ font-size:19px;
+ margin-bottom:4px
+}
+
+.bottom button.active{color:#fff}
+
+.create{
+ width:46px!important;
+ height:46px;
+ margin-top:10px;
+ border-radius:15px!important;
+ background:linear-gradient(135deg,#8b5cf6,#4f8cff)!important;
+ color:#fff!important;
+ font-size:20px!important
+}
+
+.settings{
+ display:flex;
+ align-items:center;
+ gap:13px;
+ padding:14px 0;
+ border-bottom:1px solid #1c1c25
+}
+
+.settings:last-child{border-bottom:0}
+
+.settings .si{
+ width:38px;
+ height:38px;
+ border-radius:12px;
+ background:#171720;
+ display:grid;
+ place-items:center
+}
+
+.settings .txt{flex:1}
+
+.settings b{
+ display:block;
+ font-size:14px
+}
+
+.settings small{color:var(--muted)}
+
+.switch{
+ width:44px;
+ height:25px;
+ border-radius:20px;
+ background:#2a2a34;
+ padding:3px;
+ border:0
+}
+
+.switch i{
+ display:block;
+ width:19px;
+ height:19px;
+ border-radius:50%;
+ background:#777;
+ transition:.2s
+}
+
+.switch.on{background:#6d4bd8}
+
+.switch.on i{
+ transform:translateX(19px);
+ background:#fff
+}
+
+.profile-cover{
+ height:130px;
+ border-radius:18px;
+ background:linear-gradient(135deg,#241642,#10244a,#17121e)
+}
+
+.profile-main{
+ margin-top:-28px;
+ position:relative;
+ padding:0 4px
+}
+
+.profile-main .avatar{
+ width:74px;
+ height:74px;
+ border:4px solid var(--bg);
+ font-size:23px
+}
+
+.edit{
+ border:0;
+ border-radius:12px;
+ padding:10px 15px;
+ background:#fff;
+ color:#08080b;
+ font-weight:800
+}
+
+@media(min-width:900px){
+ .side{display:block}
+ .right{display:block}
+ .bottom{display:none}
+ .main{padding-bottom:30px}
+}
 </style>
 </head>
-<body><div id="root"></div>
+
+<body>
+<div id="root"></div>
+
 <script type="text/babel">
-const {useEffect,useState}=React;
-const API='https://malik-proxy-smm.onrender.com';
-const NAV=[['Home','fa-house'],['Explore','fa-compass'],['Notifications','fa-bell'],['Messages','fa-comment-dots'],['Profile','fa-user'],['Settings','fa-gear']];
-function App(){
- const [user,setUser]=useState(()=>JSON.parse(localStorage.getItem('zivan_user')||'null'));
- const [panel,setPanel]=useState(localStorage.getItem('zivan_panel')||'');
- const [panels,setPanels]=useState([]); const [page,setPage]=useState('Home');
- const [signup,setSignup]=useState(false); const [form,setForm]=useState({username:'',email:'',pass:''}); const [toast,setToast]=useState('');
- const [privateAcct,setPrivateAcct]=useState(false); const [messageControl,setMessageControl]=useState(true); const [tagControl,setTagControl]=useState(true);
- useEffect(()=>{axios.get(API+'/api/init-app').then(r=>{setPanels(r.data.panels||[]); if(!panel&&r.data.panels?.[0]){setPanel(String(r.data.panels[0].id));localStorage.setItem('zivan_panel',String(r.data.panels[0].id));}}).catch(()=>{});},[]);
- const notify=m=>{setToast(m);setTimeout(()=>setToast(''),2200)};
- const auth=()=>{if(!form.username||!form.pass||(signup&&!form.email))return notify('Please complete all required fields.'); const p=panel||String(panels[0]?.id||1); const url=signup?'/api/signup':'/api/login'; const data=signup?{panel:p,ref:'',username:form.username.trim(),email:form.email.trim(),pass:form.pass.trim()}:{panel:p,username:form.username.trim(),pass:form.pass.trim()}; axios.post(API+url,data).then(r=>{const u=signup?{username:form.username.trim().toLowerCase(),email:form.email.trim().toLowerCase(),avatar:''}:{username:r.data.username,email:r.data.email,avatar:r.data.avatar||''};setUser(u);localStorage.setItem('zivan_user',JSON.stringify(u));localStorage.setItem('zivan_panel',p);notify(signup?'Welcome to ZIVAN.':'Welcome back.');}).catch(e=>notify(e.response?.data?.error||'Authentication failed.'));};
- if(!user)return <Auth signup={signup} setSignup={setSignup} form={form} setForm={setForm} auth={auth} panels={panels}/>;
- const logout=()=>{localStorage.removeItem('zivan_user');setUser(null);setPage('Home');};
- return <div className="app">{toast&&<div className="toast">{toast}</div>}<header className="topbar"><div className="brand"><span>ZIVAN</span></div><div style={{display:'flex',gap:8}}><button className="iconbtn" onClick={()=>setPage('Explore')}><i className="fa-solid fa-magnifying-glass"/></button><button className="iconbtn" onClick={()=>setPage('Notifications')}><i className="fa-solid fa-bell"/></button></div></header><div className="layout"><aside className="side">{NAV.map(([n,i])=><button className={page===n?'active':''} onClick={()=>setPage(n)} key={n}><i className={'fa-solid '+i}/>{n}</button>)}<button onClick={logout} className="danger"><i className="fa-solid fa-right-from-bracket"/>Log out</button></aside><main className="main">{page==='Home'&&<Home user={user} setPage={setPage}/>} {page==='Explore'&&<Explore setPage={setPage}/>} {page==='Notifications'&&<Notifications/>} {page==='Messages'&&<Messages enabled={messageControl}/>} {page==='Profile'&&<Profile user={user} setUser={setUser}/>} {page==='Settings'&&<Settings privateAcct={privateAcct} setPrivateAcct={setPrivateAcct} messageControl={messageControl} setMessageControl={setMessageControl} tagControl={tagControl} setTagControl={setTagControl} logout={logout}/>}</main><aside className="desktop-right"><div className="card"><b>Build status</b><p className="muted tiny">Phase 1 · Foundation</p><div className="pill">● Social graph next</div></div><div className="card"><b>Core coming next</b><p className="muted tiny">Follow system · Posts · Comments · Likes · Stories · Reels · Chat · Worlds</p></div></aside></div><nav className="bottom">{[['Home','fa-house'],['Explore','fa-compass'],['Create','fa-plus'],['Notifications','fa-bell'],['Profile','fa-user']].map(([n,i])=>n==='Create'?<button className="create" key={n} onClick={()=>notify('Create Post is coming in Phase 2.')}><i className="fa-solid fa-plus"/></button>:<button key={n} className={page===n?'active':''} onClick={()=>setPage(n)}><i className={'fa-solid '+i}/>{n}</button>)}</nav></div>;
+
+const {useState,useEffect}=React;
+
+/*
+  IMPORTANT:
+  Empty API means same-origin.
+  Render serves both index.html and FastAPI.
+*/
+const API="";
+
+const NAV=[
+ ["Home","fa-house"],
+ ["Explore","fa-compass"],
+ ["Notifications","fa-bell"],
+ ["Messages","fa-comment-dots"],
+ ["Profile","fa-user"],
+ ["Settings","fa-gear"]
+];
+
+function getToken(){
+ return localStorage.getItem("zivan_token")||"";
 }
-function Auth({signup,setSignup,form,setForm,auth,panels}){return <div className="auth"><div className="authbox"><div className="logoMark">Z</div><h1>{signup?'Create your ZIVAN account':'Welcome to ZIVAN'}</h1><p>{signup?'Join the new social world.':'Your social world starts here.'}</p><input className="field" placeholder="Username" value={form.username} onChange={e=>setForm({...form,username:e.target.value})}/>{signup&&<input className="field" placeholder="Email address" value={form.email} onChange={e=>setForm({...form,email:e.target.value})}/>}<input className="field" type="password" placeholder="Password" value={form.pass} onChange={e=>setForm({...form,pass:e.target.value})}/><button className="primary" onClick={auth}>{signup?'CREATE ACCOUNT':'LOGIN'}</button><button className="linkbtn" onClick={()=>setSignup(!signup)}>{signup?'Already have an account? Login':'New to ZIVAN? Create account'}</button><p className="tiny" style={{marginTop:20}}>Phase 1 uses the existing authentication foundation. {panels.length?'Connected.':'Waiting for backend.'}</p></div></div>}
-function Home({user,setPage}){return <><div className="card hero"><span className="pill">✦ ZIVAN · PHASE 1</span><h1>One social world.<br/>Built differently.</h1><p className="muted">Welcome, @{user.username}. This is the foundation for your profile, social graph, communities and creator ecosystem.</p><button className="primary" style={{maxWidth:230}} onClick={()=>setPage('Profile')}>Open my profile</button></div><div className="card"><div className="composer"><div className="avatar">{user.username[0]?.toUpperCase()}</div><button onClick={()=>setPage('Profile')}>What do you want to share?</button></div></div><div className="section-title"><h2>Your feed</h2><span className="muted tiny">Fresh ideas</span></div><Post name="ZIVAN" handle="zivan" text="The foundation is live. Social graph, creator tools and Worlds are next." icon="✦"/><Post name="ZIVAN Community" handle="worlds" text="Worlds will become community spaces built around interests, creators and conversations." icon="◈"/></>}
-function Post({name,handle,text,icon}){const [liked,setLiked]=useState(false);return <div className="card"><div className="post-head"><div className="avatar">{icon}</div><div className="post-meta"><b>{name}</b><div className="muted tiny">@{handle} · now</div></div><i className="fa-solid fa-ellipsis"/></div><div className="post-body">{text}</div><div className="post-media">{icon}</div><div className="actions"><button onClick={()=>setLiked(!liked)}><i className={liked?'fa-solid fa-heart':'fa-regular fa-heart'}/> {liked?'Liked':'Like'}</button><button><i className="fa-regular fa-comment"/> Comment</button><button><i className="fa-solid fa-share"/> Share</button><button><i className="fa-regular fa-bookmark"/> Save</button></div></div>}
-function Explore({setPage}){return <><div className="section-title"><h2>Explore</h2><span className="pill">Discover</span></div><div className="card"><input className="field" style={{margin:0}} placeholder="Search people, posts, hashtags and Worlds"/></div><div className="grid2"><div className="card"><b>Creators</b><p className="muted tiny">Find people worth following.</p></div><div className="card"><b>Worlds</b><p className="muted tiny">Communities are coming next.</p></div><div className="card"><b>Trending</b><p className="muted tiny">Topics and conversations.</p></div><div className="card"><b>Shorts</b><p className="muted tiny">Reels arrive in the next phase.</p></div></div></>}
-function Notifications(){return <><div className="section-title"><h2>Notifications</h2></div><div className="card"><div className="settings-item"><div className="si"><i className="fa-solid fa-user-plus"/></div><div className="txt"><b>Social graph ready</b><small>Your followers/following layer is queued for the next backend phase.</small></div></div><div className="settings-item"><div className="si"><i className="fa-solid fa-sparkles"/></div><div className="txt"><b>Welcome to ZIVAN</b><small>Your Phase 1 foundation is active.</small></div></div></div></>}
-function Messages({enabled}){return <><div className="section-title"><h2>Messages</h2></div><div className="card" style={{textAlign:'center',padding:35}}><div className="avatar" style={{margin:'auto',width:60,height:60}}><i className="fa-solid fa-comments"/></div><h3>{enabled?'Your conversations will live here.':'Messages are restricted.'}</h3><p className="muted tiny">1-to-1 and group chat will be built after the social graph foundation.</p></div></>}
-function Profile({user,setUser}){return <><div className="card" style={{padding:10}}><div className="profile-cover"/><div className="profile-main"><div style={{display:'flex',justifyContent:'space-between',alignItems:'end'}}><div className="avatar">{user.username[0]?.toUpperCase()}</div><button className="followbtn">Edit profile</button></div><h2 style={{margin:'10px 0 2px'}}>{user.username}</h2><div className="muted">@{user.username}</div><p className="muted tiny">Building my world on ZIVAN.</p><div className="grid2"><div className="stat"><b>0</b><span>Posts</span></div><div className="stat"><b>0</b><span>Followers</span></div><div className="stat"><b>0</b><span>Following</span></div><div className="stat"><b>0</b><span>Worlds</span></div></div></div></div><div className="card"><b>Profile identity</b><p className="muted tiny">{user.email}</p></div></>}
-function Toggle({on,setOn}){return <button className={'switch '+(on?'on':'')} onClick={()=>setOn(!on)} aria-label="toggle"><i/></button>}
-function Settings({privateAcct,setPrivateAcct,messageControl,setMessageControl,tagControl,setTagControl,logout}){return <><div className="section-title"><h2>Settings</h2></div><div className="card"><div className="settings-item"><div className="si"><i className="fa-solid fa-lock"/></div><div className="txt"><b>Private account</b><small>Only approved followers can access private content.</small></div><Toggle on={privateAcct} setOn={setPrivateAcct}/></div><div className="settings-item"><div className="si"><i className="fa-solid fa-message"/></div><div className="txt"><b>Allow messages</b><small>Control who can start conversations.</small></div><Toggle on={messageControl} setOn={setMessageControl}/></div><div className="settings-item"><div className="si"><i className="fa-solid fa-at"/></div><div className="txt"><b>Mentions & tags</b><small>Choose whether others can mention or tag you.</small></div><Toggle on={tagControl} setOn={setTagControl}/></div></div><div className="card"><div className="settings-item"><div className="si"><i className="fa-solid fa-shield-halved"/></div><div className="txt"><b>Security & sessions</b><small>Password, active sessions and account protection.</small></div><i className="fa-solid fa-chevron-right muted"/></div><div className="settings-item"><div className="si"><i className="fa-solid fa-user-slash"/></div><div className="txt"><b>Blocked accounts</b><small>Manage accounts you have blocked.</small></div><i className="fa-solid fa-chevron-right muted"/></div><div className="settings-item"><div className="si"><i className="fa-solid fa-bell"/></div><div className="txt"><b>Notification controls</b><small>Likes, follows, messages and creator alerts.</small></div><i className="fa-solid fa-chevron-right muted"/></div></div><div className="card"><button className="primary danger" style={{background:'#171118',marginTop:0}} onClick={logout}>Log out</button></div></>}
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-</script></body></html>
+
+async function api(method,url,data){
+ const headers={
+  "Content-Type":"application/json"
+ };
+
+ const token=getToken();
+
+ if(token){
+  headers.Authorization="Bearer "+token;
+ }
+
+ const response=await axios({
+  method,
+  url:API+url,
+  data,
+  headers
+ });
+
+ return response.data;
+}
+
+function App(){
+
+ const [user,setUser]=useState(
+  ()=>JSON.parse(localStorage.getItem("zivan_user")||"null")
+ );
+
+ const [page,setPage]=useState("Home");
+ const [toast,setToast]=useState("");
+
+ function notify(message){
+  setToast(message);
+  setTimeout(()=>setToast(""),2200);
+ }
+
+ async function logout(){
+
+  try{
+   await api("POST","/api/logout");
+  }catch(e){}
+
+  localStorage.removeItem("zivan_token");
+  localStorage.removeItem("zivan_user");
+
+  setUser(null);
+  setPage("Home");
+ }
+
+ if(!user){
+  return <Auth
+   setUser={setUser}
+   notify={notify}
+  />;
+ }
+
+ return (
+  <div className="app">
+
+   {toast&&<div className="toast">{toast}</div>}
+
+   <header className="topbar">
+
+    <div className="brand">
+     <span>ZIVAN</span>
+    </div>
+
+    <div style={{display:"flex",gap:8}}>
+
+     <button
+      className="iconbtn"
+      onClick={()=>setPage("Explore")}
+     >
+      <i className="fa-solid fa-magnifying-glass"/>
+     </button>
+
+     <button
+      className="iconbtn"
+      onClick={()=>setPage("Notifications")}
+     >
+      <i className="fa-solid fa-bell"/>
+     </button>
+
+    </div>
+
+   </header>
+
+   <div className="layout">
+
+    <aside className="side">
+
+     {NAV.map(([name,icon])=>(
+      <button
+       key={name}
+       className={page===name?"active":""}
+       onClick={()=>setPage(name)}
+      >
+       <i className={"fa-solid "+icon}/>
+       {name}
+      </button>
+     ))}
+
+     <button onClick={logout}>
+      <i className="fa-solid fa-right-from-bracket"/>
+      Log out
+     </button>
+
+    </aside>
+
+    <main className="main">
+
+     {page==="Home"&&
+      <Home user={user} setPage={setPage}/>
+     }
+
+     {page==="Explore"&&
+      <Explore/>
+     }
+
+     {page==="Notifications"&&
+      <Notifications/>
+     }
+
+     {page==="Messages"&&
+      <Messages/>
+     }
+
+     {page==="Profile"&&
+      <Profile user={user} setUser={setUser}/>
+     }
+
+     {page==="Settings"&&
+      <Settings logout={logout}/>
+     }
+
+    </main>
+
+    <aside className="right">
+
+     <div className="card">
+
+      <b>Build status</b>
+
+      <p className="muted tiny">
+       Phase 1 · Backend connected
+      </p>
+
+      <div className="pill">
+       ● ZIVAN API LIVE
+      </div>
+
+     </div>
+
+     <div className="card">
+
+      <b>Coming next</b>
+
+      <p className="muted tiny">
+       Social graph · Stories · Reels · Chat · Worlds · Creator tools · AI
+      </p>
+
+     </div>
+
+    </aside>
+
+   </div>
+
+   <nav className="bottom">
+
+    {[
+     ["Home","fa-house"],
+     ["Explore","fa-compass"],
+     ["Create","fa-plus"],
+     ["Notifications","fa-bell"],
+     ["Profile","fa-user"]
+    ].map(([name,icon])=>{
+
+     if(name==="Create"){
+      return (
+       <button
+        key={name}
+        className="create"
+        onClick={()=>setPage("Create")}
+       >
+        <i className="fa-solid fa-plus"/>
+       </button>
+      );
+     }
+
+     return (
+      <button
+       key={name}
+       className={page===name?"active":""}
+       onClick={()=>setPage(name)}
+      >
+       <i className={"fa-solid "+icon}/>
+       {name}
+      </button>
+     );
+
+    })}
+
+   </nav>
+
+  </div>
+ );
+}
+
+
+function Auth({setUser,notify}){
+
+ const [signup,setSignup]=useState(false);
+
+ const [form,setForm]=useState({
+  username:"",
+  email:"",
+  password:""
+ });
+
+ async function submit(){
+
+  if(
+   !form.username||
+   !form.password||
+   (signup&&!form.email)
+  ){
+   return notify("Complete all required fields.");
+  }
+
+  try{
+
+   const data=signup
+
+    ? await api(
+       "POST",
+       "/api/signup",
+       {
+        username:form.username.trim(),
+        email:form.email.trim(),
+        password:form.password
+       }
+      )
+
+    : await api(
+       "POST",
+       "/api/login",
+       {
+        username:form.username.trim(),
+        password:form.password
+       }
+      );
+
+   localStorage.setItem(
+    "zivan_token",
+    data.token
+   );
+
+   localStorage.setItem(
+    "zivan_user",
+    JSON.stringify(data.user)
+   );
+
+   setUser(data.user);
+
+   notify(
+    signup
+    ?"Welcome to ZIVAN."
+    :"Welcome back."
+   );
+
+  }catch(error){
+
+   notify(
+    error.response?.data?.detail||
+    "Authentication failed."
+   );
+
+  }
+ }
+
+ return (
+  <div className="auth">
+
+   <div className="authbox">
+
+    <div className="logo">Z</div>
+
+    <h1>
+     {signup
+      ?"Create your ZIVAN account"
+      :"Welcome to ZIVAN"
+     }
+    </h1>
+
+    <p className="muted">
+     {signup
+      ?"Join the new social world."
+      :"Your social world starts here."
+     }
+    </p>
+
+    <input
+     className="field"
+     placeholder="Username"
+     value={form.username}
+     onChange={e=>
+      setForm({
+       ...form,
+       username:e.target.value
+      })
+     }
+    />
+
+    {signup&&
+     <input
+      className="field"
+      type="email"
+      placeholder="Email address"
+      value={form.email}
+      onChange={e=>
+       setForm({
+        ...form,
+        email:e.target.value
+       })
+      }
+     />
+    }
+
+    <input
+     className="field"
+     type="password"
+     placeholder="Password"
+     value={form.password}
+     onChange={e=>
+      setForm({
+       ...form,
+       password:e.target.value
+      })
+     }
+     onKeyDown={e=>{
+      if(e.key==="Enter")submit();
+     }}
+    />
+
+    <button
+     className="primary"
+     onClick={submit}
+    >
+     {signup?"CREATE ACCOUNT":"LOGIN"}
+    </button>
+
+    <button
+     className="link"
+     onClick={()=>setSignup(!signup)}
+    >
+     {signup
+      ?"Already have an account? Login"
+      :"New to ZIVAN? Create account"
+     }
+    </button>
+
+    <p className="tiny muted">
+     ZIVAN Phase 1 · Secure authentication
+    </p>
+
+   </div>
+
+  </div>
+ );
+}
+
+
+function Home({user,setPage}){
+
+ const [posts,setPosts]=useState([]);
+ const [body,setBody]=useState("");
+ const [loading,setLoading]=useState(true);
+ const [posting,setPosting]=useState(false);
+
+ async function loadFeed(){
+
+  try{
+
+   const data=await api(
+    "GET",
+    "/api/feed"
+   );
+
+   setPosts(data.posts||[]);
+
+  }catch(e){}
+
+  setLoading(false);
+ }
+
+ useEffect(()=>{
+  loadFeed();
+ },[]);
+
+ async function createPost(){
+
+  if(!body.trim())return;
+
+  setPosting(true);
+
+  try{
+
+   await api(
+    "POST",
+    "/api/posts",
+    {
+     body:body.trim(),
+     media_url:""
+    }
+   );
+
+   setBody("");
+
+   await loadFeed();
+
+  }catch(e){}
+
+  setPosting(false);
+ }
+
+ return <>
+
+  <div className="card hero">
+
+   <span className="pill">
+    ✦ ZIVAN · LIVE
+   </span>
+
+   <h1>
+    One social world.
+    <br/>
+    Built differently.
+   </h1>
+
+   <p className="muted">
+    Welcome, @{user.username}.
+    Your social world starts here.
+   </p>
+
+   <button
+    className="primary"
+    style={{maxWidth:230}}
+    onClick={()=>setPage("Profile")}
+   >
+    Open my profile
+   </button>
+
+  </div>
+
+
+  <div className="card">
+
+   <textarea
+    className="field textarea"
+    style={{margin:0}}
+    placeholder="What do you want to share?"
+    value={body}
+    onChange={e=>setBody(e.target.value)}
+   />
+
+   <button
+    className="primary"
+    onClick={createPost}
+    disabled={posting}
+   >
+    {posting?"POSTING...":"SHARE POST"}
+   </button>
+
+  </div>
+
+
+  <div className="section-title">
+
+   <h2>Your feed</h2>
+
+   <span className="muted tiny">
+    {posts.length} posts
+   </span>
+
+  </div>
+
+
+  {loading&&
+   <div className="card">
+    <p className="muted">
+     Loading your feed...
+    </p>
+   </div>
+  }
+
+
+  {!loading&&posts.length===0&&
+   <div className="card" style={{textAlign:"center"}}>
+
+    <div
+     className="avatar"
+     style={{margin:"auto"}}
+    >
+     ✦
+    </div>
+
+    <h3>Your feed is empty</h3>
+
+    <p className="muted tiny">
+     Create your first post.
+    </p>
+
+   </div>
+  }
+
+
+  {posts.map(post=>
+   <Post
+    key={post.id}
+    post={post}
+   />
+  )}
+
+ </>;
+}
+
+
+function Post({post}){
+
+ const [liked,setLiked]=useState(false);
+ const [likes,setLikes]=useState(post.likes||0);
+ const [comment,setComment]=useState("");
+
+ async function like(){
+
+  try{
+
+   if(liked){
+
+    await api(
+     "DELETE",
+     "/api/posts/"+post.id+"/like"
+    );
+
+    setLikes(Math.max(0,likes-1));
+
+   }else{
+
+    await api(
+     "POST",
+     "/api/posts/"+post.id+"/like"
+    );
+
+    setLikes(likes+1);
+
+   }
+
+   setLiked(!liked);
+
+  }catch(e){}
+ }
+
+ async function sendComment(){
+
+  if(!comment.trim())return;
+
+  try{
+
+   await api(
+    "POST",
+    "/api/posts/"+post.id+"/comments",
+    {
+     body:comment.trim()
+    }
+   );
+
+   setComment("");
+
+  }catch(e){}
+ }
+
+ return <div className="card">
+
+  <div className="post-head">
+
+   <div className="avatar">
+    {(post.username||"Z")[0].toUpperCase()}
+   </div>
+
+   <div className="post-meta">
+
+    <b>
+     {post.display_name||post.username}
+    </b>
+
+    <div className="muted tiny">
+     @{post.username}
+    </div>
+
+   </div>
+
+   <i className="fa-solid fa-ellipsis"/>
+
+  </div>
+
+
+  <div className="post-body">
+   {post.body}
+  </div>
+
+
+  <div className="post-media">
+   ✦
+  </div>
+
+
+  <div className="actions">
+
+   <button onClick={like}>
+    <i className={
+     liked
+     ?"fa-solid fa-heart"
+     :"fa-regular fa-heart"
+    }/>
+    {" "+likes}
+   </button>
+
+   <button>
+    <i className="fa-regular fa-comment"/>
+    {" "+(post.comments||0)}
+   </button>
+
+   <button>
+    <i className="fa-solid fa-share"/>
+    {" Share"}
+   </button>
+
+   <button>
+    <i className="fa-regular fa-bookmark"/>
+    {" Save"}
+   </button>
+
+  </div>
+
+
+  <div style={{
+   display:"flex",
+   gap:8,
+   marginTop:8
+  }}>
+
+   <input
+    className="field"
+    style={{margin:0}}
+    placeholder="Write a comment..."
+    value={comment}
+    onChange={e=>setComment(e.target.value)}
+   />
+
+   <button
+    className="iconbtn"
+    onClick={sendComment}
+   >
+    <i className="fa-solid fa-paper-plane"/>
+   </button>
+
+  </div>
+
+ </div>;
+}
+
+
+function Explore(){
+
+ const [q,setQ]=useState("");
+ const [users,setUsers]=useState([]);
+
+ useEffect(()=>{
+
+  const timer=setTimeout(async()=>{
+
+   if(!q.trim()){
+    setUsers([]);
+    return;
+   }
+
+   try{
+
+    const data=await api(
+     "GET",
+     "/api/search?q="+
+     encodeURIComponent(q)
+    );
+
+    setUsers(data.users||[]);
+
+   }catch(e){}
+
+  },300);
+
+  return()=>clearTimeout(timer);
+
+ },[q]);
+
+ return <>
+
+  <div className="section-title">
+   <h2>Explore</h2>
+   <span className="pill">Discover</span>
+  </div>
+
+  <div className="card">
+
+   <input
+    className="field"
+    style={{margin:0}}
+    placeholder="Search people, posts, hashtags and Worlds"
+    value={q}
+    onChange={e=>setQ(e.target.value)}
+   />
+
+   {users.map(u=>
+    <div
+     key={u.id}
+     style={{
+      display:"flex",
+      alignItems:"center",
+      gap:10,
+      padding:"12px 0"
+     }}
+    >
+
+     <div className="avatar">
+      {(u.username||"Z")[0].toUpperCase()}
+     </div>
+
+     <div>
+      <b>{u.display_name||u.username}</b>
+      <div className="muted tiny">
+       @{u.username}
+      </div>
+     </div>
+
+    </div>
+   )}
+
+   {q&&users.length===0&&
+    <p className="muted tiny">
+     No users found.
+    </p>
+   }
+
+  </div>
+
+
+  <div className="grid2">
+
+   <div className="card">
+    <b>Creators</b>
+    <p className="muted tiny">
+     Discover creators.
+    </p>
+   </div>
+
+   <div className="card">
+    <b>Worlds</b>
+    <p className="muted tiny">
+     Communities coming next.
+    </p>
+   </div>
+
+   <div className="card">
+    <b>Trending</b>
+    <p className="muted tiny">
+     Topics and conversations.
+    </p>
+   </div>
+
+   <div className="card">
+    <b>Reels</b>
+    <p className="muted tiny">
+     Short video coming next.
+    </p>
+   </div>
+
+  </div>
+
+ </>;
+}
+
+
+function Notifications(){
+
+ const [items,setItems]=useState([]);
+
+ useEffect(()=>{
+
+  api(
+   "GET",
+   "/api/notifications"
+  )
+  .then(data=>
+   setItems(data.notifications||[])
+  )
+  .catch(()=>{});
+
+ },[]);
+
+ return <>
+
+  <div className="section-title">
+   <h2>Notifications</h2>
+  </div>
+
+  <div className="card">
+
+   {items.length===0&&
+    <div style={{
+     textAlign:"center",
+     padding:30
+    }}>
+     <p className="muted">
+      No notifications yet.
+     </p>
+    </div>
+   }
+
+   {items.map(item=>
+    <div
+     className="settings"
+     key={item.id}
+    >
+
+     <div className="si">
+      <i className="fa-solid fa-bell"/>
+     </div>
+
+     <div className="txt">
+      <b>
+       {item.kind==="follow"
+        ?"New follower"
+        :item.kind==="like"
+        ?"Post liked"
+        :"New comment"
+       }
+      </b>
+
+      <small>
+       {item.username
+        ?"@"+item.username
+        :"ZIVAN"
+       }
+      </small>
+     </div>
+
+    </div>
+   )}
+
+  </div>
+
+ </>;
+}
+
+
+function Messages(){
+
+ return <>
+
+  <div className="section-title">
+   <h2>Messages</h2>
+  </div>
+
+  <div
+   className="card"
+   style={{textAlign:"center",padding:40}}
+  >
+
+   <div
+    className="avatar"
+    style={{
+     margin:"auto",
+     width:60,
+     height:60
+    }}
+   >
+    <i className="fa-solid fa-comments"/>
+   </div>
+
+   <h3>Messages are coming next.</h3>
+
+   <p className="muted tiny">
+    1-to-1 and group chat will be part of the next ZIVAN phase.
+   </p>
+
+  </div>
+
+ </>;
+}
+
+
+function Profile({user,setUser}){
+
+ const [followers,setFollowers]=useState(0);
+ const [following,setFollowing]=useState(0);
+
+ const [editing,setEditing]=useState(false);
+
+ const [name,setName]=useState(
+  user.display_name||user.username
+ );
+
+ const [bio,setBio]=useState(
+  user.bio||""
+ );
+
+ async function load(){
+
+  try{
+
+   const data=await api(
+    "GET",
+    "/api/me"
+   );
+
+   setUser(data.user);
+
+   setFollowers(data.followers||0);
+   setFollowing(data.following||0);
+
+   setName(
+    data.user.display_name||
+    data.user.username
+   );
+
+   setBio(data.user.bio||"");
+
+   localStorage.setItem(
+    "zivan_user",
+    JSON.stringify(data.user)
+   );
+
+  }catch(e){}
+
+ }
+
+ useEffect(()=>{
+  load();
+ },[]);
+
+
+ async function save(){
+
+  try{
+
+   const data=await api(
+    "PATCH",
+    "/api/me",
+    {
+     display_name:name,
+     bio:bio
+    }
+   );
+
+   setUser(data.user);
+
+   localStorage.setItem(
+    "zivan_user",
+    JSON.stringify(data.user)
+   );
+
+   setEditing(false);
+
+  }catch(e){}
+
+ }
+
+ return <>
+
+  <div className="card">
+
+   <div className="profile-cover"/>
+
+   <div className="profile-main">
+
+    <div style={{
+     display:"flex",
+     justifyContent:"space-between",
+     alignItems:"end"
+    }}>
+
+     <div className="avatar">
+      {(user.username||"Z")[0].toUpperCase()}
+     </div>
+
+     <button
+      className="edit"
+      onClick={()=>setEditing(!editing)}
+     >
+      {editing?"Cancel":"Edit profile"}
+     </button>
+
+    </div>
+
+
+    {!editing&&
+     <>
+      <h2>
+       {user.display_name||user.username}
+      </h2>
+
+      <div className="muted">
+       @{user.username}
+      </div>
+
+      <p className="muted tiny">
+       {user.bio||"Building my world on ZIVAN."}
+      </p>
+     </>
+    }
+
+
+    {editing&&
+     <>
+      <input
+       className="field"
+       value={name}
+       onChange={e=>setName(e.target.value)}
+       placeholder="Display name"
+      />
+
+      <textarea
+       className="field textarea"
+       value={bio}
+       onChange={e=>setBio(e.target.value)}
+       placeholder="Bio"
+      />
+
+      <button
+       className="primary"
+       onClick={save}
+      >
+       SAVE PROFILE
+      </button>
+     </>
+    }
+
+
+    <div className="grid2">
+
+     <div className="stat">
+      <b>—</b>
+      <span>Posts</span>
+     </div>
+
+     <div className="stat">
+      <b>{followers}</b>
+      <span>Followers</span>
+     </div>
+
+     <div className="stat">
+      <b>{following}</b>
+      <span>Following</span>
+     </div>
+
+     <div className="stat">
+      <b>0</b>
+      <span>Worlds</span>
+     </div>
+
+    </div>
+
+   </div>
+
+  </div>
+
+
+  <div className="card">
+
+   <b>Profile identity</b>
+
+   <p className="muted tiny">
+    {user.email}
+   </p>
+
+  </div>
+
+ </>;
+}
+
+
+function Toggle({on,setOn}){
+
+ return (
+  <button
+   className={"switch "+(on?"on":"")}
+   onClick={()=>setOn(!on)}
+  >
+   <i/>
+  </button>
+ );
+}
+
+
+function Settings({logout}){
+
+ const [privateAccount,setPrivateAccount]=useState(false);
+ const [messages,setMessages]=useState(true);
+ const [tags,setTags]=useState(true);
+
+ return <>
+
+  <div className="section-title">
+   <h2>Settings</h2>
+  </div>
+
+
+  <div className="card">
+
+   <div className="settings">
+
+    <div className="si">
+     <i className="fa-solid fa-lock"/>
+    </div>
+
+    <div className="txt">
+     <b>Private account</b>
+     <small>Control who can follow you.</small>
+    </div>
+
+    <Toggle
+     on={privateAccount}
+     setOn={setPrivateAccount}
+    />
+
+   </div>
+
+
+   <div className="settings">
+
+    <div className="si">
+     <i className="fa-solid fa-message"/>
+    </div>
+
+    <div className="txt">
+     <b>Allow messages</b>
+     <small>Control who can message you.</small>
+    </div>
+
+    <Toggle
+     on={messages}
+     setOn={setMessages}
+    />
+
+   </div>
+
+
+   <div className="settings">
+
+    <div className="si">
+     <i className="fa-solid fa-at"/>
+    </div>
+
+    <div className="txt">
+     <b>Mentions & tags</b>
+     <small>Control mentions and tags.</small>
+    </div>
+
+    <Toggle
+     on={tags}
+     setOn={setTags}
+    />
+
+   </div>
+
+  </div>
+
+
+  <div className="card">
+
+   <div className="settings">
+    <div className="si">
+     <i className="fa-solid fa-shield-halved"/>
+    </div>
+
+    <div className="txt">
+     <b>Security & sessions</b>
+     <small>Account protection.</small>
+    </div>
+
+    <i className="fa-solid fa-chevron-right muted"/>
+   </div>
+
+
+   <div className="settings">
+    <div className="si">
+     <i className="fa-solid fa-user-slash"/>
+    </div>
+
+    <div className="txt">
+     <b>Blocked accounts</b>
+     <small>Manage blocked accounts.</small>
+    </div>
+
+    <i className="fa-solid fa-chevron-right muted"/>
+   </div>
+
+
+   <div className="settings">
+    <div className="si">
+     <i className="fa-solid fa-bell"/>
+    </div>
+
+    <div className="txt">
+     <b>Notification controls</b>
+     <small>Manage your notifications.</small>
+    </div>
+
+    <i className="fa-solid fa-chevron-right muted"/>
+   </div>
+
+  </div>
+
+
+  <div className="card">
+
+   <button
+    className="primary"
+    style={{background:"#171118",color:"#ff7184"}}
+    onClick={logout}
+   >
+    LOG OUT
+   </button>
+
+  </div>
+
+ </>;
+}
+
+
+ReactDOM
+ .createRoot(document.getElementById("root"))
+ .render(<App/>);
+
+</script>
+</body>
+</html>
