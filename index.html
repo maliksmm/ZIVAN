@@ -1,1752 +1,2723 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ZIVAN — Social World</title>
-
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="theme-color" content="#07070a">
+<meta name="description" content="ZIVAN — A new social world.">
+<title>ZIVAN</title>
 
 <style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
 :root{
- --bg:#060609;
- --panel:#0d0d12;
- --panel2:#111118;
- --line:#242432;
- --text:#f7f7fb;
- --muted:#8d8d9d;
- --a:#8b5cf6;
- --b:#4f8cff;
- --danger:#ff5470
+    --bg:#050507;
+    --panel:#0b0b10;
+    --panel2:#101017;
+    --line:#20202b;
+    --text:#f5f5f7;
+    --muted:#8b8b99;
+    --accent:#8b5cf6;
+    --accent2:#4f8cff;
+    --danger:#ff4d6d;
 }
 
-*{box-sizing:border-box}
-
-html,body,#root{
- margin:0;
- min-height:100%;
- background:var(--bg);
- color:var(--text);
- font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+body{
+    background:
+        radial-gradient(circle at 15% 0%,rgba(139,92,246,.14),transparent 28%),
+        radial-gradient(circle at 90% 15%,rgba(79,140,255,.10),transparent 25%),
+        var(--bg);
+    color:var(--text);
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    min-height:100vh;
 }
 
-body{overflow-x:hidden}
-button,input,textarea{font:inherit}
-button{cursor:pointer}
+button,
+input,
+textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.hidden{
+    display:none!important;
+}
 
 .app{
- min-height:100vh;
- background:
- radial-gradient(circle at 70% -10%,rgba(139,92,246,.18),transparent 30%),
- radial-gradient(circle at 0 60%,rgba(79,140,255,.08),transparent 28%),
- var(--bg)
+    min-height:100vh;
 }
 
-.topbar{
- position:sticky;
- top:0;
- z-index:20;
- height:64px;
- background:rgba(6,6,9,.86);
- backdrop-filter:blur(18px);
- border-bottom:1px solid rgba(255,255,255,.07);
- display:flex;
- align-items:center;
- justify-content:space-between;
- padding:0 18px
+/* =========================
+   AUTH
+========================= */
+
+.auth-screen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
 }
 
-.brand{
- font-weight:900;
- letter-spacing:2px;
- font-size:21px
-}
-
-.brand span{
- background:linear-gradient(90deg,#fff,#9f8cff,#65a4ff);
- -webkit-background-clip:text;
- color:transparent
-}
-
-.layout{
- display:flex;
- max-width:1240px;
- margin:auto
-}
-
-.side{
- width:220px;
- padding:20px 12px;
- position:sticky;
- top:64px;
- height:calc(100vh - 64px);
- display:none
-}
-
-.side button{
- display:flex;
- gap:13px;
- align-items:center;
- width:100%;
- padding:13px;
- border:0;
- background:transparent;
- color:var(--muted);
- border-radius:13px;
- text-align:left;
- margin-bottom:5px
-}
-
-.side button.active,
-.side button:hover{
- background:#15151d;
- color:#fff
-}
-
-.main{
- width:100%;
- max-width:700px;
- margin:auto;
- padding:18px 14px 100px
-}
-
-.right{
- display:none;
- width:300px;
- padding:20px
-}
-
-.card{
- background:rgba(13,13,18,.84);
- border:1px solid var(--line);
- border-radius:20px;
- padding:18px;
- margin-bottom:14px;
- box-shadow:0 15px 50px rgba(0,0,0,.2)
-}
-
-.hero{
- padding:24px;
- background:linear-gradient(135deg,rgba(139,92,246,.16),rgba(79,140,255,.08));
- border-color:#33285b
-}
-
-.hero h1{
- font-size:32px;
- margin:12px 0 8px
-}
-
-.muted{color:var(--muted)}
-.tiny{font-size:12px}
-
-.pill{
- display:inline-flex;
- align-items:center;
- padding:7px 11px;
- border-radius:999px;
- background:#171720;
- border:1px solid var(--line);
- font-size:12px;
- color:#cfcfe0
-}
-
-.iconbtn{
- width:40px;
- height:40px;
- border:1px solid var(--line);
- background:#0e0e14;
- color:#fff;
- border-radius:13px
-}
-
-.avatar{
- width:44px;
- height:44px;
- border-radius:50%;
- background:linear-gradient(135deg,#8b5cf6,#4f8cff);
- display:grid;
- place-items:center;
- font-weight:900;
- flex:none
-}
-
-.composer{
- display:flex;
- gap:12px;
- align-items:center
-}
-
-.field{
- width:100%;
- padding:14px 15px;
- border-radius:14px;
- background:#09090e;
- border:1px solid #292934;
- color:#fff;
- outline:0;
- margin-top:10px
-}
-
-.field:focus{border-color:#7352d4}
-
-.textarea{
- min-height:100px;
- resize:vertical
-}
-
-.primary{
- width:100%;
- padding:14px;
- border:0;
- border-radius:14px;
- background:linear-gradient(100deg,#8b5cf6,#4f8cff);
- color:#fff;
- font-weight:800;
- margin-top:14px
-}
-
-.section-title{
- display:flex;
- justify-content:space-between;
- align-items:center;
- margin:8px 2px 14px
-}
-
-.section-title h2{
- font-size:18px;
- margin:0
-}
-
-.post-head{
- display:flex;
- align-items:center;
- gap:10px
-}
-
-.post-meta{flex:1}
-
-.post-meta b{font-size:14px}
-
-.post-body{
- line-height:1.55;
- color:#e7e7ed;
- margin-top:14px;
- white-space:pre-wrap
-}
-
-.post-media{
- height:170px;
- border-radius:16px;
- margin-top:14px;
- background:linear-gradient(135deg,#15121f,#101827,#191122);
- display:grid;
- place-items:center;
- font-size:42px
-}
-
-.actions{
- display:flex;
- gap:5px;
- margin-top:10px
-}
-
-.actions button{
- border:0;
- background:transparent;
- color:#9292a1;
- padding:9px;
- border-radius:10px
-}
-
-.actions button:hover{
- background:#171720;
- color:#fff
-}
-
-.grid2{
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:10px
-}
-
-.stat{
- padding:15px;
- background:#111118;
- border:1px solid var(--line);
- border-radius:15px
-}
-
-.stat b{
- font-size:20px
-}
-
-.stat span{
- display:block;
- color:var(--muted);
- font-size:11px;
- margin-top:3px
-}
-
-.auth{
- min-height:100vh;
- display:grid;
- place-items:center;
- padding:22px;
- background:
- radial-gradient(circle at 50% 0,rgba(139,92,246,.22),transparent 35%),
- #060609
-}
-
-.authbox{
- width:min(430px,100%);
- background:rgba(13,13,18,.94);
- border:1px solid #292638;
- border-radius:26px;
- padding:28px;
- box-shadow:0 30px 100px rgba(0,0,0,.5)
+.auth-box{
+    width:100%;
+    max-width:430px;
+    background:rgba(11,11,16,.88);
+    border:1px solid var(--line);
+    border-radius:28px;
+    padding:30px;
+    box-shadow:0 30px 100px rgba(0,0,0,.45);
+    backdrop-filter:blur(20px);
 }
 
 .logo{
- width:64px;
- height:64px;
- border-radius:20px;
- background:linear-gradient(135deg,#8b5cf6,#4f8cff);
- display:grid;
- place-items:center;
- font-weight:1000;
- font-size:25px;
- margin-bottom:18px
+    font-size:38px;
+    font-weight:900;
+    letter-spacing:-2px;
 }
 
-.authbox h1{
- margin:0;
- font-size:29px
+.logo span{
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
 }
 
-.link{
- border:0;
- background:transparent;
- color:#a88cff;
- font-weight:700;
- margin-top:14px
+.tagline{
+    color:var(--muted);
+    margin-top:7px;
+    margin-bottom:26px;
 }
 
-.toast{
- position:fixed;
- top:76px;
- left:50%;
- transform:translateX(-50%);
- z-index:100;
- background:#171720;
- border:1px solid #39394a;
- border-radius:13px;
- padding:11px 15px;
- font-size:13px
+.auth-title{
+    font-size:25px;
+    margin-bottom:7px;
 }
 
-.bottom{
- position:fixed;
- bottom:0;
- left:0;
- right:0;
- height:68px;
- z-index:30;
- background:rgba(8,8,12,.94);
- backdrop-filter:blur(18px);
- border-top:1px solid rgba(255,255,255,.08);
- display:flex;
- justify-content:space-around
+.auth-sub{
+    color:var(--muted);
+    font-size:14px;
+    margin-bottom:20px;
 }
 
-.bottom button{
- border:0;
- background:transparent;
- color:#77778a;
- font-size:10px;
- min-width:55px
+.field{
+    margin-bottom:13px;
 }
 
-.bottom button i{
- display:block;
- font-size:19px;
- margin-bottom:4px
+.field label{
+    display:block;
+    font-size:12px;
+    color:#aaaab7;
+    margin-bottom:7px;
 }
 
-.bottom button.active{color:#fff}
-
-.create{
- width:46px!important;
- height:46px;
- margin-top:10px;
- border-radius:15px!important;
- background:linear-gradient(135deg,#8b5cf6,#4f8cff)!important;
- color:#fff!important;
- font-size:20px!important
+.input{
+    width:100%;
+    background:#08080d;
+    border:1px solid var(--line);
+    color:white;
+    padding:13px 14px;
+    border-radius:13px;
+    outline:none;
+    transition:.2s;
 }
 
-.settings{
- display:flex;
- align-items:center;
- gap:13px;
- padding:14px 0;
- border-bottom:1px solid #1c1c25
+.input:focus{
+    border-color:rgba(139,92,246,.75);
+    box-shadow:0 0 0 3px rgba(139,92,246,.10);
 }
 
-.settings:last-child{border-bottom:0}
-
-.settings .si{
- width:38px;
- height:38px;
- border-radius:12px;
- background:#171720;
- display:grid;
- place-items:center
+.auth-btn{
+    width:100%;
+    border:0;
+    border-radius:14px;
+    padding:14px;
+    margin-top:5px;
+    color:white;
+    font-weight:800;
+    background:linear-gradient(100deg,var(--accent),var(--accent2));
+    box-shadow:0 10px 30px rgba(99,102,241,.22);
 }
-
-.settings .txt{flex:1}
-
-.settings b{
- display:block;
- font-size:14px
-}
-
-.settings small{color:var(--muted)}
 
 .switch{
- width:44px;
- height:25px;
- border-radius:20px;
- background:#2a2a34;
- padding:3px;
- border:0
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    margin-top:20px;
 }
 
-.switch i{
- display:block;
- width:19px;
- height:19px;
- border-radius:50%;
- background:#777;
- transition:.2s
+.switch button{
+    background:none;
+    border:0;
+    color:#a78bfa;
+    font-weight:800;
 }
 
-.switch.on{background:#6d4bd8}
-
-.switch.on i{
- transform:translateX(19px);
- background:#fff
+.choice-row{
+    display:flex;
+    gap:8px;
+    margin-bottom:16px;
 }
+
+.choice{
+    flex:1;
+    padding:11px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:#08080d;
+    color:#aaa;
+}
+
+.choice.active{
+    color:white;
+    border-color:var(--accent);
+    background:rgba(139,92,246,.12);
+}
+
+.otp-box{
+    text-align:center;
+}
+
+.otp-input{
+    text-align:center;
+    letter-spacing:8px;
+    font-size:25px;
+    font-weight:800;
+}
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.shell{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+    width:250px;
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    padding:28px 18px;
+    border-right:1px solid var(--line);
+    background:rgba(5,5,7,.92);
+    backdrop-filter:blur(18px);
+    z-index:20;
+}
+
+.sidebar .logo{
+    margin:0 12px 35px;
+}
+
+.side-btn{
+    width:100%;
+    border:0;
+    background:transparent;
+    color:#858593;
+    padding:13px 14px;
+    border-radius:13px;
+    text-align:left;
+    margin-bottom:5px;
+    font-weight:700;
+}
+
+.side-btn:hover,
+.side-btn.active{
+    color:white;
+    background:#11111a;
+}
+
+.side-btn .icon{
+    width:27px;
+    display:inline-block;
+}
+
+.main{
+    margin-left:250px;
+    width:calc(100% - 250px);
+    max-width:1000px;
+    min-height:100vh;
+    border-right:1px solid var(--line);
+}
+
+.topbar{
+    height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 24px;
+    border-bottom:1px solid var(--line);
+    position:sticky;
+    top:0;
+    background:rgba(5,5,7,.82);
+    backdrop-filter:blur(18px);
+    z-index:10;
+}
+
+.top-title{
+    font-size:17px;
+    font-weight:850;
+}
+
+.page{
+    padding:22px;
+}
+
+.card{
+    background:rgba(12,12,18,.86);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:18px;
+    margin-bottom:15px;
+}
+
+.hero{
+    padding:28px;
+    min-height:230px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    background:
+        radial-gradient(circle at 90% 20%,rgba(79,140,255,.15),transparent 30%),
+        radial-gradient(circle at 10% 80%,rgba(139,92,246,.16),transparent 35%),
+        #0b0b10;
+}
+
+.hero h1{
+    font-size:clamp(32px,7vw,56px);
+    line-height:1;
+    letter-spacing:-2px;
+}
+
+.hero p{
+    color:var(--muted);
+    margin-top:14px;
+    max-width:550px;
+    line-height:1.6;
+}
+
+.hero-user{
+    color:#b8a5ff;
+    margin-top:18px;
+    font-weight:800;
+}
+
+.composer{
+    display:flex;
+    gap:12px;
+    align-items:center;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    flex-shrink:0;
+}
+
+.composer-input{
+    flex:1;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:#08080d;
+    color:#999;
+    padding:13px;
+    cursor:text;
+}
+
+.primary{
+    border:0;
+    color:white;
+    background:linear-gradient(100deg,var(--accent),var(--accent2));
+    border-radius:12px;
+    padding:11px 16px;
+    font-weight:800;
+}
+
+.secondary{
+    border:1px solid var(--line);
+    color:#ddd;
+    background:#0b0b10;
+    border-radius:12px;
+    padding:11px 16px;
+    font-weight:700;
+}
+
+.post-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.post-name{
+    font-weight:850;
+}
+
+.post-user{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.post-time{
+    color:#666673;
+    font-size:11px;
+    margin-left:auto;
+}
+
+.post-body{
+    margin-top:15px;
+    line-height:1.6;
+    white-space:pre-wrap;
+}
+
+.post-actions{
+    display:flex;
+    gap:8px;
+    margin-top:15px;
+    border-top:1px solid #171720;
+    padding-top:12px;
+}
+
+.action{
+    border:0;
+    background:#0b0b10;
+    color:#999;
+    padding:8px 12px;
+    border-radius:10px;
+}
+
+.action:hover{
+    color:white;
+}
+
+/* =========================
+   EXPLORE
+========================= */
+
+.search{
+    width:100%;
+    padding:14px;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background:#09090e;
+    color:white;
+    outline:none;
+}
+
+.section-title{
+    font-size:15px;
+    margin:22px 0 11px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.explore-card{
+    min-height:130px;
+    padding:18px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:
+        linear-gradient(145deg,rgba(139,92,246,.08),rgba(79,140,255,.04)),
+        #0b0b10;
+}
+
+.explore-card h3{
+    margin-bottom:8px;
+}
+
+.explore-card p{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.5;
+}
+
+/* =========================
+   PROFILE
+========================= */
 
 .profile-cover{
- height:130px;
- border-radius:18px;
- background:linear-gradient(135deg,#241642,#10244a,#17121e)
+    height:150px;
+    border-radius:20px 20px 0 0;
+    background:
+        radial-gradient(circle at 20% 20%,rgba(139,92,246,.5),transparent 35%),
+        radial-gradient(circle at 80% 70%,rgba(79,140,255,.4),transparent 35%),
+        #11111a;
 }
 
-.profile-main{
- margin-top:-28px;
- position:relative;
- padding:0 4px
+.profile-info{
+    margin-top:-35px;
+    padding:0 22px 20px;
 }
 
-.profile-main .avatar{
- width:74px;
- height:74px;
- border:4px solid var(--bg);
- font-size:23px
+.profile-big{
+    width:76px;
+    height:76px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    border:4px solid #0b0b10;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+    font-weight:900;
 }
 
-.edit{
- border:0;
- border-radius:12px;
- padding:10px 15px;
- background:#fff;
- color:#08080b;
- font-weight:800
+.profile-name{
+    font-size:22px;
+    font-weight:900;
+    margin-top:12px;
 }
 
-@media(min-width:900px){
- .side{display:block}
- .right{display:block}
- .bottom{display:none}
- .main{padding-bottom:30px}
+.profile-handle{
+    color:var(--muted);
+    margin-top:3px;
+}
+
+.profile-bio{
+    margin-top:12px;
+    color:#c5c5cf;
+}
+
+.stats{
+    display:flex;
+    gap:28px;
+    margin-top:18px;
+}
+
+.stat b{
+    display:block;
+    font-size:17px;
+}
+
+.stat span{
+    color:var(--muted);
+    font-size:12px;
+}
+
+/* =========================
+   SETTINGS
+========================= */
+
+.setting{
+    padding:15px 0;
+    border-bottom:1px solid #181821;
+}
+
+.setting:last-child{
+    border-bottom:0;
+}
+
+.setting-title{
+    font-weight:800;
+}
+
+.setting-desc{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:4px;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.72);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    z-index:100;
+}
+
+.modal{
+    width:100%;
+    max-width:460px;
+    background:#0c0c12;
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:22px;
+    box-shadow:0 30px 100px #000;
+}
+
+.modal-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:17px;
+}
+
+.close{
+    background:#15151d;
+    color:#aaa;
+    border:0;
+    border-radius:9px;
+    width:34px;
+    height:34px;
+}
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
+.bottom-nav{
+    display:none;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    transform:translateX(-50%);
+    background:#161620;
+    border:1px solid #292936;
+    color:white;
+    padding:12px 17px;
+    border-radius:13px;
+    z-index:200;
+    font-size:13px;
+    box-shadow:0 15px 40px #000;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:760px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .main{
+        margin-left:0;
+        width:100%;
+        padding-bottom:75px;
+        border:0;
+    }
+
+    .topbar{
+        padding:0 16px;
+    }
+
+    .page{
+        padding:15px;
+    }
+
+    .bottom-nav{
+        display:flex;
+        position:fixed;
+        left:10px;
+        right:10px;
+        bottom:10px;
+        height:62px;
+        border:1px solid #242431;
+        border-radius:20px;
+        background:rgba(10,10,15,.94);
+        backdrop-filter:blur(20px);
+        z-index:50;
+        justify-content:space-around;
+        align-items:center;
+    }
+
+    .bottom-btn{
+        border:0;
+        background:none;
+        color:#777783;
+        font-size:10px;
+        font-weight:700;
+        text-align:center;
+    }
+
+    .bottom-btn .bicon{
+        display:block;
+        font-size:20px;
+        margin-bottom:3px;
+    }
+
+    .bottom-btn.active{
+        color:white;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .hero{
+        min-height:270px;
+        padding:22px;
+    }
+
+    .composer{
+        align-items:flex-start;
+    }
+
+    .composer .primary{
+        display:none;
+    }
 }
 </style>
 </head>
 
 <body>
+
 <div id="root"></div>
 
-<script type="text/babel">
+<div id="toast" class="toast hidden"></div>
 
-const {useState,useEffect}=React;
+<!-- AUTH -->
+<div id="authScreen" class="auth-screen">
 
-/*
-  IMPORTANT:
-  Empty API means same-origin.
-  Render serves both index.html and FastAPI.
-*/
-const API="";
+    <div class="auth-box">
 
-const NAV=[
- ["Home","fa-house"],
- ["Explore","fa-compass"],
- ["Notifications","fa-bell"],
- ["Messages","fa-comment-dots"],
- ["Profile","fa-user"],
- ["Settings","fa-gear"]
-];
+        <div class="logo">ZI<span>V</span>AN</div>
+        <div class="tagline">A new social world.</div>
 
-function getToken(){
- return localStorage.getItem("zivan_token")||"";
-}
+        <!-- LOGIN -->
+        <div id="loginPanel">
 
-async function api(method,url,data){
- const headers={
-  "Content-Type":"application/json"
- };
+            <div class="auth-title">Welcome back</div>
+            <div class="auth-sub">
+                Enter your account details to continue.
+            </div>
 
- const token=getToken();
+            <div class="field">
+                <label>Username, email or phone</label>
+                <input
+                    id="loginIdentifier"
+                    class="input"
+                    placeholder="@username / email / +91..."
+                    autocomplete="username">
+            </div>
 
- if(token){
-  headers.Authorization="Bearer "+token;
- }
+            <div class="field">
+                <label>Password</label>
+                <input
+                    id="loginPassword"
+                    class="input"
+                    type="password"
+                    placeholder="Your password"
+                    autocomplete="current-password">
+            </div>
 
- const response=await axios({
-  method,
-  url:API+url,
-  data,
-  headers
- });
+            <button
+                class="auth-btn"
+                onclick="login()">
+                LOG IN
+            </button>
 
- return response.data;
-}
+            <div class="switch">
+                New to ZIVAN?
+                <button onclick="showSignup()">
+                    Create account
+                </button>
+            </div>
 
-function App(){
+        </div>
 
- const [user,setUser]=useState(
-  ()=>JSON.parse(localStorage.getItem("zivan_user")||"null")
- );
 
- const [page,setPage]=useState("Home");
- const [toast,setToast]=useState("");
+        <!-- SIGNUP -->
+        <div id="signupPanel" class="hidden">
 
- function notify(message){
-  setToast(message);
-  setTimeout(()=>setToast(""),2200);
- }
+            <div class="auth-title">Create your world</div>
 
- async function logout(){
+            <div class="auth-sub">
+                Build your identity on ZIVAN.
+            </div>
 
-  try{
-   await api("POST","/api/logout");
-  }catch(e){}
+            <div class="field">
+                <label>Full name</label>
+                <input
+                    id="fullName"
+                    class="input"
+                    placeholder="Your full name">
+            </div>
 
-  localStorage.removeItem("zivan_token");
-  localStorage.removeItem("zivan_user");
+            <div class="field">
+                <label>Username</label>
+                <input
+                    id="username"
+                    class="input"
+                    placeholder="username">
+            </div>
 
-  setUser(null);
-  setPage("Home");
- }
+            <div class="field">
+                <label>Date of birth</label>
+                <input
+                    id="dob"
+                    class="input"
+                    type="date">
+            </div>
 
- if(!user){
-  return <Auth
-   setUser={setUser}
-   notify={notify}
-  />;
- }
+            <div class="field">
+                <label>Password</label>
+                <input
+                    id="signupPassword"
+                    class="input"
+                    type="password"
+                    placeholder="Minimum 8 characters">
+            </div>
 
- return (
-  <div className="app">
+            <div class="field">
+                <label>Verify through</label>
 
-   {toast&&<div className="toast">{toast}</div>}
+                <div class="choice-row">
 
-   <header className="topbar">
+                    <button
+                        id="emailChoice"
+                        class="choice active"
+                        onclick="setChannel('email')">
+                        Email
+                    </button>
 
-    <div className="brand">
-     <span>ZIVAN</span>
+                    <button
+                        id="phoneChoice"
+                        class="choice"
+                        onclick="setChannel('phone')">
+                        Phone
+                    </button>
+
+                </div>
+            </div>
+
+            <div
+                id="emailField"
+                class="field">
+
+                <label>Email</label>
+
+                <input
+                    id="signupEmail"
+                    class="input"
+                    type="email"
+                    placeholder="you@example.com">
+
+            </div>
+
+            <div
+                id="phoneField"
+                class="field hidden">
+
+                <label>Phone number</label>
+
+                <input
+                    id="signupPhone"
+                    class="input"
+                    type="tel"
+                    placeholder="+919876543210">
+
+            </div>
+
+            <button
+                class="auth-btn"
+                onclick="requestCode()">
+                SEND VERIFICATION CODE
+            </button>
+
+            <div class="switch">
+                Already have an account?
+                <button onclick="showLogin()">
+                    Log in
+                </button>
+            </div>
+
+        </div>
+
+
+        <!-- OTP -->
+        <div id="otpPanel" class="hidden otp-box">
+
+            <div class="auth-title">
+                Verify your account
+            </div>
+
+            <div
+                id="otpMessage"
+                class="auth-sub">
+                Enter the code we sent you.
+            </div>
+
+            <div class="field">
+
+                <input
+                    id="otpCode"
+                    class="input otp-input"
+                    inputmode="numeric"
+                    maxlength="6"
+                    placeholder="••••••">
+
+            </div>
+
+            <button
+                class="auth-btn"
+                onclick="verifyCode()">
+                VERIFY & CREATE ACCOUNT
+            </button>
+
+            <div class="switch">
+                Wrong details?
+                <button onclick="backToSignup()">
+                    Go back
+                </button>
+            </div>
+
+        </div>
+
     </div>
 
-    <div style={{display:"flex",gap:8}}>
+</div>
 
-     <button
-      className="iconbtn"
-      onClick={()=>setPage("Explore")}
-     >
-      <i className="fa-solid fa-magnifying-glass"/>
-     </button>
 
-     <button
-      className="iconbtn"
-      onClick={()=>setPage("Notifications")}
-     >
-      <i className="fa-solid fa-bell"/>
-     </button>
+<!-- MAIN APP -->
+<div id="appScreen" class="app hidden">
 
-    </div>
+<div class="shell">
 
-   </header>
+    <!-- DESKTOP SIDEBAR -->
+    <aside class="sidebar">
 
-   <div className="layout">
+        <div class="logo">
+            ZI<span>V</span>AN
+        </div>
 
-    <aside className="side">
+        <button
+            class="side-btn active"
+            data-page="Home"
+            onclick="navigate('Home')">
+            <span class="icon">⌂</span>
+            Home
+        </button>
 
-     {NAV.map(([name,icon])=>(
-      <button
-       key={name}
-       className={page===name?"active":""}
-       onClick={()=>setPage(name)}
-      >
-       <i className={"fa-solid "+icon}/>
-       {name}
-      </button>
-     ))}
+        <button
+            class="side-btn"
+            data-page="Explore"
+            onclick="navigate('Explore')">
+            <span class="icon">⌕</span>
+            Explore
+        </button>
 
-     <button onClick={logout}>
-      <i className="fa-solid fa-right-from-bracket"/>
-      Log out
-     </button>
+        <button
+            class="side-btn"
+            data-page="Create"
+            onclick="openCreate()">
+            <span class="icon">＋</span>
+            Create
+        </button>
+
+        <button
+            class="side-btn"
+            data-page="Reels"
+            onclick="navigate('Reels')">
+            <span class="icon">▶</span>
+            Reels
+        </button>
+
+        <button
+            class="side-btn"
+            data-page="Notifications"
+            onclick="navigate('Notifications')">
+            <span class="icon">♡</span>
+            Notifications
+        </button>
+
+        <button
+            class="side-btn"
+            data-page="Messages"
+            onclick="navigate('Messages')">
+            <span class="icon">✉</span>
+            Messages
+        </button>
+
+        <button
+            class="side-btn"
+            data-page="Profile"
+            onclick="navigate('Profile')">
+            <span class="icon">◎</span>
+            Profile
+        </button>
+
+        <button
+            class="side-btn"
+            data-page="Settings"
+            onclick="navigate('Settings')">
+            <span class="icon">⚙</span>
+            Settings
+        </button>
 
     </aside>
 
-    <main className="main">
 
-     {page==="Home"&&
-      <Home user={user} setPage={setPage}/>
-     }
+    <!-- MAIN -->
+    <main class="main">
 
-     {page==="Explore"&&
-      <Explore/>
-     }
+        <header class="topbar">
 
-     {page==="Notifications"&&
-      <Notifications/>
-     }
+            <div
+                id="topTitle"
+                class="top-title">
+                Home
+            </div>
 
-     {page==="Messages"&&
-      <Messages/>
-     }
+            <button
+                class="secondary"
+                onclick="logout()">
+                Logout
+            </button>
 
-     {page==="Profile"&&
-      <Profile user={user} setUser={setUser}/>
-     }
+        </header>
 
-     {page==="Settings"&&
-      <Settings logout={logout}/>
-     }
+        <div id="pageRoot"></div>
 
     </main>
 
-    <aside className="right">
-
-     <div className="card">
-
-      <b>Build status</b>
-
-      <p className="muted tiny">
-       Phase 1 · Backend connected
-      </p>
-
-      <div className="pill">
-       ● ZIVAN API LIVE
-      </div>
-
-     </div>
-
-     <div className="card">
-
-      <b>Coming next</b>
-
-      <p className="muted tiny">
-       Social graph · Stories · Reels · Chat · Worlds · Creator tools · AI
-      </p>
-
-     </div>
-
-    </aside>
-
-   </div>
-
-   <nav className="bottom">
-
-    {[
-     ["Home","fa-house"],
-     ["Explore","fa-compass"],
-     ["Create","fa-plus"],
-     ["Notifications","fa-bell"],
-     ["Profile","fa-user"]
-    ].map(([name,icon])=>{
-
-     if(name==="Create"){
-      return (
-       <button
-        key={name}
-        className="create"
-        onClick={()=>setPage("Create")}
-       >
-        <i className="fa-solid fa-plus"/>
-       </button>
-      );
-     }
-
-     return (
-      <button
-       key={name}
-       className={page===name?"active":""}
-       onClick={()=>setPage(name)}
-      >
-       <i className={"fa-solid "+icon}/>
-       {name}
-      </button>
-     );
-
-    })}
-
-   </nav>
-
-  </div>
- );
-}
+</div>
 
 
-function Auth({setUser,notify}){
-
- const [signup,setSignup]=useState(false);
-
- const [form,setForm]=useState({
-  username:"",
-  email:"",
-  password:""
- });
-
- async function submit(){
-
-  if(
-   !form.username||
-   !form.password||
-   (signup&&!form.email)
-  ){
-   return notify("Complete all required fields.");
-  }
-
-  try{
-
-   const data=signup
-
-    ? await api(
-       "POST",
-       "/api/signup",
-       {
-        username:form.username.trim(),
-        email:form.email.trim(),
-        password:form.password
-       }
-      )
-
-    : await api(
-       "POST",
-       "/api/login",
-       {
-        username:form.username.trim(),
-        password:form.password
-       }
-      );
-
-   localStorage.setItem(
-    "zivan_token",
-    data.token
-   );
-
-   localStorage.setItem(
-    "zivan_user",
-    JSON.stringify(data.user)
-   );
-
-   setUser(data.user);
-
-   notify(
-    signup
-    ?"Welcome to ZIVAN."
-    :"Welcome back."
-   );
-
-  }catch(error){
-
-   notify(
-    error.response?.data?.detail||
-    "Authentication failed."
-   );
-
-  }
- }
-
- return (
-  <div className="auth">
-
-   <div className="authbox">
-
-    <div className="logo">Z</div>
-
-    <h1>
-     {signup
-      ?"Create your ZIVAN account"
-      :"Welcome to ZIVAN"
-     }
-    </h1>
-
-    <p className="muted">
-     {signup
-      ?"Join the new social world."
-      :"Your social world starts here."
-     }
-    </p>
-
-    <input
-     className="field"
-     placeholder="Username"
-     value={form.username}
-     onChange={e=>
-      setForm({
-       ...form,
-       username:e.target.value
-      })
-     }
-    />
-
-    {signup&&
-     <input
-      className="field"
-      type="email"
-      placeholder="Email address"
-      value={form.email}
-      onChange={e=>
-       setForm({
-        ...form,
-        email:e.target.value
-       })
-      }
-     />
-    }
-
-    <input
-     className="field"
-     type="password"
-     placeholder="Password"
-     value={form.password}
-     onChange={e=>
-      setForm({
-       ...form,
-       password:e.target.value
-      })
-     }
-     onKeyDown={e=>{
-      if(e.key==="Enter")submit();
-     }}
-    />
+<!-- MOBILE NAV -->
+<nav class="bottom-nav">
 
     <button
-     className="primary"
-     onClick={submit}
-    >
-     {signup?"CREATE ACCOUNT":"LOGIN"}
+        class="bottom-btn active"
+        data-page="Home"
+        onclick="navigate('Home')">
+        <span class="bicon">⌂</span>
+        Home
     </button>
 
     <button
-     className="link"
-     onClick={()=>setSignup(!signup)}
-    >
-     {signup
-      ?"Already have an account? Login"
-      :"New to ZIVAN? Create account"
-     }
+        class="bottom-btn"
+        data-page="Explore"
+        onclick="navigate('Explore')">
+        <span class="bicon">⌕</span>
+        Explore
     </button>
 
-    <p className="tiny muted">
-     ZIVAN Phase 1 · Secure authentication
-    </p>
+    <button
+        class="bottom-btn"
+        data-page="Create"
+        onclick="openCreate()">
+        <span class="bicon">＋</span>
+        Create
+    </button>
 
-   </div>
+    <button
+        class="bottom-btn"
+        data-page="Notifications"
+        onclick="navigate('Notifications')">
+        <span class="bicon">♡</span>
+        Alerts
+    </button>
 
-  </div>
- );
-}
+    <button
+        class="bottom-btn"
+        data-page="Profile"
+        onclick="navigate('Profile')">
+        <span class="bicon">◎</span>
+        Profile
+    </button>
 
+</nav>
 
-function Home({user,setPage}){
-
- const [posts,setPosts]=useState([]);
- const [body,setBody]=useState("");
- const [loading,setLoading]=useState(true);
- const [posting,setPosting]=useState(false);
-
- async function loadFeed(){
-
-  try{
-
-   const data=await api(
-    "GET",
-    "/api/feed"
-   );
-
-   setPosts(data.posts||[]);
-
-  }catch(e){}
-
-  setLoading(false);
- }
-
- useEffect(()=>{
-  loadFeed();
- },[]);
-
- async function createPost(){
-
-  if(!body.trim())return;
-
-  setPosting(true);
-
-  try{
-
-   await api(
-    "POST",
-    "/api/posts",
-    {
-     body:body.trim(),
-     media_url:""
-    }
-   );
-
-   setBody("");
-
-   await loadFeed();
-
-  }catch(e){}
-
-  setPosting(false);
- }
-
- return <>
-
-  <div className="card hero">
-
-   <span className="pill">
-    ✦ ZIVAN · LIVE
-   </span>
-
-   <h1>
-    One social world.
-    <br/>
-    Built differently.
-   </h1>
-
-   <p className="muted">
-    Welcome, @{user.username}.
-    Your social world starts here.
-   </p>
-
-   <button
-    className="primary"
-    style={{maxWidth:230}}
-    onClick={()=>setPage("Profile")}
-   >
-    Open my profile
-   </button>
-
-  </div>
+</div>
 
 
-  <div className="card">
+<!-- CREATE MODAL -->
+<div
+    id="createModal"
+    class="overlay hidden">
 
-   <textarea
-    className="field textarea"
-    style={{margin:0}}
-    placeholder="What do you want to share?"
-    value={body}
-    onChange={e=>setBody(e.target.value)}
-   />
+    <div class="modal">
 
-   <button
-    className="primary"
-    onClick={createPost}
-    disabled={posting}
-   >
-    {posting?"POSTING...":"SHARE POST"}
-   </button>
+        <div class="modal-head">
 
-  </div>
+            <strong>Create post</strong>
 
+            <button
+                class="close"
+                onclick="closeCreate()">
+                ×
+            </button>
 
-  <div className="section-title">
+        </div>
 
-   <h2>Your feed</h2>
+        <textarea
+            id="postBody"
+            class="input"
+            rows="7"
+            maxlength="5000"
+            placeholder="What do you want to share?"></textarea>
 
-   <span className="muted tiny">
-    {posts.length} posts
-   </span>
+        <input
+            id="mediaUrl"
+            class="input"
+            style="margin-top:10px"
+            placeholder="Media URL (optional)">
 
-  </div>
+        <button
+            class="auth-btn"
+            style="margin-top:13px"
+            onclick="createPost()">
+            PUBLISH
+        </button>
 
-
-  {loading&&
-   <div className="card">
-    <p className="muted">
-     Loading your feed...
-    </p>
-   </div>
-  }
-
-
-  {!loading&&posts.length===0&&
-   <div className="card" style={{textAlign:"center"}}>
-
-    <div
-     className="avatar"
-     style={{margin:"auto"}}
-    >
-     ✦
     </div>
 
-    <h3>Your feed is empty</h3>
-
-    <p className="muted tiny">
-     Create your first post.
-    </p>
-
-   </div>
-  }
+</div>
 
 
-  {posts.map(post=>
-   <Post
-    key={post.id}
-    post={post}
-   />
-  )}
+<script>
 
- </>;
+const API = "";
+
+let token = localStorage.getItem("zivan_token") || "";
+let meUser = null;
+let channel = "email";
+let challengeId = null;
+let currentPage = "Home";
+
+
+/* =========================
+   HELPERS
+========================= */
+
+function $(id){
+    return document.getElementById(id);
 }
 
+function escapeHTML(value){
+    return String(value ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
 
-function Post({post}){
+function showToast(message){
+    const t = $("toast");
 
- const [liked,setLiked]=useState(false);
- const [likes,setLikes]=useState(post.likes||0);
- const [comment,setComment]=useState("");
+    t.textContent = message;
+    t.classList.remove("hidden");
 
- async function like(){
+    clearTimeout(window.toastTimer);
 
-  try{
+    window.toastTimer = setTimeout(()=>{
+        t.classList.add("hidden");
+    },3000);
+}
 
-   if(liked){
+async function api(path, options={}){
+    const headers = {
+        "Content-Type":"application/json",
+        ...(options.headers || {})
+    };
 
-    await api(
-     "DELETE",
-     "/api/posts/"+post.id+"/like"
+    if(token){
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    const response = await fetch(
+        API + path,
+        {
+            ...options,
+            headers
+        }
     );
 
-    setLikes(Math.max(0,likes-1));
+    let data = {};
 
-   }else{
+    try{
+        data = await response.json();
+    }catch(e){}
 
-    await api(
-     "POST",
-     "/api/posts/"+post.id+"/like"
+    if(!response.ok){
+        throw new Error(
+            data.detail ||
+            data.error ||
+            "Something went wrong."
+        );
+    }
+
+    return data;
+}
+
+
+/* =========================
+   AUTH UI
+========================= */
+
+function showLogin(){
+
+    $("loginPanel").classList.remove("hidden");
+    $("signupPanel").classList.add("hidden");
+    $("otpPanel").classList.add("hidden");
+
+}
+
+function showSignup(){
+
+    $("loginPanel").classList.add("hidden");
+    $("signupPanel").classList.remove("hidden");
+    $("otpPanel").classList.add("hidden");
+
+}
+
+function backToSignup(){
+
+    showSignup();
+
+}
+
+function setChannel(value){
+
+    channel = value;
+
+    $("emailChoice")
+        .classList.toggle(
+            "active",
+            value === "email"
+        );
+
+    $("phoneChoice")
+        .classList.toggle(
+            "active",
+            value === "phone"
+        );
+
+    $("emailField")
+        .classList.toggle(
+            "hidden",
+            value !== "email"
+        );
+
+    $("phoneField")
+        .classList.toggle(
+            "hidden",
+            value !== "phone"
+        );
+}
+
+
+/* =========================
+   SIGNUP OTP
+========================= */
+
+async function requestCode(){
+
+    const full_name =
+        $("fullName").value.trim();
+
+    const username =
+        $("username").value.trim();
+
+    const dob =
+        $("dob").value;
+
+    const password =
+        $("signupPassword").value;
+
+    const email =
+        $("signupEmail").value.trim();
+
+    const phone =
+        $("signupPhone").value.trim();
+
+
+    if(!full_name){
+        showToast("Enter your full name.");
+        return;
+    }
+
+    if(!username){
+        showToast("Enter a username.");
+        return;
+    }
+
+    if(!dob){
+        showToast("Enter your date of birth.");
+        return;
+    }
+
+    if(password.length < 8){
+        showToast(
+            "Password must be at least 8 characters."
+        );
+        return;
+    }
+
+
+    if(channel === "email" && !email){
+        showToast("Enter your email.");
+        return;
+    }
+
+    if(channel === "phone" && !phone){
+        showToast("Enter your phone number.");
+        return;
+    }
+
+
+    try{
+
+        const data = await api(
+            "/api/auth/request-code",
+            {
+                method:"POST",
+                body:JSON.stringify({
+
+                    full_name,
+                    username,
+                    dob,
+
+                    email:
+                        channel === "email"
+                        ? email
+                        : null,
+
+                    phone:
+                        channel === "phone"
+                        ? phone
+                        : null,
+
+                    password,
+
+                    channel
+
+                })
+            }
+        );
+
+
+        challengeId =
+            data.challenge_id;
+
+
+        $("signupPanel")
+            .classList.add("hidden");
+
+        $("otpPanel")
+            .classList.remove("hidden");
+
+
+        $("otpMessage").textContent =
+            "Verification code sent to " +
+            data.destination;
+
+
+        showToast(
+            "Verification code sent."
+        );
+
+
+    }catch(error){
+
+        showToast(error.message);
+
+    }
+}
+
+
+/* =========================
+   VERIFY
+========================= */
+
+async function verifyCode(){
+
+    const code =
+        $("otpCode").value.trim();
+
+
+    if(!challengeId){
+        showToast(
+            "Verification session expired."
+        );
+        return;
+    }
+
+    if(!code){
+        showToast("Enter the verification code.");
+        return;
+    }
+
+
+    try{
+
+        const data = await api(
+            "/api/auth/verify-code",
+            {
+                method:"POST",
+                body:JSON.stringify({
+
+                    challenge_id:
+                        challengeId,
+
+                    code
+
+                })
+            }
+        );
+
+
+        token =
+            data.token;
+
+        meUser =
+            data.user;
+
+        localStorage.setItem(
+            "zivan_token",
+            token
+        );
+
+
+        $("authScreen")
+            .classList.add("hidden");
+
+        $("appScreen")
+            .classList.remove("hidden");
+
+
+        challengeId = null;
+
+        navigate("Home");
+
+        showToast(
+            "Welcome to ZIVAN."
+        );
+
+
+    }catch(error){
+
+        showToast(error.message);
+
+    }
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+async function login(){
+
+    const identifier =
+        $("loginIdentifier")
+            .value
+            .trim();
+
+    const password =
+        $("loginPassword")
+            .value;
+
+
+    if(!identifier){
+        showToast(
+            "Enter username, email or phone."
+        );
+        return;
+    }
+
+    if(password.length < 8){
+        showToast(
+            "Enter your password."
+        );
+        return;
+    }
+
+
+    try{
+
+        const data = await api(
+            "/api/auth/login",
+            {
+                method:"POST",
+                body:JSON.stringify({
+
+                    identifier,
+                    password
+
+                })
+            }
+        );
+
+
+        token =
+            data.token;
+
+        meUser =
+            data.user;
+
+        localStorage.setItem(
+            "zivan_token",
+            token
+        );
+
+
+        $("authScreen")
+            .classList.add("hidden");
+
+        $("appScreen")
+            .classList.remove("hidden");
+
+
+        navigate("Home");
+
+        showToast(
+            "Welcome back."
+        );
+
+
+    }catch(error){
+
+        showToast(error.message);
+
+    }
+}
+
+
+/* =========================
+   SESSION
+========================= */
+
+async function restoreSession(){
+
+    if(!token){
+        return;
+    }
+
+    try{
+
+        const data =
+            await api("/api/me");
+
+        meUser =
+            data.user;
+
+        $("authScreen")
+            .classList.add("hidden");
+
+        $("appScreen")
+            .classList.remove("hidden");
+
+        navigate("Home");
+
+    }catch(error){
+
+        token = "";
+
+        localStorage.removeItem(
+            "zivan_token"
+        );
+
+    }
+}
+
+
+async function logout(){
+
+    try{
+
+        if(token){
+            await api(
+                "/api/logout",
+                {
+                    method:"POST"
+                }
+            );
+        }
+
+    }catch(e){}
+
+
+    token = "";
+    meUser = null;
+
+    localStorage.removeItem(
+        "zivan_token"
     );
 
-    setLikes(likes+1);
 
-   }
+    $("appScreen")
+        .classList.add("hidden");
 
-   setLiked(!liked);
+    $("authScreen")
+        .classList.remove("hidden");
 
-  }catch(e){}
- }
+    showLogin();
 
- async function sendComment(){
-
-  if(!comment.trim())return;
-
-  try{
-
-   await api(
-    "POST",
-    "/api/posts/"+post.id+"/comments",
-    {
-     body:comment.trim()
-    }
-   );
-
-   setComment("");
-
-  }catch(e){}
- }
-
- return <div className="card">
-
-  <div className="post-head">
-
-   <div className="avatar">
-    {(post.username||"Z")[0].toUpperCase()}
-   </div>
-
-   <div className="post-meta">
-
-    <b>
-     {post.display_name||post.username}
-    </b>
-
-    <div className="muted tiny">
-     @{post.username}
-    </div>
-
-   </div>
-
-   <i className="fa-solid fa-ellipsis"/>
-
-  </div>
-
-
-  <div className="post-body">
-   {post.body}
-  </div>
-
-
-  <div className="post-media">
-   ✦
-  </div>
-
-
-  <div className="actions">
-
-   <button onClick={like}>
-    <i className={
-     liked
-     ?"fa-solid fa-heart"
-     :"fa-regular fa-heart"
-    }/>
-    {" "+likes}
-   </button>
-
-   <button>
-    <i className="fa-regular fa-comment"/>
-    {" "+(post.comments||0)}
-   </button>
-
-   <button>
-    <i className="fa-solid fa-share"/>
-    {" Share"}
-   </button>
-
-   <button>
-    <i className="fa-regular fa-bookmark"/>
-    {" Save"}
-   </button>
-
-  </div>
-
-
-  <div style={{
-   display:"flex",
-   gap:8,
-   marginTop:8
-  }}>
-
-   <input
-    className="field"
-    style={{margin:0}}
-    placeholder="Write a comment..."
-    value={comment}
-    onChange={e=>setComment(e.target.value)}
-   />
-
-   <button
-    className="iconbtn"
-    onClick={sendComment}
-   >
-    <i className="fa-solid fa-paper-plane"/>
-   </button>
-
-  </div>
-
- </div>;
-}
-
-
-function Explore(){
-
- const [q,setQ]=useState("");
- const [users,setUsers]=useState([]);
-
- useEffect(()=>{
-
-  const timer=setTimeout(async()=>{
-
-   if(!q.trim()){
-    setUsers([]);
-    return;
-   }
-
-   try{
-
-    const data=await api(
-     "GET",
-     "/api/search?q="+
-     encodeURIComponent(q)
+    showToast(
+        "Logged out."
     );
-
-    setUsers(data.users||[]);
-
-   }catch(e){}
-
-  },300);
-
-  return()=>clearTimeout(timer);
-
- },[q]);
-
- return <>
-
-  <div className="section-title">
-   <h2>Explore</h2>
-   <span className="pill">Discover</span>
-  </div>
-
-  <div className="card">
-
-   <input
-    className="field"
-    style={{margin:0}}
-    placeholder="Search people, posts, hashtags and Worlds"
-    value={q}
-    onChange={e=>setQ(e.target.value)}
-   />
-
-   {users.map(u=>
-    <div
-     key={u.id}
-     style={{
-      display:"flex",
-      alignItems:"center",
-      gap:10,
-      padding:"12px 0"
-     }}
-    >
-
-     <div className="avatar">
-      {(u.username||"Z")[0].toUpperCase()}
-     </div>
-
-     <div>
-      <b>{u.display_name||u.username}</b>
-      <div className="muted tiny">
-       @{u.username}
-      </div>
-     </div>
-
-    </div>
-   )}
-
-   {q&&users.length===0&&
-    <p className="muted tiny">
-     No users found.
-    </p>
-   }
-
-  </div>
-
-
-  <div className="grid2">
-
-   <div className="card">
-    <b>Creators</b>
-    <p className="muted tiny">
-     Discover creators.
-    </p>
-   </div>
-
-   <div className="card">
-    <b>Worlds</b>
-    <p className="muted tiny">
-     Communities coming next.
-    </p>
-   </div>
-
-   <div className="card">
-    <b>Trending</b>
-    <p className="muted tiny">
-     Topics and conversations.
-    </p>
-   </div>
-
-   <div className="card">
-    <b>Reels</b>
-    <p className="muted tiny">
-     Short video coming next.
-    </p>
-   </div>
-
-  </div>
-
- </>;
 }
 
 
-function Notifications(){
+/* =========================
+   NAVIGATION
+========================= */
 
- const [items,setItems]=useState([]);
+function navigate(page){
 
- useEffect(()=>{
+    currentPage = page;
 
-  api(
-   "GET",
-   "/api/notifications"
-  )
-  .then(data=>
-   setItems(data.notifications||[])
-  )
-  .catch(()=>{});
-
- },[]);
-
- return <>
-
-  <div className="section-title">
-   <h2>Notifications</h2>
-  </div>
-
-  <div className="card">
-
-   {items.length===0&&
-    <div style={{
-     textAlign:"center",
-     padding:30
-    }}>
-     <p className="muted">
-      No notifications yet.
-     </p>
-    </div>
-   }
-
-   {items.map(item=>
-    <div
-     className="settings"
-     key={item.id}
-    >
-
-     <div className="si">
-      <i className="fa-solid fa-bell"/>
-     </div>
-
-     <div className="txt">
-      <b>
-       {item.kind==="follow"
-        ?"New follower"
-        :item.kind==="like"
-        ?"Post liked"
-        :"New comment"
-       }
-      </b>
-
-      <small>
-       {item.username
-        ?"@"+item.username
-        :"ZIVAN"
-       }
-      </small>
-     </div>
-
-    </div>
-   )}
-
-  </div>
-
- </>;
-}
+    $("topTitle").textContent =
+        page === "Create"
+        ? "Create"
+        : page;
 
 
-function Messages(){
+    document
+        .querySelectorAll(
+            ".side-btn,.bottom-btn"
+        )
+        .forEach(btn=>{
 
- return <>
+            btn.classList.toggle(
+                "active",
+                btn.dataset.page === page
+            );
 
-  <div className="section-title">
-   <h2>Messages</h2>
-  </div>
-
-  <div
-   className="card"
-   style={{textAlign:"center",padding:40}}
-  >
-
-   <div
-    className="avatar"
-    style={{
-     margin:"auto",
-     width:60,
-     height:60
-    }}
-   >
-    <i className="fa-solid fa-comments"/>
-   </div>
-
-   <h3>Messages are coming next.</h3>
-
-   <p className="muted tiny">
-    1-to-1 and group chat will be part of the next ZIVAN phase.
-   </p>
-
-  </div>
-
- </>;
-}
+        });
 
 
-function Profile({user,setUser}){
-
- const [followers,setFollowers]=useState(0);
- const [following,setFollowing]=useState(0);
-
- const [editing,setEditing]=useState(false);
-
- const [name,setName]=useState(
-  user.display_name||user.username
- );
-
- const [bio,setBio]=useState(
-  user.bio||""
- );
-
- async function load(){
-
-  try{
-
-   const data=await api(
-    "GET",
-    "/api/me"
-   );
-
-   setUser(data.user);
-
-   setFollowers(data.followers||0);
-   setFollowing(data.following||0);
-
-   setName(
-    data.user.display_name||
-    data.user.username
-   );
-
-   setBio(data.user.bio||"");
-
-   localStorage.setItem(
-    "zivan_user",
-    JSON.stringify(data.user)
-   );
-
-  }catch(e){}
-
- }
-
- useEffect(()=>{
-  load();
- },[]);
-
-
- async function save(){
-
-  try{
-
-   const data=await api(
-    "PATCH",
-    "/api/me",
-    {
-     display_name:name,
-     bio:bio
-    }
-   );
-
-   setUser(data.user);
-
-   localStorage.setItem(
-    "zivan_user",
-    JSON.stringify(data.user)
-   );
-
-   setEditing(false);
-
-  }catch(e){}
-
- }
-
- return <>
-
-  <div className="card">
-
-   <div className="profile-cover"/>
-
-   <div className="profile-main">
-
-    <div style={{
-     display:"flex",
-     justifyContent:"space-between",
-     alignItems:"end"
-    }}>
-
-     <div className="avatar">
-      {(user.username||"Z")[0].toUpperCase()}
-     </div>
-
-     <button
-      className="edit"
-      onClick={()=>setEditing(!editing)}
-     >
-      {editing?"Cancel":"Edit profile"}
-     </button>
-
-    </div>
-
-
-    {!editing&&
-     <>
-      <h2>
-       {user.display_name||user.username}
-      </h2>
-
-      <div className="muted">
-       @{user.username}
-      </div>
-
-      <p className="muted tiny">
-       {user.bio||"Building my world on ZIVAN."}
-      </p>
-     </>
+    if(page === "Home"){
+        renderHome();
     }
 
+    else if(page === "Explore"){
+        renderExplore();
+    }
 
-    {editing&&
-     <>
-      <input
-       className="field"
-       value={name}
-       onChange={e=>setName(e.target.value)}
-       placeholder="Display name"
-      />
+    else if(page === "Reels"){
+        renderReels();
+    }
 
-      <textarea
-       className="field textarea"
-       value={bio}
-       onChange={e=>setBio(e.target.value)}
-       placeholder="Bio"
-      />
+    else if(page === "Notifications"){
+        renderNotifications();
+    }
 
-      <button
-       className="primary"
-       onClick={save}
-      >
-       SAVE PROFILE
-      </button>
-     </>
+    else if(page === "Messages"){
+        renderMessages();
+    }
+
+    else if(page === "Profile"){
+        renderProfile();
+    }
+
+    else if(page === "Settings"){
+        renderSettings();
+    }
+
+}
+
+
+/* =========================
+   HOME
+========================= */
+
+async function renderHome(){
+
+    $("pageRoot").innerHTML = `
+
+        <div class="page">
+
+            <section class="card hero">
+
+                <h1>
+                    One social world.
+                    <br>
+                    Built differently.
+                </h1>
+
+                <p>
+                    ZIVAN is being built as a new
+                    social ecosystem for people,
+                    creators, communities and worlds.
+                </p>
+
+                <div class="hero-user">
+                    ${
+                        meUser
+                        ? "@"+escapeHTML(meUser.username)
+                        : ""
+                    }
+                </div>
+
+            </section>
+
+
+            <section class="card">
+
+                <div class="composer">
+
+                    <div class="avatar">
+                        ${
+                            meUser
+                            ? escapeHTML(
+                                meUser.username
+                                    .charAt(0)
+                                    .toUpperCase()
+                              )
+                            : "Z"
+                        }
+                    </div>
+
+                    <div
+                        class="composer-input"
+                        onclick="openCreate()">
+                        What do you want to share?
+                    </div>
+
+                    <button
+                        class="primary"
+                        onclick="openCreate()">
+                        Post
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <div id="feed">
+                <div class="card">
+                    Loading your world...
+                </div>
+            </div>
+
+        </div>
+    `;
+
+
+    try{
+
+        const data =
+            await api("/api/feed");
+
+        const posts =
+            data.posts || [];
+
+
+        if(posts.length === 0){
+
+            $("feed").innerHTML = `
+
+                <div class="card">
+
+                    <h3>
+                        Your world is empty.
+                    </h3>
+
+                    <p
+                        style="
+                        color:var(--muted);
+                        margin-top:7px">
+                        Follow people or create
+                        your first post.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        $("feed").innerHTML =
+            posts
+            .map(postHTML)
+            .join("");
+
+
+    }catch(error){
+
+        $("feed").innerHTML = `
+
+            <div class="card">
+                ${escapeHTML(error.message)}
+            </div>
+        `;
+
+    }
+}
+
+
+function postHTML(post){
+
+    const initial =
+        (post.display_name ||
+         post.username ||
+         "Z")
+        .charAt(0)
+        .toUpperCase();
+
+
+    return `
+
+        <article class="card">
+
+            <div class="post-head">
+
+                <div class="avatar">
+                    ${escapeHTML(initial)}
+                </div>
+
+                <div>
+
+                    <div class="post-name">
+                        ${escapeHTML(
+                            post.display_name ||
+                            post.username
+                        )}
+                    </div>
+
+                    <div class="post-user">
+                        @${escapeHTML(
+                            post.username
+                        )}
+                    </div>
+
+                </div>
+
+                <div class="post-time">
+                    ${formatTime(
+                        post.created_at
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="post-body">
+                ${escapeHTML(post.body)}
+            </div>
+
+            ${
+                post.media_url
+                ? `
+                    <div
+                        style="
+                        margin-top:12px;
+                        padding:12px;
+                        border:1px solid var(--line);
+                        border-radius:13px;
+                        color:#9b9baa;
+                        word-break:break-all">
+                        ${escapeHTML(
+                            post.media_url
+                        )}
+                    </div>
+                `
+                : ""
+            }
+
+
+            <div class="post-actions">
+
+                <button
+                    class="action"
+                    onclick="likePost(${post.id})">
+                    ♡ ${post.likes || 0}
+                </button>
+
+                <button
+                    class="action"
+                    onclick="commentPost(${post.id})">
+                    ○ ${post.comments || 0}
+                </button>
+
+                <button
+                    class="action"
+                    onclick="showToast('Share system coming next.')">
+                    ↗ Share
+                </button>
+
+            </div>
+
+        </article>
+    `;
+}
+
+
+function formatTime(value){
+
+    if(!value) return "";
+
+    try{
+
+        return new Date(value)
+            .toLocaleDateString();
+
+    }catch(e){
+
+        return "";
+
+    }
+}
+
+
+/* =========================
+   CREATE POST
+========================= */
+
+function openCreate(){
+
+    $("createModal")
+        .classList.remove("hidden");
+
+    $("postBody").focus();
+
+}
+
+function closeCreate(){
+
+    $("createModal")
+        .classList.add("hidden");
+
+}
+
+
+async function createPost(){
+
+    const body =
+        $("postBody").value.trim();
+
+    const media_url =
+        $("mediaUrl").value.trim();
+
+
+    if(!body){
+        showToast(
+            "Write something first."
+        );
+        return;
     }
 
 
-    <div className="grid2">
+    try{
 
-     <div className="stat">
-      <b>—</b>
-      <span>Posts</span>
-     </div>
+        await api(
+            "/api/posts",
+            {
+                method:"POST",
+                body:JSON.stringify({
 
-     <div className="stat">
-      <b>{followers}</b>
-      <span>Followers</span>
-     </div>
+                    body,
+                    media_url
 
-     <div className="stat">
-      <b>{following}</b>
-      <span>Following</span>
-     </div>
-
-     <div className="stat">
-      <b>0</b>
-      <span>Worlds</span>
-     </div>
-
-    </div>
-
-   </div>
-
-  </div>
+                })
+            }
+        );
 
 
-  <div className="card">
+        $("postBody").value = "";
+        $("mediaUrl").value = "";
 
-   <b>Profile identity</b>
+        closeCreate();
 
-   <p className="muted tiny">
-    {user.email}
-   </p>
+        showToast(
+            "Post published."
+        );
 
-  </div>
+        navigate("Home");
 
- </>;
+
+    }catch(error){
+
+        showToast(
+            error.message
+        );
+
+    }
 }
 
 
-function Toggle({on,setOn}){
+/* =========================
+   LIKE
+========================= */
 
- return (
-  <button
-   className={"switch "+(on?"on":"")}
-   onClick={()=>setOn(!on)}
-  >
-   <i/>
-  </button>
- );
+async function likePost(id){
+
+    try{
+
+        await api(
+            `/api/posts/${id}/like`,
+            {
+                method:"POST"
+            }
+        );
+
+        if(currentPage === "Home"){
+            renderHome();
+        }
+
+    }catch(error){
+
+        showToast(
+            error.message
+        );
+
+    }
 }
 
 
-function Settings({logout}){
+/* =========================
+   COMMENT
+========================= */
 
- const [privateAccount,setPrivateAccount]=useState(false);
- const [messages,setMessages]=useState(true);
- const [tags,setTags]=useState(true);
+async function commentPost(id){
 
- return <>
+    const text =
+        prompt("Write your comment:");
 
-  <div className="section-title">
-   <h2>Settings</h2>
-  </div>
-
-
-  <div className="card">
-
-   <div className="settings">
-
-    <div className="si">
-     <i className="fa-solid fa-lock"/>
-    </div>
-
-    <div className="txt">
-     <b>Private account</b>
-     <small>Control who can follow you.</small>
-    </div>
-
-    <Toggle
-     on={privateAccount}
-     setOn={setPrivateAccount}
-    />
-
-   </div>
+    if(!text){
+        return;
+    }
 
 
-   <div className="settings">
+    try{
 
-    <div className="si">
-     <i className="fa-solid fa-message"/>
-    </div>
+        await api(
+            `/api/posts/${id}/comments`,
+            {
+                method:"POST",
+                body:JSON.stringify({
+                    body:text
+                })
+            }
+        );
 
-    <div className="txt">
-     <b>Allow messages</b>
-     <small>Control who can message you.</small>
-    </div>
+        showToast(
+            "Comment added."
+        );
 
-    <Toggle
-     on={messages}
-     setOn={setMessages}
-    />
+        if(currentPage === "Home"){
+            renderHome();
+        }
 
-   </div>
+    }catch(error){
 
+        showToast(
+            error.message
+        );
 
-   <div className="settings">
-
-    <div className="si">
-     <i className="fa-solid fa-at"/>
-    </div>
-
-    <div className="txt">
-     <b>Mentions & tags</b>
-     <small>Control mentions and tags.</small>
-    </div>
-
-    <Toggle
-     on={tags}
-     setOn={setTags}
-    />
-
-   </div>
-
-  </div>
-
-
-  <div className="card">
-
-   <div className="settings">
-    <div className="si">
-     <i className="fa-solid fa-shield-halved"/>
-    </div>
-
-    <div className="txt">
-     <b>Security & sessions</b>
-     <small>Account protection.</small>
-    </div>
-
-    <i className="fa-solid fa-chevron-right muted"/>
-   </div>
-
-
-   <div className="settings">
-    <div className="si">
-     <i className="fa-solid fa-user-slash"/>
-    </div>
-
-    <div className="txt">
-     <b>Blocked accounts</b>
-     <small>Manage blocked accounts.</small>
-    </div>
-
-    <i className="fa-solid fa-chevron-right muted"/>
-   </div>
-
-
-   <div className="settings">
-    <div className="si">
-     <i className="fa-solid fa-bell"/>
-    </div>
-
-    <div className="txt">
-     <b>Notification controls</b>
-     <small>Manage your notifications.</small>
-    </div>
-
-    <i className="fa-solid fa-chevron-right muted"/>
-   </div>
-
-  </div>
-
-
-  <div className="card">
-
-   <button
-    className="primary"
-    style={{background:"#171118",color:"#ff7184"}}
-    onClick={logout}
-   >
-    LOG OUT
-   </button>
-
-  </div>
-
- </>;
+    }
 }
 
 
-ReactDOM
- .createRoot(document.getElementById("root"))
- .render(<App/>);
+/* =========================
+   EXPLORE
+========================= */
+
+function renderExplore(){
+
+    $("pageRoot").innerHTML = `
+
+        <div class="page">
+
+            <div class="card">
+
+                <input
+                    id="searchInput"
+                    class="search"
+                    placeholder="
+                    Search people, posts,
+                    hashtags and Worlds..."
+                    onkeydown="
+                        if(event.key==='Enter')
+                        searchUsers()
+                    ">
+
+            </div>
+
+
+            <div class="section-title">
+                Discover
+            </div>
+
+
+            <div class="grid">
+
+                <div class="explore-card">
+                    <h3>Creators</h3>
+                    <p>
+                        Discover people building
+                        their world on ZIVAN.
+                    </p>
+                </div>
+
+                <div class="explore-card">
+                    <h3>Worlds</h3>
+                    <p>
+                        Communities built around
+                        shared interests.
+                    </p>
+                </div>
+
+                <div class="explore-card">
+                    <h3>Trending</h3>
+                    <p>
+                        Find conversations and
+                        posts gaining attention.
+                    </p>
+                </div>
+
+                <div class="explore-card">
+                    <h3>Reels</h3>
+                    <p>
+                        Short-form video discovery
+                        will grow here.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div id="searchResults"></div>
+
+        </div>
+    `;
+}
+
+
+async function searchUsers(){
+
+    const q =
+        $("searchInput").value.trim();
+
+    if(!q){
+        return;
+    }
+
+
+    try{
+
+        const data =
+            await api(
+                "/api/search?q=" +
+                encodeURIComponent(q)
+            );
+
+
+        const users =
+            data.users || [];
+
+
+        $("searchResults").innerHTML = `
+
+            <div class="section-title">
+                People
+            </div>
+
+            ${
+                users.length
+                ? users.map(user => `
+
+                    <div class="card">
+
+                        <div class="post-head">
+
+                            <div class="avatar">
+                                ${escapeHTML(
+                                    (
+                                        user.display_name ||
+                                        user.username ||
+                                        "Z"
+                                    )
+                                    .charAt(0)
+                                    .toUpperCase()
+                                )}
+                            </div>
+
+                            <div>
+
+                                <div class="post-name">
+                                    ${escapeHTML(
+                                        user.display_name ||
+                                        user.username
+                                    )}
+                                </div>
+
+                                <div class="post-user">
+                                    @${escapeHTML(
+                                        user.username
+                                    )}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <p
+                            style="
+                            color:var(--muted);
+                            margin-top:10px">
+                            ${escapeHTML(
+                                user.bio || ""
+                            )}
+                        </p>
+
+                        ${
+                            user.username !==
+                            meUser?.username
+                            ? `
+                                <button
+                                    class="primary"
+                                    style="margin-top:12px"
+                                    onclick="
+                                    followUser(
+                                        '${escapeHTML(
+                                            user.username
+                                        )}'
+                                    )">
+                                    Follow
+                                </button>
+                            `
+                            : ""
+                        }
+
+                    </div>
+
+                `).join("")
+                : `
+                    <div class="card">
+                        No people found.
+                    </div>
+                `
+            }
+
+        `;
+
+    }catch(error){
+
+        showToast(
+            error.message
+        );
+
+    }
+}
+
+
+async function followUser(username){
+
+    try{
+
+        await api(
+            `/api/users/${encodeURIComponent(
+                username
+            )}/follow`,
+            {
+                method:"POST"
+            }
+        );
+
+        showToast(
+            "Following @" + username
+        );
+
+    }catch(error){
+
+        showToast(
+            error.message
+        );
+
+    }
+}
+
+
+/* =========================
+   REELS
+========================= */
+
+function renderReels(){
+
+    $("pageRoot").innerHTML = `
+
+        <div class="page">
+
+            <div class="card hero">
+
+                <h1>Reels</h1>
+
+                <p>
+                    ZIVAN short video is part of
+                    the next creator layer.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Coming into the ecosystem</h3>
+
+                <p
+                    style="
+                    color:var(--muted);
+                    margin-top:8px;
+                    line-height:1.6">
+                    Short videos, creator discovery,
+                    engagement and recommendation
+                    systems will be connected here.
+                </p>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* =========================
+   NOTIFICATIONS
+========================= */
+
+async function renderNotifications(){
+
+    $("pageRoot").innerHTML = `
+
+        <div class="page">
+
+            <div id="notifications">
+
+                <div class="card">
+                    Loading notifications...
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+
+    try{
+
+        const data =
+            await api(
+                "/api/notifications"
+            );
+
+        const items =
+            data.notifications || [];
+
+
+        if(!items.length){
+
+            $("notifications").innerHTML = `
+
+                <div class="card">
+
+                    <h3>
+                        No notifications yet.
+                    </h3>
+
+                    <p
+                        style="
+                        color:var(--muted);
+                        margin-top:7px">
+                        Your social activity will
+                        appear here.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        $("notifications").innerHTML =
+            items.map(n=>`
+
+                <div class="card">
+
+                    <strong>
+                        ${escapeHTML(
+                            n.display_name ||
+                            n.username ||
+                            "Someone"
+                        )}
+                    </strong>
+
+                    <span
+                        style="color:var(--muted)">
+                        ${
+                            n.kind === "follow"
+                            ? " followed you."
+                            : n.kind === "like"
+                            ? " liked your post."
+                            : n.kind === "comment"
+                            ? " commented on your post."
+                            : " interacted with you."
+                        }
+                    </span>
+
+                    <div
+                        style="
+                        color:#666;
+                        font-size:11px;
+                        margin-top:7px">
+                        ${formatTime(
+                            n.created_at
+                        )}
+                    </div>
+
+                </div>
+
+            `).join("");
+
+
+    }catch(error){
+
+        showToast(
+            error.message
+        );
+
+    }
+}
+
+
+/* =========================
+   MESSAGES
+========================= */
+
+function renderMessages(){
+
+    $("pageRoot").innerHTML = `
+
+        <div class="page">
+
+            <div class="card hero">
+
+                <h1>Messages</h1>
+
+                <p>
+                    Private conversations and
+                    group chat are part of the
+                    ZIVAN social foundation.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>
+                    Messaging foundation
+                </h3>
+
+                <p
+                    style="
+                    color:var(--muted);
+                    margin-top:8px;
+                    line-height:1.6">
+                    1-to-1 chat, group conversations,
+                    message controls and notifications
+                    will connect here.
+                </p>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+async function renderProfile(){
+
+    $("pageRoot").innerHTML = `
+
+        <div class="page">
+
+            <div class="card">
+
+                <div class="profile-cover"></div>
+
+                <div class="profile-info">
+
+                    <div class="profile-big">
+                        ${
+                            meUser
+                            ? escapeHTML(
+                                meUser.username
+                                    .charAt(0)
+                                    .toUpperCase()
+                              )
+                            : "Z"
+                        }
+                    </div>
+
+                    <div class="profile-name">
+                        ${
+                            escapeHTML(
+                                meUser?.display_name ||
+                                meUser?.username ||
+                                "ZIVAN"
+                            )
+                        }
+                    </div>
+
+                    <div class="profile-handle">
+                        @${escapeHTML(
+                            meUser?.username || ""
+                        )}
+                    </div>
+
+                    <div class="profile-bio">
+                        ${
+                            escapeHTML(
+                                meUser?.bio ||
+                                "Building my world on ZIVAN."
+                            )
+                        }
+                    </div>
+
+                    <div
+                        id="profileStats"
+                        class="stats">
+                        Loading...
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Your identity</h3>
+
+                <p
+                    style="
+                    color:var(--muted);
+                    margin-top:8px">
+                    Email:
+                    ${
+                        escapeHTML(
+                            meUser?.email || "—"
+                        )
+                    }
+                </p>
+
+                <p
+                    style="
+                    color:var(--muted);
+                    margin-top:6px">
+                    Verification:
+                    ${
+                        meUser?.email_verified ||
+                        meUser?.phone_verified
+                        ? "Verified"
+                        : "Not verified"
+                    }
+                </p>
+
+            </div>
+
+        </div>
+    `;
+
+
+    try{
+
+        const data =
+            await api("/api/me");
+
+
+        $("profileStats").innerHTML = `
+
+            <div class="stat">
+                <b>—</b>
+                <span>Posts</span>
+            </div>
+
+            <div class="stat">
+                <b>
+                    ${data.followers || 0}
+                </b>
+                <span>Followers</span>
+            </div>
+
+            <div class="stat">
+                <b>
+                    ${data.following || 0}
+                </b>
+                <span>Following</span>
+            </div>
+
+            <div class="stat">
+                <b>0</b>
+                <span>Worlds</span>
+            </div>
+
+        `;
+
+    }catch(error){
+
+        showToast(
+            error.message
+        );
+
+    }
+}
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+function renderSettings(){
+
+    $("pageRoot").innerHTML = `
+
+        <div class="page">
+
+            <div class="card">
+
+                <h2>
+                    Settings
+                </h2>
+
+                <p
+                    style="
+                    color:var(--muted);
+                    margin-top:6px">
+                    Manage your ZIVAN account.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="setting">
+
+                    <div class="setting-title">
+                        Account
+                    </div>
+
+                    <div class="setting-desc">
+                        Username:
+                        @${escapeHTML(
+                            meUser?.username || ""
+                        )}
+                    </div>
+
+                </div>
+
+
+                <div class="setting">
+
+                    <div class="setting-title">
+                        Privacy
+                    </div>
+
+                    <div class="setting-desc">
+                        Account visibility and
+                        follow controls will live here.
+                    </div>
+
+                </div>
+
+
+                <div class="setting">
+
+                    <div class="setting-title">
+                        Messages
+                    </div>
+
+                    <div class="setting-desc">
+                        Message permissions and
+                        requests will be configurable.
+                    </div>
+
+                </div>
+
+
+                <div class="setting">
+
+                    <div class="setting-title">
+                        Security
+                    </div>
+
+                    <div class="setting-desc">
+                        Session and account security
+                        controls will be expanded here.
+                    </div>
+
+                </div>
+
+
+                <div class="setting">
+
+                    <div class="setting-title">
+                        Verification
+                    </div>
+
+                    <div class="setting-desc">
+                        ${
+                            meUser?.email_verified ||
+                            meUser?.phone_verified
+                            ? "Your account is verified."
+                            : "Verification required."
+                        }
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <button
+                    class="secondary"
+                    style="width:100%"
+                    onclick="logout()">
+                    Log out of ZIVAN
+                </button>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* =========================
+   START
+========================= */
+
+restoreSession();
 
 </script>
+
 </body>
 </html>
