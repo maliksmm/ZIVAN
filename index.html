@@ -1,521 +1,2681 @@
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">  
+<meta name="theme-color" content="#07070a">  
+<meta name="description" content="ZIVAN — A new social world.">  
+<title>ZIVAN</title>  <style>  
+*{  
+    box-sizing:border-box;  
+    margin:0;  
+    padding:0;  
+}  
+  
+:root{  
+    --bg:#050507;  
+    --panel:#0b0b10;  
+    --panel2:#101017;  
+    --line:#20202b;  
+    --text:#f5f5f7;  
+    --muted:#8b8b99;  
+    --accent:#8b5cf6;  
+    --accent2:#4f8cff;  
+    --danger:#ff4d6d;  
+}  
+  
+body{  
+    background:  
+        radial-gradient(circle at 15% 0%,rgba(139,92,246,.14),transparent 28%),  
+        radial-gradient(circle at 90% 15%,rgba(79,140,255,.10),transparent 25%),  
+        var(--bg);  
+    color:var(--text);  
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;  
+    min-height:100vh;  
+}  
+  
+button,  
+input,  
+textarea{  
+    font:inherit;  
+}  
+  
+button{  
+    cursor:pointer;  
+}  
+  
+.hidden{  
+    display:none!important;  
+}  
+  
+.app{  
+    min-height:100vh;  
+}  
+  
+/* =========================  
+   AUTH  
+========================= */  
+  
+.auth-screen{  
+    min-height:100vh;  
+    display:flex;  
+    align-items:center;  
+    justify-content:center;  
+    padding:24px;  
+}  
+  
+.auth-box{  
+    width:100%;  
+    max-width:430px;  
+    background:rgba(11,11,16,.88);  
+    border:1px solid var(--line);  
+    border-radius:28px;  
+    padding:30px;  
+    box-shadow:0 30px 100px rgba(0,0,0,.45);  
+    backdrop-filter:blur(20px);  
+}  
+  
+.logo{  
+    font-size:38px;  
+    font-weight:900;  
+    letter-spacing:-2px;  
+}  
+  
+.logo span{  
+    background:linear-gradient(90deg,var(--accent),var(--accent2));  
+    -webkit-background-clip:text;  
+    background-clip:text;  
+    color:transparent;  
+}  
+  
+.tagline{  
+    color:var(--muted);  
+    margin-top:7px;  
+    margin-bottom:26px;  
+}  
+  
+.auth-title{  
+    font-size:25px;  
+    margin-bottom:7px;  
+}  
+  
+.auth-sub{  
+    color:var(--muted);  
+    font-size:14px;  
+    margin-bottom:20px;  
+}  
+  
+.field{  
+    margin-bottom:13px;  
+}  
+  
+.field label{  
+    display:block;  
+    font-size:12px;  
+    color:#aaaab7;  
+    margin-bottom:7px;  
+}  
+  
+.input{  
+    width:100%;  
+    background:#08080d;  
+    border:1px solid var(--line);  
+    color:white;  
+    padding:13px 14px;  
+    border-radius:13px;  
+    outline:none;  
+    transition:.2s;  
+}  
+  
+.input:focus{  
+    border-color:rgba(139,92,246,.75);  
+    box-shadow:0 0 0 3px rgba(139,92,246,.10);  
+}  
+  
+.auth-btn{  
+    width:100%;  
+    border:0;  
+    border-radius:14px;  
+    padding:14px;  
+    margin-top:5px;  
+    color:white;  
+    font-weight:800;  
+    background:linear-gradient(100deg,var(--accent),var(--accent2));  
+    box-shadow:0 10px 30px rgba(99,102,241,.22);  
+}  
+  
+.switch{  
+    text-align:center;  
+    color:var(--muted);  
+    font-size:13px;  
+    margin-top:20px;  
+}  
+  
+.switch button{  
+    background:none;  
+    border:0;  
+    color:#a78bfa;  
+    font-weight:800;  
+}  
+  
+.choice-row{  
+    display:flex;  
+    gap:8px;  
+    margin-bottom:16px;  
+}  
+  
+.choice{  
+    flex:1;  
+    padding:11px;  
+    border:1px solid var(--line);  
+    border-radius:12px;  
+    background:#08080d;  
+    color:#aaa;  
+}  
+  
+.choice.active{  
+    color:white;  
+    border-color:var(--accent);  
+    background:rgba(139,92,246,.12);  
+}  
+  
+.otp-box{  
+    text-align:center;  
+}  
+  
+.otp-input{  
+    text-align:center;  
+    letter-spacing:8px;  
+    font-size:25px;  
+    font-weight:800;  
+}  
+  
+/* =========================  
+   MAIN LAYOUT  
+========================= */  
+  
+.shell{  
+    display:flex;  
+    min-height:100vh;  
+}  
+  
+.sidebar{  
+    width:250px;  
+    position:fixed;  
+    top:0;  
+    bottom:0;  
+    left:0;  
+    padding:28px 18px;  
+    border-right:1px solid var(--line);  
+    background:rgba(5,5,7,.92);  
+    backdrop-filter:blur(18px);  
+    z-index:20;  
+}  
+  
+.sidebar .logo{  
+    margin:0 12px 35px;  
+}  
+  
+.side-btn{  
+    width:100%;  
+    border:0;  
+    background:transparent;  
+    color:#858593;  
+    padding:13px 14px;  
+    border-radius:13px;  
+    text-align:left;  
+    margin-bottom:5px;  
+    font-weight:700;  
+}  
+  
+.side-btn:hover,  
+.side-btn.active{  
+    color:white;  
+    background:#11111a;  
+}  
+  
+.side-btn .icon{  
+    width:27px;  
+    display:inline-block;  
+}  
+  
+.main{  
+    margin-left:250px;  
+    width:calc(100% - 250px);  
+    max-width:1000px;  
+    min-height:100vh;  
+    border-right:1px solid var(--line);  
+}  
+  
+.topbar{  
+    height:70px;  
+    display:flex;  
+    align-items:center;  
+    justify-content:space-between;  
+    padding:0 24px;  
+    border-bottom:1px solid var(--line);  
+    position:sticky;  
+    top:0;  
+    background:rgba(5,5,7,.82);  
+    backdrop-filter:blur(18px);  
+    z-index:10;  
+}  
+  
+.top-title{  
+    font-size:17px;  
+    font-weight:850;  
+}  
+  
+.page{  
+    padding:22px;  
+}  
+  
+.card{  
+    background:rgba(12,12,18,.86);  
+    border:1px solid var(--line);  
+    border-radius:20px;  
+    padding:18px;  
+    margin-bottom:15px;  
+}  
+  
+.hero{  
+    padding:28px;  
+    min-height:230px;  
+    display:flex;  
+    flex-direction:column;  
+    justify-content:center;  
+    background:  
+        radial-gradient(circle at 90% 20%,rgba(79,140,255,.15),transparent 30%),  
+        radial-gradient(circle at 10% 80%,rgba(139,92,246,.16),transparent 35%),  
+        #0b0b10;  
+}  
+  
+.hero h1{  
+    font-size:clamp(32px,7vw,56px);  
+    line-height:1;  
+    letter-spacing:-2px;  
+}  
+  
+.hero p{  
+    color:var(--muted);  
+    margin-top:14px;  
+    max-width:550px;  
+    line-height:1.6;  
+}  
+  
+.hero-user{  
+    color:#b8a5ff;  
+    margin-top:18px;  
+    font-weight:800;  
+}  
+  
+.composer{  
+    display:flex;  
+    gap:12px;  
+    align-items:center;  
+}  
+  
+.avatar{  
+    width:42px;  
+    height:42px;  
+    border-radius:50%;  
+    background:linear-gradient(135deg,var(--accent),var(--accent2));  
+    display:flex;  
+    align-items:center;  
+    justify-content:center;  
+    font-weight:900;  
+    flex-shrink:0;  
+}  
+  
+.composer-input{  
+    flex:1;  
+    border:1px solid var(--line);  
+    border-radius:14px;  
+    background:#08080d;  
+    color:#999;  
+    padding:13px;  
+    cursor:text;  
+}  
+  
+.primary{  
+    border:0;  
+    color:white;  
+    background:linear-gradient(100deg,var(--accent),var(--accent2));  
+    border-radius:12px;  
+    padding:11px 16px;  
+    font-weight:800;  
+}  
+  
+.secondary{  
+    border:1px solid var(--line);  
+    color:#ddd;  
+    background:#0b0b10;  
+    border-radius:12px;  
+    padding:11px 16px;  
+    font-weight:700;  
+}  
+  
+.post-head{  
+    display:flex;  
+    align-items:center;  
+    gap:10px;  
+}  
+  
+.post-name{  
+    font-weight:850;  
+}  
+  
+.post-user{  
+    color:var(--muted);  
+    font-size:12px;  
+}  
+  
+.post-time{  
+    color:#666673;  
+    font-size:11px;  
+    margin-left:auto;  
+}  
+  
+.post-body{  
+    margin-top:15px;  
+    line-height:1.6;  
+    white-space:pre-wrap;  
+}  
+  
+.post-actions{  
+    display:flex;  
+    gap:8px;  
+    margin-top:15px;  
+    border-top:1px solid #171720;  
+    padding-top:12px;  
+}  
+  
+.action{  
+    border:0;  
+    background:#0b0b10;  
+    color:#999;  
+    padding:8px 12px;  
+    border-radius:10px;  
+}  
+  
+.action:hover{  
+    color:white;  
+}  
+  
+/* =========================  
+   EXPLORE  
+========================= */  
+  
+.search{  
+    width:100%;  
+    padding:14px;  
+    border-radius:14px;  
+    border:1px solid var(--line);  
+    background:#09090e;  
+    color:white;  
+    outline:none;  
+}  
+  
+.section-title{  
+    font-size:15px;  
+    margin:22px 0 11px;  
+}  
+  
+.grid{  
+    display:grid;  
+    grid-template-columns:repeat(2,1fr);  
+    gap:12px;  
+}  
+  
+.explore-card{  
+    min-height:130px;  
+    padding:18px;  
+    border:1px solid var(--line);  
+    border-radius:18px;  
+    background:  
+        linear-gradient(145deg,rgba(139,92,246,.08),rgba(79,140,255,.04)),  
+        #0b0b10;  
+}  
+  
+.explore-card h3{  
+    margin-bottom:8px;  
+}  
+  
+.explore-card p{  
+    color:var(--muted);  
+    font-size:13px;  
+    line-height:1.5;  
+}  
+  
+/* =========================  
+   PROFILE  
+========================= */  
+  
+.profile-cover{  
+    height:150px;  
+    border-radius:20px 20px 0 0;  
+    background:  
+        radial-gradient(circle at 20% 20%,rgba(139,92,246,.5),transparent 35%),  
+        radial-gradient(circle at 80% 70%,rgba(79,140,255,.4),transparent 35%),  
+        #11111a;  
+}  
+  
+.profile-info{  
+    margin-top:-35px;  
+    padding:0 22px 20px;  
+}  
+  
+.profile-big{  
+    width:76px;  
+    height:76px;  
+    border-radius:50%;  
+    background:linear-gradient(135deg,var(--accent),var(--accent2));  
+    border:4px solid #0b0b10;  
+    display:flex;  
+    align-items:center;  
+    justify-content:center;  
+    font-size:25px;  
+    font-weight:900;  
+}  
+  
+.profile-name{  
+    font-size:22px;  
+    font-weight:900;  
+    margin-top:12px;  
+}  
+  
+.profile-handle{  
+    color:var(--muted);  
+    margin-top:3px;  
+}  
+  
+.profile-bio{  
+    margin-top:12px;  
+    color:#c5c5cf;  
+}  
+  
+.stats{  
+    display:flex;  
+    gap:28px;  
+    margin-top:18px;  
+}  
+  
+.stat b{  
+    display:block;  
+    font-size:17px;  
+}  
+  
+.stat span{  
+    color:var(--muted);  
+    font-size:12px;  
+}  
+  
+/* =========================  
+   SETTINGS  
+========================= */  
+  
+.setting{  
+    padding:15px 0;  
+    border-bottom:1px solid #181821;  
+}  
+  
+.setting:last-child{  
+    border-bottom:0;  
+}  
+  
+.setting-title{  
+    font-weight:800;  
+}  
+  
+.setting-desc{  
+    color:var(--muted);  
+    font-size:12px;  
+    margin-top:4px;  
+}  
+  
+/* =========================  
+   MODAL  
+========================= */  
+  
+.overlay{  
+    position:fixed;  
+    inset:0;  
+    background:rgba(0,0,0,.72);  
+    display:flex;  
+    align-items:center;  
+    justify-content:center;  
+    padding:18px;  
+    z-index:100;  
+}  
+  
+.modal{  
+    width:100%;  
+    max-width:460px;  
+    background:#0c0c12;  
+    border:1px solid var(--line);  
+    border-radius:22px;  
+    padding:22px;  
+    box-shadow:0 30px 100px #000;  
+}  
+  
+.modal-head{  
+    display:flex;  
+    justify-content:space-between;  
+    align-items:center;  
+    margin-bottom:17px;  
+}  
+  
+.close{  
+    background:#15151d;  
+    color:#aaa;  
+    border:0;  
+    border-radius:9px;  
+    width:34px;  
+    height:34px;  
+}  
+  
+/* =========================  
+   BOTTOM NAV  
+========================= */  
+  
+.bottom-nav{  
+    display:none;  
+}  
+  
+/* =========================  
+   TOAST  
+========================= */  
+  
+.toast{  
+    position:fixed;  
+    left:50%;  
+    bottom:25px;  
+    transform:translateX(-50%);  
+    background:#161620;  
+    border:1px solid #292936;  
+    color:white;  
+    padding:12px 17px;  
+    border-radius:13px;  
+    z-index:200;  
+    font-size:13px;  
+    box-shadow:0 15px 40px #000;  
+}  
+  
+/* =========================  
+   RESPONSIVE  
+========================= */  
+  
+@media(max-width:760px){  
+  
+    .sidebar{  
+        display:none;  
+    }  
+  
+    .main{  
+        margin-left:0;  
+        width:100%;  
+        padding-bottom:75px;  
+        border:0;  
+    }  
+  
+    .topbar{  
+        padding:0 16px;  
+    }  
+  
+    .page{  
+        padding:15px;  
+    }  
+  
+    .bottom-nav{  
+        display:flex;  
+        position:fixed;  
+        left:10px;  
+        right:10px;  
+        bottom:10px;  
+        height:62px;  
+        border:1px solid #242431;  
+        border-radius:20px;  
+        background:rgba(10,10,15,.94);  
+        backdrop-filter:blur(20px);  
+        z-index:50;  
+        justify-content:space-around;  
+        align-items:center;  
+    }  
+  
+    .bottom-btn{  
+        border:0;  
+        background:none;  
+        color:#777783;  
+        font-size:10px;  
+        font-weight:700;  
+        text-align:center;  
+    }  
+  
+    .bottom-btn .bicon{  
+        display:block;  
+        font-size:20px;  
+        margin-bottom:3px;  
+    }  
+  
+    .bottom-btn.active{  
+        color:white;  
+    }  
+  
+    .grid{  
+        grid-template-columns:1fr;  
+    }  
+  
+    .hero{  
+        min-height:270px;  
+        padding:22px;  
+    }  
+  
+    .composer{  
+        align-items:flex-start;  
+    }  
+  
+    .composer .primary{  
+        display:none;  
+    }  
+}  
+</style>  </head>  <body>  <div id="root"></div>  <div id="toast" class="toast hidden"></div>  <!-- AUTH -->  <div id="authScreen" class="auth-screen">  <div class="auth-box">  
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#09090d">
-<title>ZIVAN — Your World, Your Way</title>
-<style>
-:root{--bg:#09090d;--panel:#12121a;--panel2:#191923;--line:#292936;--text:#f6f5fb;--muted:#a2a0b4;--accent:#a78bfa;--pink:#f0abfc;--danger:#ff758f;--green:#65e6b2}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-button:disabled{opacity:.45;cursor:not-allowed}
-.hidden{display:none!important}
-.app{min-height:100vh}
-.topbar{height:66px;position:sticky;top:0;z-index:10;background:#09090deF;backdrop-filter:blur(18px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(18px,calc((100vw - 1050px)/2))}
-.brand{font-size:26px;letter-spacing:5px;font-weight:900;background:linear-gradient(100deg,#fff,#c4b5fd,#f0abfc);color:transparent;background-clip:text}
-.top-actions{display:flex;gap:9px;align-items:center}
-.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:11px 15px;border-radius:13px;font-weight:700}
-.btn.primary{background:linear-gradient(120deg,#a78bfa,#e879f9);color:#140d20;border:0}
-.btn.danger{color:#ff9bae;border-color:#63303d}
-.btn.ghost{background:transparent}
-.btn.small{padding:8px 11px;font-size:13px}
-main{width:min(100% - 28px,850px);margin:26px auto 100px}
-.auth-wrap{width:min(100%,430px);margin:36px auto}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:23px;padding:23px}
-.hero{text-align:center;margin-bottom:22px}
-.hero-mark{width:62px;height:62px;border-radius:20px;margin:0 auto 16px;display:grid;place-items:center;font-size:29px;font-weight:900;background:linear-gradient(135deg,#a78bfa,#f0abfc);color:#170e25}
-h1,h2,h3,p{margin-top:0}
-h1{font-size:27px;letter-spacing:-.8px;margin-bottom:9px}
-h2{font-size:20px}
-p{color:var(--muted);line-height:1.55}
-label{font-size:13px;color:#d8d5e7;display:block;margin-bottom:8px;font-weight:700}
-.field{margin:17px 0}
-input,textarea,select{width:100%;background:#0b0b11;border:1px solid var(--line);color:var(--text);border-radius:12px;padding:14px;outline:none}
-input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px #a78bfa20}
-textarea{min-height:100px;resize:vertical}
-.hint{font-size:12px;color:var(--muted);margin-top:7px}
-.full{width:100%}
-.row{display:flex;gap:10px}
-.row>*{flex:1;min-width:0}
-.progress{height:4px;background:#282735;border-radius:10px;overflow:hidden;margin:22px 0}
-.progress>div{height:100%;background:linear-gradient(90deg,#a78bfa,#f0abfc);transition:width .2s}
-.step-label{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);font-weight:800}
-.notice{padding:12px;border:1px solid var(--line);background:#0b0b11;border-radius:12px;color:var(--muted);font-size:13px;line-height:1.5}
-.error{color:#ff9bae;font-size:13px;white-space:pre-wrap;margin-top:13px}
-.success{color:var(--green);font-size:13px;margin-top:12px}
-.policy{height:130px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:13px;font-size:12px;line-height:1.65;color:var(--muted);margin:14px 0}
-.check{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.5;color:#ddd9eb}
-.check input{width:17px;margin-top:2px;flex-shrink:0}
-.auth-foot{text-align:center;margin-top:19px;font-size:13px;color:var(--muted)}
-.link{color:#c4b5fd;text-decoration:none;font-weight:700;cursor:pointer}
-.tabs{display:flex;gap:8px;overflow:auto;padding-bottom:12px;margin-bottom:15px}
-.tab{white-space:nowrap;border:1px solid var(--line);background:transparent;color:var(--muted);padding:10px 13px;border-radius:12px}
-.tab.active{background:#28213b;color:#e9ddff;border-color:#6952a3}
-.composer{margin-bottom:20px}
-.composer textarea{min-height:90px}
-.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:25px 0 15px}
-.post{padding:18px;margin-bottom:13px;background:var(--panel);border:1px solid var(--line);border-radius:19px}
-.post-head{display:flex;align-items:center;gap:11px;margin-bottom:13px}
-.avatar{width:42px;height:42px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,#3d315d,#a78bfa);font-weight:900;flex-shrink:0}
-.username{font-weight:800}
-.meta{font-size:12px;color:var(--muted);margin-top:4px}
-.post-body{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6}
-.post-media{width:100%;max-height:430px;object-fit:cover;border-radius:14px;margin-top:12px}
-.post-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
-.stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.stat{background:var(--panel2);padding:14px;border-radius:15px}
-.stat strong{font-size:22px;display:block}
-.stat span{font-size:12px;color:var(--muted)}
-.list-item{padding:14px 0;border-bottom:1px solid var(--line)}
-.list-item:last-child{border-bottom:0}
-.badge{display:inline-block;padding:4px 8px;border-radius:8px;background:#29213c;color:#d7c6ff;font-size:11px;font-weight:800}
-.badge.gold{background:#3b3017;color:#f9d77a}
-.bottomnav{display:none}
-.empty{text-align:center;padding:34px 12px;color:var(--muted)}
-.footer{text-align:center;color:#77748a;font-size:11px;padding:30px 0}
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:50;max-width:90vw;background:#282438;border:1px solid #55446d;border-radius:13px;padding:12px 16px;font-size:13px;display:none}
-@media(max-width:600px){
- .topbar{height:60px;padding:0 14px}.brand{font-size:23px;letter-spacing:4px}
- main{width:calc(100% - 20px);margin:18px auto 95px}
- .card{padding:19px;border-radius:20px}.auth-wrap{margin:18px auto}
- .bottomnav{position:fixed;bottom:0;left:0;right:0;z-index:20;display:flex;justify-content:space-around;background:#101017f5;border-top:1px solid var(--line);padding:10px 5px calc(10px + env(safe-area-inset-bottom));backdrop-filter:blur(20px)}
- .bottomnav button{border:0;background:transparent;color:var(--muted);font-size:11px;padding:7px}
- .bottomnav button span{display:block;font-size:20px;margin-bottom:3px}
- .top-actions .btn{padding:9px 10px;font-size:12px}
- .stat-grid{gap:7px}.stat{padding:11px}.stat strong{font-size:19px}
-}
-</style>
-</head>
-<body>
-<div class="app">
-<header class="topbar">
-  <div class="brand" onclick="go('home')">ZIVAN</div>
-  <div class="top-actions">
-    <button class="btn ghost small" id="searchTop" onclick="go('search')">⌕ Search</button>
-    <button class="btn small hidden" id="logoutBtn" onclick="logout()">Log out</button>
-  </div>
-</header>
+    <div class="logo">ZI<span>V</span>AN</div>  
+    <div class="tagline">A new social world.</div>  
 
-<main>
-  <section id="authScreen" class="auth-wrap">
-    <div class="hero">
-      <div class="hero-mark">Z</div>
-      <h1 id="authTitle">Your world. Your way.</h1>
-      <p id="authSubtitle">Connect with people, share your moments, find your community.</p>
-    </div>
+    <!-- LOGIN -->  
+    <div id="loginPanel">  
 
-    <div class="card">
-      <div id="loginPanel">
-        <h2>Welcome back</h2>
-        <p>Log in to continue to ZIVAN.</p>
-        <form id="loginForm">
-          <div class="field"><label for="loginIdentifier">Username, email or phone</label><input id="loginIdentifier" autocomplete="username" required maxlength="254" placeholder="@yourusername"></div>
-          <div class="field"><label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" minlength="8" required maxlength="128" placeholder="Your password"></div>
-          <button class="btn primary full" type="submit">Log in</button>
-          <div id="loginError" class="error"></div>
-        </form>
-        <div class="auth-foot">New to ZIVAN? <a class="link" onclick="startSignup()">Create new account</a></div>
-      </div>
+        <div class="auth-title">Welcome back</div>  
+        <div class="auth-sub">  
+            Enter your account details to continue.  
+        </div>  
 
-      <div id="signupPanel" class="hidden">
-        <div class="step-label" id="stepLabel">STEP 1 OF 8</div>
-        <div class="progress"><div id="progressBar" style="width:12.5%"></div></div>
-        <h2 id="stepTitle">What's your name?</h2>
-        <p id="stepDescription">Start with the name people know you by.</p>
-        <div id="stepContent"></div>
-        <div class="error" id="signupError"></div>
-        <div class="row" style="margin-top:20px">
-          <button class="btn" id="backStep" onclick="previousStep()">Back</button>
-          <button class="btn primary" id="nextStep" onclick="nextStep()">Continue</button>
-        </div>
-        <div class="auth-foot"><a class="link" onclick="showLogin()">Already have an account? Log in</a></div>
-      </div>
-    </div>
-    <div class="footer">ZIVAN · Share your world, safely.</div>
-  </section>
+        <div class="field">  
+            <label>Username, email or phone</label>  
+            <input  
+                id="loginIdentifier"  
+                class="input"  
+                placeholder="@username / email / +91..."  
+                autocomplete="username">  
+        </div>  
 
-  <section id="mainScreen" class="hidden">
-    <div class="tabs" id="mainTabs">
-      <button class="tab active" data-view="home" onclick="go('home')">⌂ Home</button>
-      <button class="tab" data-view="search" onclick="go('search')">⌕ Explore</button>
-      <button class="tab" data-view="profile" onclick="go('profile')">◉ Profile</button>
-      <button class="tab hidden" id="controlTab" data-view="control" onclick="go('control')">✦ Control Center</button>
-    </div>
+        <div class="field">  
+            <label>Password</label>  
+            <input  
+                id="loginPassword"  
+                class="input"  
+                type="password"  
+                placeholder="Your password"  
+                autocomplete="current-password">  
+        </div>  
 
-    <section id="homeView">
-      <div class="section-head"><div><h1>Home feed</h1><p style="margin:0">Your people. Your moments.</p></div><span class="badge">ZIVAN</span></div>
-      <div class="card composer">
-        <h3>Create a post</h3>
-        <form id="postForm">
-          <div class="field"><textarea id="postBody" maxlength="5000" required placeholder="What's happening in your world?"></textarea></div>
-          <div class="field"><label for="postMedia">Media URL (optional)</label><input id="postMedia" type="url" maxlength="2000" placeholder="https://..."></div>
-          <button class="btn primary" type="submit">Share post ↗</button>
-          <div id="postError" class="error"></div>
-        </form>
-      </div>
-      <div id="feedList"></div>
-    </section>
+        <button  
+            class="auth-btn"  
+            onclick="login()">  
+            LOG IN  
+        </button>  
 
-    <section id="searchView" class="hidden">
-      <div class="section-head"><div><h1>Explore</h1><p style="margin:0">Find people on ZIVAN.</p></div></div>
-      <div class="card">
-        <form id="searchForm"><div class="row"><input id="searchQuery" maxlength="80" placeholder="Search username or name"><button class="btn primary" type="submit">Search</button></div></form>
-        <div id="searchResults" style="margin-top:15px"></div>
-      </div>
-    </section>
+        <div class="switch">  
+            New to ZIVAN?  
+            <button onclick="showSignup()">  
+                Create account  
+            </button>  
+        </div>  
 
-    <section id="profileView" class="hidden">
-      <div class="section-head"><div><h1>Your profile</h1><p style="margin:0">Make your space yours.</p></div><button class="btn small" onclick="loadMe()">Refresh</button></div>
-      <div id="profileCard" class="card"></div>
-      <div class="card" style="margin-top:14px">
-        <h3>Edit profile</h3>
-        <form id="profileForm">
-          <div class="field"><label for="editDisplay">Display name</label><input id="editDisplay" maxlength="80"></div>
-          <div class="field"><label for="editBio">Bio</label><textarea id="editBio" maxlength="500"></textarea></div>
-          <div class="field"><label for="editAvatar">Avatar image URL</label><input id="editAvatar" type="url" maxlength="500"></div>
-          <label class="check"><input id="editPrivate" type="checkbox"> Make my account private</label>
-          <button class="btn primary full" style="margin-top:16px" type="submit">Save profile</button>
-          <div id="profileError" class="error"></div>
-        </form>
-      </div>
-    </section>
+    </div>  
 
-    <section id="controlView" class="hidden">
-      <div class="section-head"><div><h1>Control Center</h1><p style="margin:0">Restricted moderation workspace.</p></div><span class="badge" id="roleBadge">ACCESS</span></div>
-      <div class="notice">Actions are checked by the server. Report volume alone never proves a violation. Review evidence before taking action.</div>
-      <div class="tabs" style="margin-top:18px">
-        <button class="tab active" onclick="controlSection('overview',this)">Overview</button>
-        <button class="tab" onclick="controlSection('users',this)">Users</button>
-        <button class="tab" onclick="controlSection('reports',this)">Reports</button>
-        <button class="tab" onclick="controlSection('appeals',this)">Appeals</button>
-        <button class="tab" onclick="controlSection('audit',this)">Audit</button>
-        <button class="tab" onclick="controlSection('settings',this)">Settings</button>
-      </div>
-      <div id="controlContent" class="card"><p>Loading Control Center…</p></div>
-    </section>
-  </section>
-</main>
 
-<nav class="bottomnav hidden" id="bottomNav">
-  <button onclick="go('home')"><span>⌂</span>Home</button>
-  <button onclick="go('search')"><span>⌕</span>Explore</button>
-  <button onclick="go('profile')"><span>◉</span>Profile</button>
-  <button id="bottomControl" class="hidden" onclick="go('control')"><span>✦</span>Control</button>
-</nav>
-<div id="toast"></div>
+    <!-- SIGNUP -->  
+    <div id="signupPanel" class="hidden">  
+
+        <div class="auth-title">Create your world</div>  
+
+        <div class="auth-sub">  
+            Build your identity on ZIVAN.  
+        </div>  
+
+        <div class="field">  
+            <label>Full name</label>  
+            <input  
+                id="fullName"  
+                class="input"  
+                placeholder="Your full name">  
+        </div>  
+
+        <div class="field">  
+            <label>Username</label>  
+            <input  
+                id="username"  
+                class="input"  
+                placeholder="username">  
+        </div>  
+
+        <div class="field">  
+            <label>Date of birth</label>  
+            <input  
+                id="dob"  
+                class="input"  
+                type="date">  
+        </div>  
+
+        <div class="field">  
+            <label>Password</label>  
+            <input  
+                id="signupPassword"  
+                class="input"  
+                type="password"  
+                placeholder="Minimum 8 characters">  
+        </div>  
+
+        <div class="field">  
+            <label>Verify through</label>  
+
+            <div class="choice-row">  
+
+                <button  
+                    id="emailChoice"  
+                    class="choice active"  
+                    onclick="setChannel('email')">  
+                    Email  
+                </button>  
+
+                <button  
+                    id="phoneChoice"  
+                    class="choice"  
+                    onclick="setChannel('phone')">  
+                    Phone  
+                </button>  
+
+            </div>  
+        </div>  
+
+        <div  
+            id="emailField"  
+            class="field">  
+
+            <label>Email</label>  
+
+            <input  
+                id="signupEmail"  
+                class="input"  
+                type="email"  
+                placeholder="you@example.com">  
+
+        </div>  
+
+        <div  
+            id="phoneField"  
+            class="field hidden">  
+
+            <label>Phone number</label>  
+
+            <input  
+                id="signupPhone"  
+                class="input"  
+                type="tel"  
+                placeholder="+919876543210">  
+
+        </div>  
+
+        <button  
+            class="auth-btn"  
+            onclick="requestCode()">  
+            SEND VERIFICATION CODE  
+        </button>  
+
+        <div class="switch">  
+            Already have an account?  
+            <button onclick="showLogin()">  
+                Log in  
+            </button>  
+        </div>  
+
+    </div>  
+
+
+    <!-- OTP -->  
+    <div id="otpPanel" class="hidden otp-box">  
+
+        <div class="auth-title">  
+            Verify your account  
+        </div>  
+
+        <div  
+            id="otpMessage"  
+            class="auth-sub">  
+            Enter the code we sent you.  
+        </div>  
+
+        <div class="field">  
+
+            <input  
+                id="otpCode"  
+                class="input otp-input"  
+                inputmode="numeric"  
+                maxlength="6"  
+                placeholder="••••••">  
+
+        </div>  
+
+        <button  
+            class="auth-btn"  
+            onclick="verifyCode()">  
+            VERIFY & CREATE ACCOUNT  
+        </button>  
+
+        <div class="switch">  
+            Wrong details?  
+            <button onclick="backToSignup()">  
+                Go back  
+            </button>  
+        </div>  
+
+    </div>  
+
 </div>
 
-<script>
-"use strict";
-const API = "/api";
-const POLICY_VERSION = "2026-10-01";
-let token = localStorage.getItem("zivan_token") || "";
-let meUser = null;
-let controlStatus = null;
-let signup = {};
-let step = 0;
-let lastView = "home";
+</div>  <!-- MAIN APP -->  <div id="appScreen" class="app hidden">  <div class="shell">  <!-- DESKTOP SIDEBAR -->  
+<aside class="sidebar">  
 
-const steps = [
- {key:"full_name",title:"What's your name?",desc:"Use the name you want people to recognize.",kind:"text",label:"Full name",placeholder:"Your full name",max:80},
- {key:"dob",title:"When is your birthday?",desc:"ZIVAN is currently for people aged 13 and older.",kind:"date",label:"Date of birth"},
- {key:"username",title:"Choose your username",desc:"Your unique name on ZIVAN. Letters, numbers and underscores.",kind:"text",label:"Username",placeholder:"e.g. zivan_creator",max:30},
- {key:"channel",title:"How should we verify you?",desc:"Choose one way to receive your verification code.",kind:"choice"},
- {key:"destination",title:"Where should we send the code?",desc:"Use an email address or international phone number you control.",kind:"destination"},
- {key:"password",title:"Create a strong password",desc:"Use at least 8 characters. Never share your password or OTP.",kind:"password"},
- {key:"policy",title:"Your safety comes first",desc:"Please review the community and privacy basics.",kind:"policy"},
- {key:"otp",title:"Verify your account",desc:"Enter the code sent to your chosen contact.",kind:"otp"}
-];
+    <div class="logo">  
+        ZI<span>V</span>AN  
+    </div>  
 
-function el(id){return document.getElementById(id)}
-function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function toast(msg){const t=el("toast");t.textContent=msg;t.style.display="block";clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.style.display="none",3200)}
-function errorText(err){return err?.message||"Something went wrong. Please try again."}
-async function api(path,options={}){
- const headers={"Content-Type":"application/json",...(options.headers||{})};
- if(token)headers.Authorization="Bearer "+token;
- const response=await fetch(API+path,{...options,headers});
- const raw=await response.text();
- let data={};
- try{data=raw?JSON.parse(raw):{}}catch{data={detail:raw||"Unexpected server response."}}
- if(!response.ok)throw new Error(typeof data.detail==="string"?data.detail:"Request failed ("+response.status+").");
- return data;
-}
-function showAuth(){el("authScreen").classList.remove("hidden");el("mainScreen").classList.add("hidden");el("bottomNav").classList.add("hidden");el("logoutBtn").classList.add("hidden")}
-function showMain(){el("authScreen").classList.add("hidden");el("mainScreen").classList.remove("hidden");el("bottomNav").classList.remove("hidden");el("logoutBtn").classList.remove("hidden")}
-function showLogin(){el("loginPanel").classList.remove("hidden");el("signupPanel").classList.add("hidden");el("authTitle").textContent="Your world. Your way.";el("authSubtitle").textContent="Connect with people, share your moments, find your community."}
-function startSignup(){signup={};step=0;el("loginPanel").classList.add("hidden");el("signupPanel").classList.remove("hidden");el("authTitle").textContent="Join ZIVAN";el("authSubtitle").textContent="One step at a time. Your world starts here.";renderStep()}
-function renderStep(){
- const s=steps[step];el("stepLabel").textContent=`STEP ${step+1} OF ${steps.length}`;
- el("progressBar").style.width=((step+1)/steps.length*100)+"%";
- el("stepTitle").textContent=s.title;el("stepDescription").textContent=s.desc;
- el("signupError").textContent="";el("backStep").disabled=step===0;
- el("nextStep").textContent=step===steps.length-1?"Verify & create account":"Continue";
- const c=el("stepContent");
- if(s.kind==="text"||s.kind==="date"||s.kind==="password"){
-  c.innerHTML=`<div class="field"><label for="stepInput">${esc(s.label)}</label><input id="stepInput" ${s.kind==="date"?'type="date"':s.kind==="password"?'type="password"':'type="text"'} ${s.max?'maxlength="'+s.max+'"':''} ${s.placeholder?'placeholder="'+esc(s.placeholder)+'"':''} autocomplete="off" required></div>`;
-  el("stepInput").value=signup[s.key]||"";
-  el("stepInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();nextStep()}});
- }else if(s.kind==="choice"){
-  c.innerHTML=`<div class="field"><label class="check"><input type="radio" name="channel" value="email" ${signup.channel!=="phone"?"checked":""}> Email address</label></div><div class="field"><label class="check"><input type="radio" name="channel" value="phone" ${signup.channel==="phone"?"checked":""}> Phone number (SMS)</label></div>`;
- }else if(s.kind==="destination"){
-  const phone=signup.channel==="phone";
-  c.innerHTML=`<div class="field"><label for="stepInput">${phone?"Phone number with country code":"Email address"}</label><input id="stepInput" ${phone?'type="tel" placeholder="+919876543210"':'type="email" placeholder="you@example.com"'} required autocomplete="off"></div><div class="notice">Only use a contact method you control. Verification codes expire after 10 minutes.</div>`;
-  el("stepInput").value=signup.destination||"";
- }else if(s.kind==="policy"){
-  c.innerHTML=`<div class="policy"><strong>Community safety</strong><br>Be respectful. Do not harass, threaten, impersonate, scam, or share content that violates the law or other people's privacy.<br><br><strong>Age and account details</strong><br>You must be at least 13. Provide an accurate date of birth and use a contact method you control.<br><br><strong>Privacy</strong><br>Your password and verification codes are private. Do not share them with anyone. Public profile information may be visible to other people; contact details and date of birth should remain private.<br><br><strong>Moderation and appeals</strong><br>Reports may be reviewed for context. Report counts alone do not prove a violation. Restrictions may be appealed.<br><br><strong>Account security</strong><br>Keep your login secure and report suspicious activity. This summary is not a substitute for the full ZIVAN Privacy Policy and Terms of Service.</div><label class="check"><input id="policyCheck" type="checkbox"> I have read and agree to ZIVAN's safety rules, Privacy Policy and Terms of Service.</label><p class="hint">Policy version: ${POLICY_VERSION}. Before public launch, publish and link the full legal documents.</p>`;
-  el("policyCheck").checked=!!signup.policyAccepted;
- }else if(s.kind==="otp"){
-  c.innerHTML=`<div class="notice">Code destination: <strong>${esc(signup.destination||"")}</strong><br>If no code arrives, check the address/number and server provider settings.</div><div class="field"><label for="stepInput">Verification code</label><input id="stepInput" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="Enter code" required></div>`;
-  el("stepInput").value=signup.code||"";
- }
-}
-function previousStep(){if(step>0){step--;renderStep()}}
-function ageOK(value){
- if(!value)return false;const d=new Date(value+"T00:00:00Z"),today=new Date();
- if(Number.isNaN(d.getTime())||d>today)return false;
- let age=today.getUTCFullYear()-d.getUTCFullYear();
- if(today.getUTCMonth()<d.getUTCMonth()||(today.getUTCMonth()===d.getUTCMonth()&&today.getUTCDate()<d.getUTCDate()))age--;
- return age>=13&&age<=120;
-}
-function collectStep(){
- const s=steps[step];
- if(s.kind==="text"||s.kind==="date"||s.kind==="password"){
-  const input=el("stepInput");if(!input.value.trim()){throw Error("Please complete this field.")}
-  signup[s.key]=input.value.trim();
-  if(s.key==="full_name"&&signup.full_name.length>80)throw Error("Name is too long.");
-  if(s.key==="dob"&&!ageOK(signup.dob))throw Error("You must be at least 13 and enter a valid date of birth.");
-  if(s.key==="username"&&!/^[a-z0-9_]{3,30}$/i.test(signup.username.replace(/^@/,"")))throw Error("Username must be 3–30 letters, numbers or underscores.");
-  if(s.key==="username")signup.username=signup.username.replace(/^@/,"").toLowerCase();
-  if(s.key==="password"&&signup.password.length<8)throw Error("Password must contain at least 8 characters.");
- }else if(s.kind==="choice"){
-  signup.channel=document.querySelector('input[name="channel"]:checked')?.value||"email";
- }else if(s.kind==="destination"){
-  signup.destination=el("stepInput").value.trim();
-  if(signup.channel==="email"){
-   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(signup.destination))throw Error("Enter a valid email address.");
-   signup.email=signup.destination.toLowerCase();signup.phone="";
-  }else{
-   const phone=signup.destination.replace(/[\s().-]/g,"");
-   if(!/^\+[1-9]\d{7,14}$/.test(phone))throw Error("Use international format, e.g. +919876543210.");
-   signup.phone=phone;signup.email="";
-  }
- }else if(s.kind==="policy"){
-  if(!el("policyCheck").checked)throw Error("Please agree to the safety rules and policies to continue.");
-  signup.policyAccepted=true;
- }else if(s.kind==="otp"){
-  signup.code=el("stepInput").value.trim();
-  if(!/^\d{4,10}$/.test(signup.code))throw Error("Enter the verification code.");
- }
-}
-async function nextStep(){
- const b=el("nextStep");b.disabled=true;
- try{
-  collectStep();
-  if(step===steps.length-1){
-   const result=await api("/auth/verify-code",{method:"POST",body:JSON.stringify({challenge_id:signup.challenge_id,code:signup.code})});
-   token=result.token;localStorage.setItem("zivan_token",token);
-   meUser=result.user;toast("Welcome to ZIVAN!");await enterApp();return;
-  }
-  if(steps[step].key==="policy"){
-   // Policy is recorded by the backend on successful account creation.
-   // The consent checkbox must be accepted before requesting OTP.
-   if(!signup.policyAccepted)throw Error("Please accept the policies.");
-   const payload={full_name:signup.full_name,username:signup.username,dob:signup.dob,password:signup.password,channel:signup.channel};
-   if(signup.channel==="email")payload.email=signup.email;else payload.phone=signup.phone;
-   const result=await api("/auth/request-code",{method:"POST",body:JSON.stringify(payload)});
-   signup.challenge_id=result.challenge_id;signup.destination=result.destination;
-   signup.channel=result.channel;step=steps.length-1;renderStep();return;
-  }
-  step++;renderStep();
- }catch(e){el("signupError").textContent=errorText(e)}
- finally{b.disabled=false}
-}
-el("loginForm").addEventListener("submit",async e=>{
- e.preventDefault();el("loginError").textContent="";
- try{
-  const result=await api("/auth/login",{method:"POST",body:JSON.stringify({identifier:el("loginIdentifier").value.trim(),password:el("loginPassword").value})});
-  token=result.token;localStorage.setItem("zivan_token",token);meUser=result.user;await enterApp();
- }catch(err){el("loginError").textContent=errorText(err)}
-});
-async function logout(){
- try{if(token)await api("/logout",{method:"POST"})}catch{}
- token="";meUser=null;controlStatus=null;localStorage.removeItem("zivan_token");showAuth();showLogin();toast("Logged out.");
-}
-function go(view){
- if(!meUser){showAuth();return}
- lastView=view;
- ["home","search","profile","control"].forEach(v=>el(v+"View").classList.toggle("hidden",v!==view));
- document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===view));
- if(view==="home")loadFeed();
- if(view==="profile")loadMe();
- if(view==="control")loadControlOverview();
- if(view==="search")el("searchQuery").focus();
- window.scrollTo({top:0,behavior:"smooth"});
-}
-async function enterApp(){
- showMain();
- try{
-  const me=await api("/me");meUser=me.user;await refreshControlStatus();
-  go("home");
- }catch(e){toast(errorText(e))}
-}
-async function refreshControlStatus(){
- try{
-  controlStatus=await api("/control/status");
-  const allowed=controlStatus.enabled;
-  el("controlTab").classList.toggle("hidden",!allowed);
-  el("bottomControl").classList.toggle("hidden",!allowed);
- }catch{controlStatus={enabled:false};el("controlTab").classList.add("hidden");el("bottomControl").classList.add("hidden")}
-}
-function avatarHTML(user){
- const initial=esc((user.display_name||user.username||"Z").slice(0,1).toUpperCase());
- if(user.avatar&&/^https?:\/\//i.test(user.avatar))return `<img class="avatar" style="object-fit:cover" src="${esc(user.avatar)}" alt="" referrerpolicy="no-referrer" onerror="this.outerHTML='<div class=&quot;avatar&quot;>${initial}</div>'">`;
- return `<div class="avatar">${initial}</div>`;
-}
-async function loadFeed(){
- const box=el("feedList");box.innerHTML='<div class="empty">Loading your feed…</div>';
- try{
-  const data=await api("/feed");
-  if(!data.posts?.length){box.innerHTML='<div class="card empty"><h3>Your feed starts here</h3><p>Follow people and share your first moment.</p></div>';return}
-  box.innerHTML=data.posts.map(p=>`<article class="post">
-   <div class="post-head">${avatarHTML(p)}<div style="flex:1"><div class="username">@${esc(p.username||"user")}</div><div class="meta">${esc(p.display_name||"ZIVAN member")} · ${esc(formatDate(p.created_at))}</div></div><button class="btn ghost small" onclick="reportUser('${esc(p.username)}',${Number(p.id)})">Report</button></div>
-   <div class="post-body">${esc(p.body)}</div>
-   ${p.media_url&&/^https?:\/\//i.test(p.media_url)?`<img class="post-media" src="${esc(p.media_url)}" loading="lazy" alt="Post media" onerror="this.style.display='none'">`:""}
-   <div class="post-actions"><button class="btn small" onclick="likePost(${Number(p.id)})">♡ ${Number(p.likes)||0} Likes</button><button class="btn small" onclick="commentPost(${Number(p.id)})">Comment · ${Number(p.comments)||0}</button><button class="btn small" onclick="sharePost(${Number(p.id)})">Share</button></div>
-  </article>`).join("");
- }catch(e){box.innerHTML=`<div class="card empty">${esc(errorText(e))}<br><button class="btn small" style="margin-top:12px" onclick="loadFeed()">Retry</button></div>`}
-}
-function formatDate(value){if(!value)return"Just now";const d=new Date(value);return Number.isNaN(d.getTime())?"Recently":d.toLocaleString([], {dateStyle:"medium",timeStyle:"short"})}
-el("postForm").addEventListener("submit",async e=>{
- e.preventDefault();el("postError").textContent="";
- try{await api("/posts",{method:"POST",body:JSON.stringify({body:el("postBody").value.trim(),media_url:el("postMedia").value.trim()})});el("postBody").value="";el("postMedia").value="";toast("Post shared.");loadFeed()}
- catch(err){el("postError").textContent=errorText(err)}
-});
-async function likePost(id){try{await api(`/posts/${id}/like`,{method:"POST"});toast("Post liked.");loadFeed()}catch(e){toast(errorText(e))}}
-async function commentPost(id){
- const body=prompt("Write your comment (up to 1000 characters):");if(body===null)return;if(!body.trim())return;
- try{await api(`/posts/${id}/comments`,{method:"POST",body:JSON.stringify({body:body.trim()})});toast("Comment added.");loadFeed()}catch(e){toast(errorText(e))}
-}
-async function sharePost(id){
- const url=location.origin+location.pathname+"#post-"+id;
- try{if(navigator.share)await navigator.share({title:"ZIVAN post",url});else if(navigator.clipboard){await navigator.clipboard.writeText(url);toast("Post link copied.")}else toast(url)}catch{}
-}
-async function reportUser(username,postId){
- const reason=prompt("Why are you reporting @"+username+"? Choose a brief reason, such as spam, harassment, impersonation or scam.");if(!reason)return;
- const details=prompt("Add relevant context (optional):")||"";
- try{const r=await api("/reports",{method:"POST",body:JSON.stringify({username,reason:reason.slice(0,80),details:details.slice(0,2000),post_id:postId})});toast(r.message||"Report received.")}catch(e){toast(errorText(e))}
-}
-el("searchForm").addEventListener("submit",async e=>{
- e.preventDefault();const q=el("searchQuery").value.trim();const box=el("searchResults");box.innerHTML='<p>Searching…</p>';
- try{
-  const data=await api("/search?q="+encodeURIComponent(q));
-  if(!data.users?.length){box.innerHTML='<div class="empty">No matching accounts found.</div>';return}
-  box.innerHTML=data.users.map(u=>`<div class="list-item" style="display:flex;align-items:center;gap:12px">${avatarHTML(u)}<div style="flex:1;min-width:0"><strong>@${esc(u.username)}</strong>${u.golden_tick?'<span class="badge gold">✦ GOLD VERIFIED</span>':""}<div class="meta">${esc(u.display_name||"")} · ${esc(u.bio||"")}</div></div><button class="btn small" onclick="viewUser('${esc(u.username)}')">View</button><button class="btn primary small" onclick="followUser('${esc(u.username)}')">Follow</button></div>`).join("");
- }catch(err){box.innerHTML=`<div class="error">${esc(errorText(err))}</div>`}
-});
-async function viewUser(username){
- try{
-  const data=await api("/users/"+encodeURIComponent(username));
-  const u=data.user;
-  el("searchResults").insertAdjacentHTML("afterbegin",`<div class="card" style="margin-bottom:12px">${avatarHTML(u)}<h3 style="margin-top:10px">@${esc(u.username)} ${u.golden_tick?'✦':''}</h3><p>${esc(u.bio||"No bio yet.")}</p><p>${Number(data.followers)||0} followers · ${Number(data.following)||0} following</p></div>`);
- }catch(e){toast(errorText(e))}
-}
-async function followUser(username){try{await api("/users/"+encodeURIComponent(username)+"/follow",{method:"POST"});toast("Following @"+username)}catch(e){toast(errorText(e))}}
-async function loadMe(){
- try{
-  const data=await api("/me");meUser=data.user;
-  el("profileCard").innerHTML=`<div style="display:flex;gap:14px;align-items:center">${avatarHTML(meUser)}<div><h2 style="margin:0">${esc(meUser.display_name||meUser.username)} ${meUser.golden_tick?'<span class="badge gold">✦ GOLD</span>':""}</h2><p style="margin:4px 0">@${esc(meUser.username)}</p></div></div>
-  <div class="stat-grid" style="margin-top:20px"><div class="stat"><strong>${Number(data.followers)||0}</strong><span>Followers</span></div><div class="stat"><strong>${Number(data.following)||0}</strong><span>Following</span></div><div class="stat"><strong>${meUser.email_verified||meUser.phone_verified?"✓":"!"}</strong><span>Verification</span></div></div>
-  <p style="margin-top:17px">${esc(meUser.bio||"Add a bio to introduce yourself.")}</p>
-  <div class="notice">Login contact: ${esc(meUser.email||meUser.phone||"Verified contact")}<br>Date of birth is kept private.</div>
-  <div style="margin-top:14px"><button class="btn small" onclick="requestAppeal()">Submit a moderation appeal</button></div>`;
-  el("editDisplay").value=meUser.display_name||"";el("editBio").value=meUser.bio||"";el("editAvatar").value=meUser.avatar||"";el("editPrivate").checked=!!meUser.is_private;
- }catch(e){el("profileCard").innerHTML=`<div class="error">${esc(errorText(e))}</div>`}
-}
-el("profileForm").addEventListener("submit",async e=>{
- e.preventDefault();el("profileError").textContent="";
- try{const data=await api("/me",{method:"PATCH",body:JSON.stringify({display_name:el("editDisplay").value.trim(),bio:el("editBio").value.trim(),avatar:el("editAvatar").value.trim(),is_private:el("editPrivate").checked})});meUser=data.user;toast("Profile updated.");loadMe()}
- catch(err){el("profileError").textContent=errorText(err)}
-});
-async function requestAppeal(){
- const message=prompt("Explain why you believe the restriction should be reviewed (at least 10 characters):");if(!message)return;
- try{await api("/appeals",{method:"POST",body:JSON.stringify({message})});toast("Appeal submitted for review.")}catch(e){toast(errorText(e))}
-}
-async function controlSection(section,button){
- document.querySelectorAll("#controlView .tabs .tab").forEach(b=>b.classList.remove("active"));if(button)button.classList.add("active");
- const box=el("controlContent");box.innerHTML='<p>Loading…</p>';
- try{
-  if(section==="overview"){
-   const [o,c]=await Promise.all([api("/control/overview"),api("/control/config-status")]);
-   box.innerHTML=`<div class="stat-grid">${Object.entries(o.counts||{}).map(([k,v])=>`<div class="stat"><strong>${Number(v)||0}</strong><span>${esc(k.replaceAll("_"," "))}</span></div>`).join("")}</div><h3 style="margin-top:24px">Configuration</h3><div class="list-item">Owner configured <span class="badge">${c.owner_configured?"YES":"NO"}</span></div><div class="list-item">Email OTP <span class="badge">${c.email_configured?"READY":"NOT CONFIGURED"}</span></div><div class="list-item">Phone OTP <span class="badge">${c.phone_otp_configured?"READY":"NOT CONFIGURED"}</span></div><div class="list-item">AI assistant <span class="badge">FUTURE PHASE</span></div>`;
-  }else if(section==="users"){
-   const d=await api("/control/users?limit=50");
-   box.innerHTML=`<div class="field"><input id="controlUserQuery" placeholder="Search users by username or name"><button class="btn small" style="margin-top:8px" onclick="searchControlUsers()">Search</button></div><div id="controlUserList">${renderControlUsers(d.users)}</div>`;
-  }else if(section==="reports"){
-   const d=await api("/control/reports?status=all&limit=100");
-   box.innerHTML=(d.reports||[]).map(r=>`<div class="list-item"><strong>#${r.id} · @${esc(r.target_username)}</strong><div class="meta">Reported by @${esc(r.reporter_username)} · ${esc(r.reason)} · Priority ${Number(r.priority_score)||0}</div><p>${esc(r.details||"No extra details.")}</p>${r.post_body?`<div class="notice">Post: ${esc(r.post_body)}</div>`:""}<div class="post-actions"><button class="btn small" onclick="reviewReport(${r.id},'reviewed')">Mark reviewed</button><button class="btn small" onclick="reviewReport(${r.id},'dismissed')">Dismiss</button><button class="btn primary small" onclick="reviewReport(${r.id},'actioned')">Actioned</button><button class="btn danger small" onclick="banTarget(${r.target_user_id})">Restrict user</button></div></div>`).join("")||'<div class="empty">No reports.</div>';
-  }else if(section==="appeals"){
-   const d=await api("/control/appeals?status=all&limit=100");
-   box.innerHTML=(d.appeals||[]).map(a=>`<div class="list-item"><strong>Appeal #${a.id} · @${esc(a.username)}</strong><span class="badge">${esc(a.status)}</span><p>${esc(a.message)}</p>${a.status==="pending"?`<div class="post-actions"><button class="btn primary small" onclick="reviewAppeal(${a.id},'approve')">Approve / unrestrict</button><button class="btn danger small" onclick="reviewAppeal(${a.id},'reject')">Reject</button></div>`:""}</div>`).join("")||'<div class="empty">No appeals.</div>';
-  }else if(section==="audit"){
-   const d=await api("/control/audit?limit=100");
-   box.innerHTML=(d.events||[]).map(a=>`<div class="list-item"><strong>${esc(a.action)}</strong><div class="meta">${esc(a.actor_username||"System")} · ${esc(a.created_at)}</div><p>${esc(a.details_json||"{}")}</p></div>`).join("")||'<div class="empty">No audit events.</div>';
-  }else if(section==="settings"){
-   const d=await api("/control/settings");
-   box.innerHTML=`<h3>App settings</h3><div id="settingList">${(d.settings||[]).map(s=>`<div class="list-item"><strong>${esc(s.setting_key)}</strong><p>${esc(s.setting_value)}</p></div>`).join("")}</div><form id="settingForm"><div class="field"><label>Setting key</label><input id="settingKey" pattern="[a-z][a-z0-9_.-]{1,80}" required></div><div class="field"><label>Value</label><input id="settingValue" maxlength="2000" required></div><button class="btn primary">Save setting</button></form>`;
-   el("settingForm").addEventListener("submit",saveSetting);
-  }
- }catch(e){box.innerHTML=`<div class="error">${esc(errorText(e))}</div>`}
-}
-function renderControlUsers(users){return (users||[]).map(u=>`<div class="list-item"><strong>@${esc(u.username)}</strong><span class="badge">${esc(u.account_status)}</span>${u.golden_tick?'<span class="badge gold">GOLD</span>':""}<div class="meta">ID ${Number(u.id)} · ${esc(u.created_at)}</div><div class="post-actions"><button class="btn small" onclick="banTarget(${Number(u.id)})">Restrict</button><button class="btn small" onclick="unbanTarget(${Number(u.id)})">Unrestrict</button><button class="btn small" onclick="toggleGolden(${Number(u.id)},${u.golden_tick?0:1})">${u.golden_tick?"Remove tick":"Grant gold tick"}</button></div></div>`).join("")||'<div class="empty">No users found.</div>'}
-async function searchControlUsers(){
- const q=el("controlUserQuery").value.trim();
- try{const d=await api("/control/users?q="+encodeURIComponent(q)+"&limit=100");el("controlUserList").innerHTML=renderControlUsers(d.users)}catch(e){toast(errorText(e))}
-}
-async function reviewReport(id,decision){
- const note=prompt("Optional review note:")||"";
- try{await api(`/control/reports/${id}/review?decision=${encodeURIComponent(decision)}&note=${encodeURIComponent(note)}`,{method:"POST"});toast("Report updated.");controlSection("reports")}catch(e){toast(errorText(e))}
-}
-async function banTarget(id){
- const reason=prompt("Reason for restriction (be specific):");if(!reason||reason.trim().length<3)return;
- const permanent=confirm("Press OK for a permanent ban. Press Cancel for a temporary 24-hour suspension.");
- try{await api(`/control/users/${id}/ban`,{method:"POST",body:JSON.stringify({reason:reason.trim(),duration_hours:24,permanent})});toast("Moderation action recorded.");controlSection("users")}catch(e){toast(errorText(e))}
-}
-async function unbanTarget(id){
- const note=prompt("Reason for removing restriction (optional):")||"Restriction reviewed";
- try{await api(`/control/users/${id}/unban?note=${encodeURIComponent(note)}`,{method:"POST"});toast("Restriction removed.");controlSection("users")}catch(e){toast(errorText(e))}
-}
-async function toggleGolden(id,enabled){
- const note=prompt(enabled?"Reason for granting gold verification:":"Reason for removing gold verification:")||"Manual review";
- try{await api(`/control/users/${id}/golden-tick`,{method:"PUT",body:JSON.stringify({enabled:!!enabled,note})});toast("Verification status updated.");controlSection("users")}catch(e){toast(errorText(e))}
-}
-async function reviewAppeal(id,decision){
- const note=prompt("Review note (optional):")||"";
- try{await api(`/control/appeals/${id}/review`,{method:"POST",body:JSON.stringify({decision,note})});toast("Appeal reviewed.");controlSection("appeals")}catch(e){toast(errorText(e))}
-}
-async function saveSetting(e){
- e.preventDefault();
- try{await api("/control/settings/"+encodeURIComponent(el("settingKey").value.trim()),{method:"PUT",body:JSON.stringify({value:el("settingValue").value})});toast("Setting saved.");controlSection("settings")}catch(err){toast(errorText(err))}
-}
-async function loadControlOverview(){
- if(!controlStatus?.enabled){toast("Control Center access is not authorized.");go("home");return}
- el("roleBadge").textContent=(controlStatus.role||"admin").toUpperCase();
- await controlSection("overview",document.querySelector('#controlView .tabs .tab'));
-}
-(async function boot(){
- try{
-  await api("/health");
- }catch(e){console.warn("ZIVAN API health check failed",e)}
- if(token){
-  try{const data=await api("/me");meUser=data.user;await enterApp()}
-  catch{localStorage.removeItem("zivan_token");token="";showAuth();showLogin()}
- }else{showAuth();showLogin()}
-})();
-</script>
-</body>
-</html>
+    <button  
+        class="side-btn active"  
+        data-page="Home"  
+        onclick="navigate('Home')">  
+        <span class="icon">⌂</span>  
+        Home  
+    </button>  
+
+    <button  
+        class="side-btn"  
+        data-page="Explore"  
+        onclick="navigate('Explore')">  
+        <span class="icon">⌕</span>  
+        Explore  
+    </button>  
+
+    <button  
+        class="side-btn"  
+        data-page="Create"  
+        onclick="openCreate()">  
+        <span class="icon">＋</span>  
+        Create  
+    </button>  
+
+    <button  
+        class="side-btn"  
+        data-page="Reels"  
+        onclick="navigate('Reels')">  
+        <span class="icon">▶</span>  
+        Reels  
+    </button>  
+
+    <button  
+        class="side-btn"  
+        data-page="Notifications"  
+        onclick="navigate('Notifications')">  
+        <span class="icon">♡</span>  
+        Notifications  
+    </button>  
+
+    <button  
+        class="side-btn"  
+        data-page="Messages"  
+        onclick="navigate('Messages')">  
+        <span class="icon">✉</span>  
+        Messages  
+    </button>  
+
+    <button  
+        class="side-btn"  
+        data-page="Profile"  
+        onclick="navigate('Profile')">  
+        <span class="icon">◎</span>  
+        Profile  
+    </button>  
+
+    <button  
+        class="side-btn"  
+        data-page="Settings"  
+        onclick="navigate('Settings')">  
+        <span class="icon">⚙</span>  
+        Settings  
+    </button>  
+
+</aside>  
+
+
+<!-- MAIN -->  
+<main class="main">  
+
+    <header class="topbar">  
+
+        <div  
+            id="topTitle"  
+            class="top-title">  
+            Home  
+        </div>  
+
+        <button  
+            class="secondary"  
+            onclick="logout()">  
+            Logout  
+        </button>  
+
+    </header>  
+
+    <div id="pageRoot"></div>  
+
+</main>
+
+</div>  <!-- MOBILE NAV -->  <nav class="bottom-nav">  <button  
+    class="bottom-btn active"  
+    data-page="Home"  
+    onclick="navigate('Home')">  
+    <span class="bicon">⌂</span>  
+    Home  
+</button>  
+
+<button  
+    class="bottom-btn"  
+    data-page="Explore"  
+    onclick="navigate('Explore')">  
+    <span class="bicon">⌕</span>  
+    Explore  
+</button>  
+
+<button  
+    class="bottom-btn"  
+    data-page="Create"  
+    onclick="openCreate()">  
+    <span class="bicon">＋</span>  
+    Create  
+</button>  
+
+<button  
+    class="bottom-btn"  
+    data-page="Notifications"  
+    onclick="navigate('Notifications')">  
+    <span class="bicon">♡</span>  
+    Alerts  
+</button>  
+
+<button  
+    class="bottom-btn"  
+    data-page="Profile"  
+    onclick="navigate('Profile')">  
+    <span class="bicon">◎</span>  
+    Profile  
+</button>
+
+</nav>  </div>  <!-- CREATE MODAL -->  <div  
+    id="createModal"  
+    class="overlay hidden">  <div class="modal">  
+
+    <div class="modal-head">  
+
+        <strong>Create post</strong>  
+
+        <button  
+            class="close"  
+            onclick="closeCreate()">  
+            ×  
+        </button>  
+
+    </div>  
+
+    <textarea  
+        id="postBody"  
+        class="input"  
+        rows="7"  
+        maxlength="5000"  
+        placeholder="What do you want to share?"></textarea>  
+
+    <input  
+        id="mediaUrl"  
+        class="input"  
+        style="margin-top:10px"  
+        placeholder="Media URL (optional)">  
+
+    <button  
+        class="auth-btn"  
+        style="margin-top:13px"  
+        onclick="createPost()">  
+        PUBLISH  
+    </button>  
+
+</div>
+
+</div>  <script>  
+  
+const API = "";  
+  
+let token = localStorage.getItem("zivan_token") || "";  
+let meUser = null;  
+let channel = "email";  
+let challengeId = null;  
+let currentPage = "Home";  
+  
+  
+/* =========================  
+   HELPERS  
+========================= */  
+  
+function $(id){  
+    return document.getElementById(id);  
+}  
+  
+function escapeHTML(value){  
+    return String(value ?? "")  
+        .replaceAll("&","&amp;")  
+        .replaceAll("<","&lt;")  
+        .replaceAll(">","&gt;")  
+        .replaceAll('"',"&quot;")  
+        .replaceAll("'","&#039;");  
+}  
+  
+function showToast(message){  
+    const t = $("toast");  
+  
+    t.textContent = message;  
+    t.classList.remove("hidden");  
+  
+    clearTimeout(window.toastTimer);  
+  
+    window.toastTimer = setTimeout(()=>{  
+        t.classList.add("hidden");  
+    },3000);  
+}  
+  
+async function api(path, options={}){  
+    const headers = {  
+        "Content-Type":"application/json",  
+        ...(options.headers || {})  
+    };  
+  
+    if(token){  
+        headers["Authorization"] = "Bearer " + token;  
+    }  
+  
+    const response = await fetch(  
+        API + path,  
+        {  
+            ...options,  
+            headers  
+        }  
+    );  
+  
+    let data = {};  
+  
+    try{  
+        data = await response.json();  
+    }catch(e){}  
+  
+    if(!response.ok){  
+        throw new Error(  
+            data.detail ||  
+            data.error ||  
+            "Something went wrong."  
+        );  
+    }  
+  
+    return data;  
+}  
+  
+  
+/* =========================  
+   AUTH UI  
+========================= */  
+  
+function showLogin(){  
+  
+    $("loginPanel").classList.remove("hidden");  
+    $("signupPanel").classList.add("hidden");  
+    $("otpPanel").classList.add("hidden");  
+  
+}  
+  
+function showSignup(){  
+  
+    $("loginPanel").classList.add("hidden");  
+    $("signupPanel").classList.remove("hidden");  
+    $("otpPanel").classList.add("hidden");  
+  
+}  
+  
+function backToSignup(){  
+  
+    showSignup();  
+  
+}  
+  
+function setChannel(value){  
+  
+    channel = value;  
+  
+    $("emailChoice")  
+        .classList.toggle(  
+            "active",  
+            value === "email"  
+        );  
+  
+    $("phoneChoice")  
+        .classList.toggle(  
+            "active",  
+            value === "phone"  
+        );  
+  
+    $("emailField")  
+        .classList.toggle(  
+            "hidden",  
+            value !== "email"  
+        );  
+  
+    $("phoneField")  
+        .classList.toggle(  
+            "hidden",  
+            value !== "phone"  
+        );  
+}  
+  
+  
+/* =========================  
+   SIGNUP OTP  
+========================= */  
+  
+async function requestCode(){  
+  
+    const full_name =  
+        $("fullName").value.trim();  
+  
+    const username =  
+        $("username").value.trim();  
+  
+    const dob =  
+        $("dob").value;  
+  
+    const password =  
+        $("signupPassword").value;  
+  
+    const email =  
+        $("signupEmail").value.trim();  
+  
+    const phone =  
+        $("signupPhone").value.trim();  
+  
+  
+    if(!full_name){  
+        showToast("Enter your full name.");  
+        return;  
+    }  
+  
+    if(!username){  
+        showToast("Enter a username.");  
+        return;  
+    }  
+  
+    if(!dob){  
+        showToast("Enter your date of birth.");  
+        return;  
+    }  
+  
+    if(password.length < 8){  
+        showToast(  
+            "Password must be at least 8 characters."  
+        );  
+        return;  
+    }  
+  
+  
+    if(channel === "email" && !email){  
+        showToast("Enter your email.");  
+        return;  
+    }  
+  
+    if(channel === "phone" && !phone){  
+        showToast("Enter your phone number.");  
+        return;  
+    }  
+  
+  
+    try{  
+  
+        const data = await api(  
+            "/api/auth/request-code",  
+            {  
+                method:"POST",  
+                body:JSON.stringify({  
+  
+                    full_name,  
+                    username,  
+                    dob,  
+  
+                    email:  
+                        channel === "email"  
+                        ? email  
+                        : null,  
+  
+                    phone:  
+                        channel === "phone"  
+                        ? phone  
+                        : null,  
+  
+                    password,  
+  
+                    channel  
+  
+                })  
+            }  
+        );  
+  
+  
+        challengeId =  
+            data.challenge_id;  
+  
+  
+        $("signupPanel")  
+            .classList.add("hidden");  
+  
+        $("otpPanel")  
+            .classList.remove("hidden");  
+  
+  
+        $("otpMessage").textContent =  
+            "Verification code sent to " +  
+            data.destination;  
+  
+  
+        showToast(  
+            "Verification code sent."  
+        );  
+  
+  
+    }catch(error){  
+  
+        showToast(error.message);  
+  
+    }  
+}  
+  
+  
+/* =========================  
+   VERIFY  
+========================= */  
+  
+async function verifyCode(){  
+  
+    const code =  
+        $("otpCode").value.trim();  
+  
+  
+    if(!challengeId){  
+        showToast(  
+            "Verification session expired."  
+        );  
+        return;  
+    }  
+  
+    if(!code){  
+        showToast("Enter the verification code.");  
+        return;  
+    }  
+  
+  
+    try{  
+  
+        const data = await api(  
+            "/api/auth/verify-code",  
+            {  
+                method:"POST",  
+                body:JSON.stringify({  
+  
+                    challenge_id:  
+                        challengeId,  
+  
+                    code  
+  
+                })  
+            }  
+        );  
+  
+  
+        token =  
+            data.token;  
+  
+        meUser =  
+            data.user;  
+  
+        localStorage.setItem(  
+            "zivan_token",  
+            token  
+        );  
+  
+  
+        $("authScreen")  
+            .classList.add("hidden");  
+  
+        $("appScreen")  
+            .classList.remove("hidden");  
+  
+  
+        challengeId = null;  
+  
+        navigate("Home");  
+  
+        showToast(  
+            "Welcome to ZIVAN."  
+        );  
+  
+  
+    }catch(error){  
+  
+        showToast(error.message);  
+  
+    }  
+}  
+  
+  
+/* =========================  
+   LOGIN  
+========================= */  
+  
+async function login(){  
+  
+    const identifier =  
+        $("loginIdentifier")  
+            .value  
+            .trim();  
+  
+    const password =  
+        $("loginPassword")  
+            .value;  
+  
+  
+    if(!identifier){  
+        showToast(  
+            "Enter username, email or phone."  
+        );  
+        return;  
+    }  
+  
+    if(password.length < 8){  
+        showToast(  
+            "Enter your password."  
+        );  
+        return;  
+    }  
+  
+  
+    try{  
+  
+        const data = await api(  
+            "/api/auth/login",  
+            {  
+                method:"POST",  
+                body:JSON.stringify({  
+  
+                    identifier,  
+                    password  
+  
+                })  
+            }  
+        );  
+  
+  
+        token =  
+            data.token;  
+  
+        meUser =  
+            data.user;  
+  
+        localStorage.setItem(  
+            "zivan_token",  
+            token  
+        );  
+  
+  
+        $("authScreen")  
+            .classList.add("hidden");  
+  
+        $("appScreen")  
+            .classList.remove("hidden");  
+  
+  
+        navigate("Home");  
+  
+        showToast(  
+            "Welcome back."  
+        );  
+  
+  
+    }catch(error){  
+  
+        showToast(error.message);  
+  
+    }  
+}  
+  
+  
+/* =========================  
+   SESSION  
+========================= */  
+  
+async function restoreSession(){  
+  
+    if(!token){  
+        return;  
+    }  
+  
+    try{  
+  
+        const data =  
+            await api("/api/me");  
+  
+        meUser =  
+            data.user;  
+  
+        $("authScreen")  
+            .classList.add("hidden");  
+  
+        $("appScreen")  
+            .classList.remove("hidden");  
+  
+        navigate("Home");  
+  
+    }catch(error){  
+  
+        token = "";  
+  
+        localStorage.removeItem(  
+            "zivan_token"  
+        );  
+  
+    }  
+}  
+  
+  
+async function logout(){  
+  
+    try{  
+  
+        if(token){  
+            await api(  
+                "/api/logout",  
+                {  
+                    method:"POST"  
+                }  
+            );  
+        }  
+  
+    }catch(e){}  
+  
+  
+    token = "";  
+    meUser = null;  
+  
+    localStorage.removeItem(  
+        "zivan_token"  
+    );  
+  
+  
+    $("appScreen")  
+        .classList.add("hidden");  
+  
+    $("authScreen")  
+        .classList.remove("hidden");  
+  
+    showLogin();  
+  
+    showToast(  
+        "Logged out."  
+    );  
+}  
+  
+  
+/* =========================  
+   NAVIGATION  
+========================= */  
+  
+function navigate(page){  
+  
+    currentPage = page;  
+  
+    $("topTitle").textContent =  
+        page === "Create"  
+        ? "Create"  
+        : page;  
+  
+  
+    document  
+        .querySelectorAll(  
+            ".side-btn,.bottom-btn"  
+        )  
+        .forEach(btn=>{  
+  
+            btn.classList.toggle(  
+                "active",  
+                btn.dataset.page === page  
+            );  
+  
+        });  
+  
+  
+    if(page === "Home"){  
+        renderHome();  
+    }  
+  
+    else if(page === "Explore"){  
+        renderExplore();  
+    }  
+  
+    else if(page === "Reels"){  
+        renderReels();  
+    }  
+  
+    else if(page === "Notifications"){  
+        renderNotifications();  
+    }  
+  
+    else if(page === "Messages"){  
+        renderMessages();  
+    }  
+  
+    else if(page === "Profile"){  
+        renderProfile();  
+    }  
+  
+    else if(page === "Settings"){  
+        renderSettings();  
+    }  
+  
+}  
+  
+  
+/* =========================  
+   HOME  
+========================= */  
+  
+async function renderHome(){  
+  
+    $("pageRoot").innerHTML = `  
+  
+        <div class="page">  
+  
+            <section class="card hero">  
+  
+                <h1>  
+                    One social world.  
+                    <br>  
+                    Built differently.  
+                </h1>  
+  
+                <p>  
+                    ZIVAN is being built as a new  
+                    social ecosystem for people,  
+                    creators, communities and worlds.  
+                </p>  
+  
+                <div class="hero-user">  
+                    ${  
+                        meUser  
+                        ? "@"+escapeHTML(meUser.username)  
+                        : ""  
+                    }  
+                </div>  
+  
+            </section>  
+  
+  
+            <section class="card">  
+  
+                <div class="composer">  
+  
+                    <div class="avatar">  
+                        ${  
+                            meUser  
+                            ? escapeHTML(  
+                                meUser.username  
+                                    .charAt(0)  
+                                    .toUpperCase()  
+                              )  
+                            : "Z"  
+                        }  
+                    </div>  
+  
+                    <div  
+                        class="composer-input"  
+                        onclick="openCreate()">  
+                        What do you want to share?  
+                    </div>  
+  
+                    <button  
+                        class="primary"  
+                        onclick="openCreate()">  
+                        Post  
+                    </button>  
+  
+                </div>  
+  
+            </section>  
+  
+  
+            <div id="feed">  
+                <div class="card">  
+                    Loading your world...  
+                </div>  
+            </div>  
+  
+        </div>  
+    `;  
+  
+  
+    try{  
+  
+        const data =  
+            await api("/api/feed");  
+  
+        const posts =  
+            data.posts || [];  
+  
+  
+        if(posts.length === 0){  
+  
+            $("feed").innerHTML = `  
+  
+                <div class="card">  
+  
+                    <h3>  
+                        Your world is empty.  
+                    </h3>  
+  
+                    <p  
+                        style="  
+                        color:var(--muted);  
+                        margin-top:7px">  
+                        Follow people or create  
+                        your first post.  
+                    </p>  
+  
+                </div>  
+            `;  
+  
+            return;  
+        }  
+  
+  
+        $("feed").innerHTML =  
+            posts  
+            .map(postHTML)  
+            .join("");  
+  
+  
+    }catch(error){  
+  
+        $("feed").innerHTML = `  
+  
+            <div class="card">  
+                ${escapeHTML(error.message)}  
+            </div>  
+        `;  
+  
+    }  
+}  
+  
+  
+function postHTML(post){  
+  
+    const initial =  
+        (post.display_name ||  
+         post.username ||  
+         "Z")  
+        .charAt(0)  
+        .toUpperCase();  
+  
+  
+    return `  
+  
+        <article class="card">  
+  
+            <div class="post-head">  
+  
+                <div class="avatar">  
+                    ${escapeHTML(initial)}  
+                </div>  
+  
+                <div>  
+  
+                    <div class="post-name">  
+                        ${escapeHTML(  
+                            post.display_name ||  
+                            post.username  
+                        )}  
+                    </div>  
+  
+                    <div class="post-user">  
+                        @${escapeHTML(  
+                            post.username  
+                        )}  
+                    </div>  
+  
+                </div>  
+  
+                <div class="post-time">  
+                    ${formatTime(  
+                        post.created_at  
+                    )}  
+                </div>  
+  
+            </div>  
+  
+  
+            <div class="post-body">  
+                ${escapeHTML(post.body)}  
+            </div>  
+  
+            ${  
+                post.media_url  
+                ? `  
+                    <div  
+                        style="  
+                        margin-top:12px;  
+                        padding:12px;  
+                        border:1px solid var(--line);  
+                        border-radius:13px;  
+                        color:#9b9baa;  
+                        word-break:break-all">  
+                        ${escapeHTML(  
+                            post.media_url  
+                        )}  
+                    </div>  
+                `  
+                : ""  
+            }  
+  
+  
+            <div class="post-actions">  
+  
+                <button  
+                    class="action"  
+                    onclick="likePost(${post.id})">  
+                    ♡ ${post.likes || 0}  
+                </button>  
+  
+                <button  
+                    class="action"  
+                    onclick="commentPost(${post.id})">  
+                    ○ ${post.comments || 0}  
+                </button>  
+  
+                <button  
+                    class="action"  
+                    onclick="showToast('Share system coming next.')">  
+                    ↗ Share  
+                </button>  
+  
+            </div>  
+  
+        </article>  
+    `;  
+}  
+  
+  
+function formatTime(value){  
+  
+    if(!value) return "";  
+  
+    try{  
+  
+        return new Date(value)  
+            .toLocaleDateString();  
+  
+    }catch(e){  
+  
+        return "";  
+  
+    }  
+}  
+  
+  
+/* =========================  
+   CREATE POST  
+========================= */  
+  
+function openCreate(){  
+  
+    $("createModal")  
+        .classList.remove("hidden");  
+  
+    $("postBody").focus();  
+  
+}  
+  
+function closeCreate(){  
+  
+    $("createModal")  
+        .classList.add("hidden");  
+  
+}  
+  
+  
+async function createPost(){  
+  
+    const body =  
+        $("postBody").value.trim();  
+  
+    const media_url =  
+        $("mediaUrl").value.trim();  
+  
+  
+    if(!body){  
+        showToast(  
+            "Write something first."  
+        );  
+        return;  
+    }  
+  
+  
+    try{  
+  
+        await api(  
+            "/api/posts",  
+            {  
+                method:"POST",  
+                body:JSON.stringify({  
+  
+                    body,  
+                    media_url  
+  
+                })  
+            }  
+        );  
+  
+  
+        $("postBody").value = "";  
+        $("mediaUrl").value = "";  
+  
+        closeCreate();  
+  
+        showToast(  
+            "Post published."  
+        );  
+  
+        navigate("Home");  
+  
+  
+    }catch(error){  
+  
+        showToast(  
+            error.message  
+        );  
+  
+    }  
+}  
+  
+  
+/* =========================  
+   LIKE  
+========================= */  
+  
+async function likePost(id){  
+  
+    try{  
+  
+        await api(  
+            `/api/posts/${id}/like`,  
+            {  
+                method:"POST"  
+            }  
+        );  
+  
+        if(currentPage === "Home"){  
+            renderHome();  
+        }  
+  
+    }catch(error){  
+  
+        showToast(  
+            error.message  
+        );  
+  
+    }  
+}  
+  
+  
+/* =========================  
+   COMMENT  
+========================= */  
+  
+async function commentPost(id){  
+  
+    const text =  
+        prompt("Write your comment:");  
+  
+    if(!text){  
+        return;  
+    }  
+  
+  
+    try{  
+  
+        await api(  
+            `/api/posts/${id}/comments`,  
+            {  
+                method:"POST",  
+                body:JSON.stringify({  
+                    body:text  
+                })  
+            }  
+        );  
+  
+        showToast(  
+            "Comment added."  
+        );  
+  
+        if(currentPage === "Home"){  
+            renderHome();  
+        }  
+  
+    }catch(error){  
+  
+        showToast(  
+            error.message  
+        );  
+  
+    }  
+}  
+  
+  
+/* =========================  
+   EXPLORE  
+========================= */  
+  
+function renderExplore(){  
+  
+    $("pageRoot").innerHTML = `  
+  
+        <div class="page">  
+  
+            <div class="card">  
+  
+                <input  
+                    id="searchInput"  
+                    class="search"  
+                    placeholder="  
+                    Search people, posts,  
+                    hashtags and Worlds..."  
+                    onkeydown="  
+                        if(event.key==='Enter')  
+                        searchUsers()  
+                    ">  
+  
+            </div>  
+  
+  
+            <div class="section-title">  
+                Discover  
+            </div>  
+  
+  
+            <div class="grid">  
+  
+                <div class="explore-card">  
+                    <h3>Creators</h3>  
+                    <p>  
+                        Discover people building  
+                        their world on ZIVAN.  
+                    </p>  
+                </div>  
+  
+                <div class="explore-card">  
+                    <h3>Worlds</h3>  
+                    <p>  
+                        Communities built around  
+                        shared interests.  
+                    </p>  
+                </div>  
+  
+                <div class="explore-card">  
+                    <h3>Trending</h3>  
+                    <p>  
+                        Find conversations and  
+                        posts gaining attention.  
+                    </p>  
+                </div>  
+  
+                <div class="explore-card">  
+                    <h3>Reels</h3>  
+                    <p>  
+                        Short-form video discovery  
+                        will grow here.  
+                    </p>  
+                </div>  
+  
+            </div>  
+  
+  
+            <div id="searchResults"></div>  
+  
+        </div>  
+    `;  
+}  
+  
+  
+async function searchUsers(){  
+  
+    const q =  
+        $("searchInput").value.trim();  
+  
+    if(!q){  
+        return;  
+    }  
+  
+  
+    try{  
+  
+        const data =  
+            await api(  
+                "/api/search?q=" +  
+                encodeURIComponent(q)  
+            );  
+  
+  
+        const users =  
+            data.users || [];  
+  
+  
+        $("searchResults").innerHTML = `  
+  
+            <div class="section-title">  
+                People  
+            </div>  
+  
+            ${  
+                users.length  
+                ? users.map(user => `  
+  
+                    <div class="card">  
+  
+                        <div class="post-head">  
+  
+                            <div class="avatar">  
+                                ${escapeHTML(  
+                                    (  
+                                        user.display_name ||  
+                                        user.username ||  
+                                        "Z"  
+                                    )  
+                                    .charAt(0)  
+                                    .toUpperCase()  
+                                )}  
+                            </div>  
+  
+                            <div>  
+  
+                                <div class="post-name">  
+                                    ${escapeHTML(  
+                                        user.display_name ||  
+                                        user.username  
+                                    )}  
+                                </div>  
+  
+                                <div class="post-user">  
+                                    @${escapeHTML(  
+                                        user.username  
+                                    )}  
+                                </div>  
+  
+                            </div>  
+  
+                        </div>  
+  
+                        <p  
+                            style="  
+                            color:var(--muted);  
+                            margin-top:10px">  
+                            ${escapeHTML(  
+                                user.bio || ""  
+                            )}  
+                        </p>  
+  
+                        ${  
+                            user.username !==  
+                            meUser?.username  
+                            ? `  
+                                <button  
+                                    class="primary"  
+                                    style="margin-top:12px"  
+                                    onclick="  
+                                    followUser(  
+                                        '${escapeHTML(  
+                                            user.username  
+                                        )}'  
+                                    )">  
+                                    Follow  
+                                </button>  
+                            `  
+                            : ""  
+                        }  
+  
+                    </div>  
+  
+                `).join("")  
+                : `  
+                    <div class="card">  
+                        No people found.  
+                    </div>  
+                `  
+            }  
+  
+        `;  
+  
+    }catch(error){  
+  
+        showToast(  
+            error.message  
+        );  
+  
+    }  
+}  
+  
+  
+async function followUser(username){  
+  
+    try{  
+  
+        await api(  
+            `/api/users/${encodeURIComponent(  
+                username  
+            )}/follow`,  
+            {  
+                method:"POST"  
+            }  
+        );  
+  
+        showToast(  
+            "Following @" + username  
+        );  
+  
+    }catch(error){  
+  
+        showToast(  
+            error.message  
+        );  
+  
+    }  
+}  
+  
+  
+/* =========================  
+   REELS  
+========================= */  
+  
+function renderReels(){  
+  
+    $("pageRoot").innerHTML = `  
+  
+        <div class="page">  
+  
+            <div class="card hero">  
+  
+                <h1>Reels</h1>  
+  
+                <p>  
+                    ZIVAN short video is part of  
+                    the next creator layer.  
+                </p>  
+  
+            </div>  
+  
+  
+            <div class="card">  
+  
+                <h3>Coming into the ecosystem</h3>  
+  
+                <p  
+                    style="  
+                    color:var(--muted);  
+                    margin-top:8px;  
+                    line-height:1.6">  
+                    Short videos, creator discovery,  
+                    engagement and recommendation  
+                    systems will be connected here.  
+                </p>  
+  
+            </div>  
+  
+        </div>  
+    `;  
+}  
+  
+  
+/* =========================  
+   NOTIFICATIONS  
+========================= */  
+  
+async function renderNotifications(){  
+  
+    $("pageRoot").innerHTML = `  
+  
+        <div class="page">  
+  
+            <div id="notifications">  
+  
+                <div class="card">  
+                    Loading notifications...  
+                </div>  
+  
+            </div>  
+  
+        </div>  
+    `;  
+  
+  
+    try{  
+  
+        const data =  
+            await api(  
+                "/api/notifications"  
+            );  
+  
+        const items =  
+            data.notifications || [];  
+  
+  
+        if(!items.length){  
+  
+            $("notifications").innerHTML = `  
+  
+                <div class="card">  
+  
+                    <h3>  
+                        No notifications yet.  
+                    </h3>  
+  
+                    <p  
+                        style="  
+                        color:var(--muted);  
+                        margin-top:7px">  
+                        Your social activity will  
+                        appear here.  
+                    </p>  
+  
+                </div>  
+            `;  
+  
+            return;  
+        }  
+  
+  
+        $("notifications").innerHTML =  
+            items.map(n=>`  
+  
+                <div class="card">  
+  
+                    <strong>  
+                        ${escapeHTML(  
+                            n.display_name ||  
+                            n.username ||  
+                            "Someone"  
+                        )}  
+                    </strong>  
+  
+                    <span  
+                        style="color:var(--muted)">  
+                        ${  
+                            n.kind === "follow"  
+                            ? " followed you."  
+                            : n.kind === "like"  
+                            ? " liked your post."  
+                            : n.kind === "comment"  
+                            ? " commented on your post."  
+                            : " interacted with you."  
+                        }  
+                    </span>  
+  
+                    <div  
+                        style="  
+                        color:#666;  
+                        font-size:11px;  
+                        margin-top:7px">  
+                        ${formatTime(  
+                            n.created_at  
+                        )}  
+                    </div>  
+  
+                </div>  
+  
+            `).join("");  
+  
+  
+    }catch(error){  
+  
+        showToast(  
+            error.message  
+        );  
+  
+    }  
+}  
+  
+  
+/* =========================  
+   MESSAGES  
+========================= */  
+  
+function renderMessages(){  
+  
+    $("pageRoot").innerHTML = `  
+  
+        <div class="page">  
+  
+            <div class="card hero">  
+  
+                <h1>Messages</h1>  
+  
+                <p>  
+                    Private conversations and  
+                    group chat are part of the  
+                    ZIVAN social foundation.  
+                </p>  
+  
+            </div>  
+  
+  
+            <div class="card">  
+  
+                <h3>  
+                    Messaging foundation  
+                </h3>  
+  
+                <p  
+                    style="  
+                    color:var(--muted);  
+                    margin-top:8px;  
+                    line-height:1.6">  
+                    1-to-1 chat, group conversations,  
+                    message controls and notifications  
+                    will connect here.  
+                </p>  
+  
+            </div>  
+  
+        </div>  
+    `;  
+}  
+  
+  
+/* =========================  
+   PROFILE  
+========================= */  
+  
+async function renderProfile(){  
+  
+    $("pageRoot").innerHTML = `  
+  
+        <div class="page">  
+  
+            <div class="card">  
+  
+                <div class="profile-cover"></div>  
+  
+                <div class="profile-info">  
+  
+                    <div class="profile-big">  
+                        ${  
+                            meUser  
+                            ? escapeHTML(  
+                                meUser.username  
+                                    .charAt(0)  
+                                    .toUpperCase()  
+                              )  
+                            : "Z"  
+                        }  
+                    </div>  
+  
+                    <div class="profile-name">  
+                        ${  
+                            escapeHTML(  
+                                meUser?.display_name ||  
+                                meUser?.username ||  
+                                "ZIVAN"  
+                            )  
+                        }  
+                    </div>  
+  
+                    <div class="profile-handle">  
+                        @${escapeHTML(  
+                            meUser?.username || ""  
+                        )}  
+                    </div>  
+  
+                    <div class="profile-bio">  
+                        ${  
+                            escapeHTML(  
+                                meUser?.bio ||  
+                                "Building my world on ZIVAN."  
+                            )  
+                        }  
+                    </div>  
+  
+                    <div  
+                        id="profileStats"  
+                        class="stats">  
+                        Loading...  
+                    </div>  
+  
+                </div>  
+  
+            </div>  
+  
+  
+            <div class="card">  
+  
+                <h3>Your identity</h3>  
+  
+                <p  
+                    style="  
+                    color:var(--muted);  
+                    margin-top:8px">  
+                    Email:  
+                    ${  
+                        escapeHTML(  
+                            meUser?.email || "—"  
+                        )  
+                    }  
+                </p>  
+  
+                <p  
+                    style="  
+                    color:var(--muted);  
+                    margin-top:6px">  
+                    Verification:  
+                    ${  
+                        meUser?.email_verified ||  
+                        meUser?.phone_verified  
+                        ? "Verified"  
+                        : "Not verified"  
+                    }  
+                </p>  
+  
+            </div>  
+  
+        </div>  
+    `;  
+  
+  
+    try{  
+  
+        const data =  
+            await api("/api/me");  
+  
+  
+        $("profileStats").innerHTML = `  
+  
+            <div class="stat">  
+                <b>—</b>  
+                <span>Posts</span>  
+            </div>  
+  
+            <div class="stat">  
+                <b>  
+                    ${data.followers || 0}  
+                </b>  
+                <span>Followers</span>  
+            </div>  
+  
+            <div class="stat">  
+                <b>  
+                    ${data.following || 0}  
+                </b>  
+                <span>Following</span>  
+            </div>  
+  
+            <div class="stat">  
+                <b>0</b>  
+                <span>Worlds</span>  
+            </div>  
+  
+        `;  
+  
+    }catch(error){  
+  
+        showToast(  
+            error.message  
+        );  
+  
+    }  
+}  
+  
+  
+/* =========================  
+   SETTINGS  
+========================= */  
+  
+function renderSettings(){  
+  
+    $("pageRoot").innerHTML = `  
+  
+        <div class="page">  
+  
+            <div class="card">  
+  
+                <h2>  
+                    Settings  
+                </h2>  
+  
+                <p  
+                    style="  
+                    color:var(--muted);  
+                    margin-top:6px">  
+                    Manage your ZIVAN account.  
+                </p>  
+  
+            </div>  
+  
+  
+            <div class="card">  
+  
+                <div class="setting">  
+  
+                    <div class="setting-title">  
+                        Account  
+                    </div>  
+  
+                    <div class="setting-desc">  
+                        Username:  
+                        @${escapeHTML(  
+                            meUser?.username || ""  
+                        )}  
+                    </div>  
+  
+                </div>  
+  
+  
+                <div class="setting">  
+  
+                    <div class="setting-title">  
+                        Privacy  
+                    </div>  
+  
+                    <div class="setting-desc">  
+                        Account visibility and  
+                        follow controls will live here.  
+                    </div>  
+  
+                </div>  
+  
+  
+                <div class="setting">  
+  
+                    <div class="setting-title">  
+                        Messages  
+                    </div>  
+  
+                    <div class="setting-desc">  
+                        Message permissions and  
+                        requests will be configurable.  
+                    </div>  
+  
+                </div>  
+  
+  
+                <div class="setting">  
+  
+                    <div class="setting-title">  
+                        Security  
+                    </div>  
+  
+                    <div class="setting-desc">  
+                        Session and account security  
+                        controls will be expanded here.  
+                    </div>  
+  
+                </div>  
+  
+  
+                <div class="setting">  
+  
+                    <div class="setting-title">  
+                        Verification  
+                    </div>  
+  
+                    <div class="setting-desc">  
+                        ${  
+                            meUser?.email_verified ||  
+                            meUser?.phone_verified  
+                            ? "Your account is verified."  
+                            : "Verification required."  
+                        }  
+                    </div>  
+  
+                </div>  
+  
+            </div>  
+  
+  
+            <div class="card">  
+  
+                <button  
+                    class="secondary"  
+                    style="width:100%"  
+                    onclick="logout()">  
+                    Log out of ZIVAN  
+                </button>  
+  
+            </div>  
+  
+        </div>  
+    `;  
+}  
+  
+  
+/* =========================  
+   START  
+========================= */  
+  
+restoreSession();  
+  
+</script>  </body>  
+</html>  ye  index ab main.py.dunga.ruko
