@@ -20,7 +20,7 @@ from pydantic import BaseModel, Field
 
 =========================================================
 
-ZIVAN — BACKEND CONFIGURATION
+ZIVAN BACKEND CONFIGURATION
 
 =========================================================
 
