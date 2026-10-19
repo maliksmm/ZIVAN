@@ -18,11 +18,9 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-#=========================================================
-
-#ZIVAN BACKEND CONFIGURATION#
-
-=========================================================
+# =========================================================
+# ZIVAN BACKEND CONFIGURATION
+# =========================================================
 
 APP_NAME = "ZIVAN"
 APP_VERSION = "0.2.0"
